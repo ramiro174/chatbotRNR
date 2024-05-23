@@ -10,7 +10,7 @@ class HomeController extends Controller
     {
         if ($request->query("fullscreen")) {
             return view('index', [
-                'welcome' => 'Hey! Im Botman, to start a conversation write "hi".',
+                'welcome' => 'Hola Soy Guetza, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
             ]);
         }
 
