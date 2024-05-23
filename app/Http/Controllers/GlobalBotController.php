@@ -14,19 +14,19 @@ class GlobalBotController extends BotController
     {
         // You can access the botman object with this line
         $botman = $this->botman;
-   
+
         $botman->hears('{message}', function($botman, $message) {
-   
-            if ($message == 'hi') {
+
+            if ($message == 'hola') {
                 // Start a conversation
                 $botman->startConversation(new ExampleConversation());
             }
-            
+
             else {
-                $botman->reply("write 'hi' for testing...");
+                $botman->reply("Escribe hola para comenzar");
             }
         });
-   
+
         $botman->listen();
     }
 }

@@ -18,18 +18,18 @@ class ExampleConversation extends Conversation
 
     public function askName()
     {
-        $this->ask('Hello! What is your firstname?', function(Answer $answer) {
+        $this->ask('me gustaría conocer tu nombre o cómo deseas que te llame?', function(Answer $answer) {
             // Save result
             $this->firstname = $answer->getText();
 
-            $this->say('Nice to meet you '.$this->firstname);
-            $this->askEmail();
+            $this->say($this->firstname.' un gusto, para poder acompañarte necesito conocerte un poco más');
+            $this->askGenero();
         });
     }
 
-    public function askEmail()
+    public function askGenero()
     {
-        $this->ask('One more thing - what is your email?', function(Answer $answer) {
+        $this->ask('por favor selecciona la opción con la qué te identifiques', function(Answer $answer) {
             // Save result
             $this->email = $answer->getText();
 
