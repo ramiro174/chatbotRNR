@@ -4,12 +4,16 @@ namespace App\Conversations;
 
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
+use BotMan\BotMan\Messages\Outgoing\Question;
 
 class ExampleConversation extends Conversation
 {
     protected $firstname;
-
     protected $email;
+    protected $edad;
+    protected $estado_republica;
+    protected $genero;
 
     public function run()
     {
@@ -26,15 +30,52 @@ class ExampleConversation extends Conversation
             $this->askGenero();
         });
     }
-
     public function askGenero()
     {
-        $this->ask('por favor selecciona la opción con la qué te identifiques', function(Answer $answer) {
-            // Save result
-            $this->email = $answer->getText();
+        $question = Question::create('por favor selecciona la opción con la qué te identifiques?')
+            ->fallback('no seleccionate una opcion valida')
+            ->callbackId('askGeneroid')
+            ->addButtons([
+                Button::create('Mujer')->value('Mujer'),
+                Button::create('Hombre')->value('Hombre'),
+                Button::create('Otra identidad de genero')->value('Otra'),
+            ]);
 
-            $this->say('We will contact you at your email: '.$this->email);
-            $this->say('Bye '.$this->firstname.'!');
+
+        $this->ask($question, function(Answer $answer) {
+                $selectedValue = $answer->getValue(); // will be either 'yes' or 'no'
+                $selectedText = $answer->getText(); // will be either 'Of course' or 'Hell no!'
+                if(!in_array($selectedValue,['Mujer','Hombre','Otra'])){
+                    $this->say("Haz click en un opcion valida");
+                    $this->repeat();
+                }else{
+                    $this->genero=$selectedValue;
+                    $this->say($selectedText);
+                    $this->askEdad();
+                }
+        },['askGeneroid']);
+
+    }
+    public function askEdad()
+    {
+        $this->ask('¡Gracias!, para poder brindarte atención adecuada podrías indicarme tu edad?', function(Answer $answer) {
+            // Save result
+            $this->edad = $answer->getText();
+
+            $this->askEstado();
+
         });
     }
+    public function askEstado()
+    {
+        $this->ask('¿En que Estado de la República te encuentras en este momento?', function(Answer $answer) {
+            // Save result
+            $this->estado_republica = $answer->getText();
+
+            $this->say($this->firstname.' gracias!!');
+
+        });
+    }
+
+
 }

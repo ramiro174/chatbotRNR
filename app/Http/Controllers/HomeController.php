@@ -11,7 +11,7 @@ class HomeController extends Controller
         if ($request->query("fullscreen")) {
             return view('index', [
                 'welcome' => 'Hola Soy Guetza, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
-            ]);
+                ]);
         }
 
         return view('welcome');
