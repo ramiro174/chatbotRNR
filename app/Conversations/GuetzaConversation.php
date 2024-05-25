@@ -7,7 +7,7 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
 
-class ExampleConversation extends Conversation
+class GuetzaConversation extends Conversation
 {
     protected $firstname;
     protected $email;
@@ -33,7 +33,7 @@ class ExampleConversation extends Conversation
     public function askGenero()
     {
         $question = Question::create('por favor selecciona la opción con la qué te identifiques?')
-            ->fallback('no seleccionate una opcion valida')
+            ->fallback('no seleccionate una opción valida')
             ->callbackId('askGeneroid')
             ->addButtons([
                 Button::create('Mujer')->value('Mujer'),

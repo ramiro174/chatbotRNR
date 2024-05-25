@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Conversations\ExampleConversation;
+use App\Conversations\GuetzaConversation;
 use App\Http\Controllers\Bot\BotController;
-use BotMan\BotMan\BotMan;
-use Illuminate\Http\Request;
-use BotMan\BotMan\Messages\Incoming\Answer;
 
 class GlobalBotController extends BotController
 {
@@ -19,7 +17,7 @@ class GlobalBotController extends BotController
 
             if ($message == 'hola') {
                 // Start a conversation
-                $botman->startConversation(new ExampleConversation());
+                $botman->startConversation(new GuetzaConversation());
             }
 
             else {
