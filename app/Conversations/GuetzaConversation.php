@@ -26,13 +26,13 @@ class GuetzaConversation extends Conversation
             // Save result
             $this->firstname = $answer->getText();
 
-            $this->say($this->firstname.' un gusto, para poder acompañarte necesito conocerte un poco más');
+            //$this->say(');
             $this->askGenero();
         });
     }
     public function askGenero() :void
     {
-        $question = Question::create('por favor selecciona la opción con la qué te identifiques?')
+        $question = Question::create($this->firstname .'un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askGeneroid')
             ->addButtons([
