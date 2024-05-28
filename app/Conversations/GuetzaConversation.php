@@ -20,7 +20,7 @@ class GuetzaConversation extends Conversation
         $this->askName();
     }
 
-    public function askName()
+    public function askName():void
     {
         $this->ask('me gustaría conocer tu nombre o cómo deseas que te llame?', function(Answer $answer) {
             // Save result
@@ -30,7 +30,7 @@ class GuetzaConversation extends Conversation
             $this->askGenero();
         });
     }
-    public function askGenero()
+    public function askGenero() :void
     {
         $question = Question::create('por favor selecciona la opción con la qué te identifiques?')
             ->fallback('no seleccionate una opción valida')
@@ -40,8 +40,6 @@ class GuetzaConversation extends Conversation
                 Button::create('Hombre')->value('Hombre'),
                 Button::create('Otra identidad de genero')->value('Otra'),
             ]);
-
-
         $this->ask($question, function(Answer $answer) {
                 $selectedValue = $answer->getValue(); // will be either 'yes' or 'no'
                 $selectedText = $answer->getText(); // will be either 'Of course' or 'Hell no!'
