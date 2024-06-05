@@ -22,9 +22,10 @@ class GuetzaConversation extends Conversation
     {
         $this->askName();
     }
-    public function askName():void
+
+    public function askName(): void
     {
-        $this->ask('me gustaría conocer tu nombre o cómo deseas que te llame?', function(Answer $answer) {
+        $this->ask('me gustaría conocer tu nombre o cómo deseas que te llame?', function (Answer $answer) {
             // Save result
             $this->firstname = $answer->getText();
 
@@ -32,9 +33,11 @@ class GuetzaConversation extends Conversation
             $this->askGenero();
         });
     }
-    public function askGenero() :void
+
+    public function askGenero(): void
     {
-        $question = Question::create($this->firstname .' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques?')
+        $nombreNegritas='<b>mensaje en negritas</b>';
+        $question = Question::create($nombreNegritas . ' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askGeneroid')
             ->addButtons([
@@ -42,19 +45,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Hombre')->value('Hombre'),
                 Button::create('Otra identidad de genero')->value('Otra'),
             ]);
-        $this->ask($question, function(Answer $answer) {
-                $selectedValue = $answer->getValue(); // will be either 'yes' or 'no'
-                $selectedText = $answer->getText(); // will be either 'Of course' or 'Hell no!'
-                if(!in_array($selectedValue,['Mujer','Hombre','Otra'])){
-                    $this->say("Haz click en un opcion valida");
-                    $this->repeat();
-                }else{
-                    $this->genero=$selectedValue;
-                    $this->say($selectedText);
-                    $this->askEdad();
-                }
-        },['askGeneroid']);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue(); // will be either 'yes' or 'no'
+            $selectedText = $answer->getText(); // will be either 'Of course' or 'Hell no!'
+            if (!in_array($selectedValue, ['Mujer', 'Hombre', 'Otra'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->genero = $selectedValue;
+                $this->say($selectedText);
+                $this->askEdad();
+            }
+        }, ['askGeneroid']);
     }
+
     public function askEdad()
     {
 
@@ -62,23 +66,23 @@ class GuetzaConversation extends Conversation
             ->fallback('Edad no valida')
             ->callbackId('askEdad');
 
-        $this->ask($question_Edad, function(Answer $answer) {
+        $this->ask($question_Edad, function (Answer $answer) {
 
-            if(!is_numeric( $answer->getText())){
+            if (!is_numeric($answer->getText())) {
                 $this->say("Introduce una edad numerica");
                 $this->repeat();
-            }else{
+            } else {
                 $this->edad = $answer->getText();
                 $this->askEstado();
             }
 
 
-
-        },['askEdad']);
+        }, ['askEdad']);
     }
+
     public function askEstado()
     {
-        $this->ask('¿En que Estado de la República te encuentras en este momento?', function(Answer $answer) {
+        $this->ask('¿En que Estado de la República te encuentras en este momento?', function (Answer $answer) {
             // Save result
             $this->estado_republica = $answer->getText();
 
@@ -86,9 +90,10 @@ class GuetzaConversation extends Conversation
 
         });
     }
-    public function askOrientacionNecesitas() :void
+
+    public function askOrientacionNecesitas(): void
     {
-        $question = Question::create($this->firstname .' ¿la orientación que necesitas es para ti o para alguna mujer que conoces?')
+        $question = Question::create($this->firstname . ' ¿la orientación que necesitas es para ti o para alguna mujer que conoces?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askOrientacionNecesitasid')
             ->addButtons([
@@ -96,22 +101,21 @@ class GuetzaConversation extends Conversation
                 Button::create('Para una conocida')->value('Para una conocida'),
 
             ]);
-        $this->ask($question, function(Answer $answer) {
+        $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if(!in_array($selectedValue,['Para mi','Para una conocida'])){
+            if (!in_array($selectedValue, ['Para mi', 'Para una conocida'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            }else{
-                $this->orientacionNecesitas=$selectedValue;
-
-
-               $this->askQuieresSaberSituacionRiesgo();
+            } else {
+                $this->orientacionNecesitas = $selectedValue;
+                $this->askQuieresSaberSituacionRiesgo();
             }
-        },['askOrientacionNecesitasid']);
+        }, ['askOrientacionNecesitasid']);
     }
-    public function askQuieresSaberSituacionRiesgo() :void
+
+    public function askQuieresSaberSituacionRiesgo(): void
     {
-        $question = Question::create($this->firstname .' ¿Quieres saber que hacer en caso de necesitar algún servicio de emergencia?')
+        $question = Question::create(' ¿Quieres saber que hacer en caso de necesitar algún servicio de emergencia?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askQuieresSaberSituacionRiesgoid')
             ->addButtons([
@@ -119,25 +123,24 @@ class GuetzaConversation extends Conversation
                 Button::create('No')->value('No'),
 
             ]);
-        $this->ask($question, function(Answer $answer) {
+        $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if(!in_array($selectedValue,['Si','No'])){
+            if (!in_array($selectedValue, ['Si', 'No'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            }else{
-                $this->QuieresSaberSituacionRiesgo=$selectedValue;
-                if($selectedValue='Si'){
+            } else {
+                $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                if ($selectedValue = 'Si') {
                     $this->askIdentificamosServiciosAtencionMujeres();
-                }else{
+                } else {
                     $this->askEdad();
                 }
             }
-        },['askQuieresSaberSituacionRiesgoid']);
+        }, ['askQuieresSaberSituacionRiesgoid']);
     }
 
-    public function askIdentificamosServiciosAtencionMujeres() :void
+    public function askIdentificamosServiciosAtencionMujeres(): void
     {
-
         $this->say("Identificamos los siguientes servicios de atención a las mujeres en tu entidad.");
         $this->say("Líneas de emergencia (filtrando por:
                     -mujeres menores de 17 años, 
@@ -149,7 +152,8 @@ class GuetzaConversation extends Conversation
 
 
     }
-    public function askQuieresSaberqueHacerHeridaLesion() :void
+
+    public function askQuieresSaberqueHacerHeridaLesion(): void
     {
         $question = Question::create('¿Quieres saber que hacer en caso de alguna herida o lesión?')
             ->fallback('no seleccionate una opción valida')
@@ -159,25 +163,23 @@ class GuetzaConversation extends Conversation
                 Button::create('No')->value('No'),
 
             ]);
-        $this->ask($question, function(Answer $answer) {
+        $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if(!in_array($selectedValue,['Si','No'])){
+            if (!in_array($selectedValue, ['Si', 'No'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            }else{
-                $this->QuieresSaberSituacionRiesgo=$selectedValue;
-                if($selectedValue='Si'){
+            } else {
+                $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                if ($selectedValue = 'Si') {
                     $this->askIdentificamosServiciosAtencionMujeres();
-                }else{
+                } else {
                     $this->askEdad();
                 }
             }
-        },['askQuieresSaberqueHacerHeridaLesionid']);
+        }, ['askQuieresSaberqueHacerHeridaLesionid']);
 
 
     }
-
-
 
 
 }
