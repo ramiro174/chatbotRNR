@@ -13,7 +13,6 @@ class HomeController extends Controller
                 'welcome' => 'Hola Soy Guetza, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
                 ]);
         }
-
         return view('welcome');
     }
 }
