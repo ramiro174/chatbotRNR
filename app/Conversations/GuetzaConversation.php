@@ -36,8 +36,7 @@ class GuetzaConversation extends Conversation
 
     public function askGenero(): void
     {
-        $nombreNegritas='<b>mensaje en negritas</b>';
-        $question = Question::create($nombreNegritas . ' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques?')
+        $question = Question::create($this->firstname . ' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askGeneroid')
             ->addButtons([
@@ -130,10 +129,10 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
-                if ($selectedValue = 'Si') {
+                if ($selectedValue == 'Si') {
                     $this->askIdentificamosServiciosAtencionMujeres();
                 } else {
-                    $this->askEdad();
+                    $this->askAquiTengoUnasOpcionesParaTi();
                 }
             }
         }, ['askQuieresSaberSituacionRiesgoid']);
@@ -152,6 +151,80 @@ class GuetzaConversation extends Conversation
 
 
     }
+    public function askAquiTengoUnasOpcionesParaTi(): void
+    {
+        $question_AquiTengoUnasOpcionesParaTi = Question::create('Aquí tengo unas opciones para ti, selecciona la que mejor se ajuste a lo que necesitas:')
+            ->fallback('Edad no valida')
+            ->callbackId('askAquiTengoUnasOpcionesParaTiid')
+            ->addButtons([
+            Button::create('Identificar las violencias')->value('IdenViolencias'),
+            Button::create('Planes de acción y protección ante situaciones de violencia')->value('PlanesAccionProteccion'),
+            Button::create('Información sobre derechos sexuales y reproductivos.')->value('InforDerechosSexRepro'),
+            Button::create('Orientación psicológica')->value('OrienPsicologica'),
+            Button::create('Me comunique con anterioridad y necesito atención. ')->value('MeComunicoAnterioridad'),
+            Button::create('Información adicional')->value('InformacionAdicional'),
+            Button::create('Derechos sexuales y reproductivos')->value('DerechosSexRepro'),
+        ]);
+
+        $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['IdenViolencias', 'PlanesAccionProteccion','InforDerechosSexRepro','OrienPsicologica','MeComunicoAnterioridad','InformacionAdicional','DerechosSexRepro'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                if ($selectedValue == 'IdenViolencias') {
+                    $this->askQuieroSaberIdentificarViolencias();
+                } else {
+
+                }
+            }
+
+
+        }, ['askAquiTengoUnasOpcionesParaTiid']);
+
+
+
+    }
+    public function askQuieroSaberIdentificarViolencias(): void
+    {
+        $question_AquiTengoUnasOpcionesParaTi = Question::create('Aquí tengo unas opciones para ti, selecciona la que mejor se ajuste a lo que necesitas:')
+            ->fallback('Edad no valida')
+            ->callbackId('askAquiTengoUnasOpcionesParaTiid')
+            ->addButtons([
+            Button::create('Física')->value('Fisica'),
+            Button::create('Psicológica')->value('Psicologica'),
+            Button::create('Sexual')->value('Sexual'),
+            Button::create('Patrimonial')->value('Patrimonial'),
+
+        ]);
+
+        $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+
+            if (!in_array($selectedValue, ['Fisica', 'Psicologica','Sexual','Patrimonial'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                if ($selectedValue == 'Fisica') {
+                    $this->say("Es cualquier acto que causa daño no accidental, usando la fuerza física o algún tipo de arma u objeto que pueda provocarte o no lesiones ya sean internas, externas o ambas. En este tipo te violencia también entra la violencia acida la cual se usa para atacar a mujeres con el objetivo de causarles daños físicos graves y permanentes.");
+                    $this->say("Algunos ejemplos: pellizcos; empujones; bofetadas; jalones de cabello; golpes en cualquier parte del cuerpo; mordidas, etc.");
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoce s, está o ha estado en situación de violencia física, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+
+                } else {
+
+                }
+            }
+
+
+        }, ['askAquiTengoUnasOpcionesParaTiid']);
+
+
+
+    }
+
+
 
     public function askQuieresSaberqueHacerHeridaLesion(): void
     {

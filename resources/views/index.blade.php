@@ -18,6 +18,9 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            #botmanChatRoot{
+                padding-bottom:350px;
+            }
         </style>
     </head>
     <body class="antialiased">
