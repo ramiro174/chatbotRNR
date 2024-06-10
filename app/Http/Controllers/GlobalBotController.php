@@ -15,7 +15,7 @@ class GlobalBotController extends BotController
 
         $botman->hears('{message}', function($botman, $message) {
 
-            if ($message == 'hola') {
+            if (in_array($message,['hola','ola','Hola','HOLA'])) {
                 // Start a conversation
                 $botman->startConversation(new GuetzaConversation());
             }

@@ -9,14 +9,18 @@ use BotMan\BotMan\Messages\Outgoing\Question;
 
 class GuetzaConversation extends Conversation
 {
-    protected $firstname;
-    protected $email;
-    protected $edad;
-    protected $estado_republica;
-    protected $genero;
-    protected $orientacionNecesitas;
-    protected $QuieresSaberSituacionRiesgo;
+    protected String $firstname;
+    protected String $email;
+    protected String $edad;
+    protected String $estado_republica;
+    protected String $genero;
+    protected String $orientacionNecesitas;
+    protected String $QuieresSaberSituacionRiesgo;
 
+    protected String $AlgunaVezHanEmpujadoGolpeadoAgreFisicamente;
+    protected String $HasSentidoMiedoSobreTuSeguridad;
+    protected String $HasTenidoLesionesFisicas;
+    protected String $TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas;
 
     public function run()
     {
@@ -176,7 +180,6 @@ class GuetzaConversation extends Conversation
                 if ($selectedValue == 'IdenViolencias') {
                     $this->askQuieroSaberIdentificarViolencias();
                 } else {
-
                 }
             }
 
@@ -213,12 +216,115 @@ class GuetzaConversation extends Conversation
                     $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoce s, está o ha estado en situación de violencia física, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
 
                 } else {
-
+                   $this->askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente();
                 }
             }
 
 
         }, ['askAquiTengoUnasOpcionesParaTiid']);
+
+
+
+    }
+    public function askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente(): void
+    {
+        $question_AlgunaVezHanEmpujadoGolpeadoAgreFisicamente = Question::create('¿Alguna vez te han empujado, golpeado o agredido físicamente?')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlgunaVezHanEmpujadoGolpeadoAgreFisicamenteid')
+            ->addButtons([
+            Button::create('Si')->value('Si'),
+            Button::create('No')->value('No'),
+        ]);
+
+        $this->ask($question_AlgunaVezHanEmpujadoGolpeadoAgreFisicamente, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente = $selectedValue;
+                $this->askHasSentidoMiedoSobreTuSeguridad();
+            }
+
+
+        }, ['askAlgunaVezHanEmpujadoGolpeadoAgreFisicamenteid']);
+
+
+
+    }
+    public function askHasSentidoMiedoSobreTuSeguridad(): void
+    {
+        $question_HasSentidoMiedoSobreTuSeguridad = Question::create('¿Has sentido miedo sobre tu seguridad  física por parte de tu pareja, familiar o alguna persona cercana?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasSentidoMiedoSobreTuSeguridadid')
+            ->addButtons([
+            Button::create('Si')->value('Si'),
+            Button::create('No')->value('No'),
+        ]);
+
+        $this->ask($question_HasSentidoMiedoSobreTuSeguridad, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HasSentidoMiedoSobreTuSeguridad = $selectedValue;
+                $this->askHasTenidoLesionesFisicas();
+            }
+
+
+        }, ['askHasSentidoMiedoSobreTuSeguridadid']);
+
+
+
+    }
+    public function askHasTenidoLesionesFisicas(): void
+    {
+        $question_askHasTenidoLesionesFisicas = Question::create('¿Has tenido lesiones físicas  o haber tenido que ir al médico por agresiones físicas de terceras personas?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasTenidoLesionesFisicasid')
+            ->addButtons([
+            Button::create('Si')->value('Si'),
+            Button::create('No')->value('No'),
+        ]);
+
+        $this->ask($question_askHasTenidoLesionesFisicas, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HasTenidoLesionesFisicas = $selectedValue;
+                $this->askTuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas();
+            }
+
+
+        }, ['askHasTenidoLesionesFisicasid']);
+
+
+
+    }
+    public function askTuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas(): void
+    {
+        $question_TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas = Question::create('¿Tú pareja, familiar o alguien cercano te ha obligado o engañado para que consumas  alguna sustancia o medicamento? ')
+            ->fallback('Edad no valida')
+            ->callbackId('askTuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas')
+            ->addButtons([
+            Button::create('Si')->value('Si'),
+            Button::create('No')->value('No'),
+        ]);
+
+        $this->ask($question_TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas = $selectedValue;
+            }
+
+
+        }, ['askTuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas']);
 
 
 
