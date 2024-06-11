@@ -214,9 +214,16 @@ class GuetzaConversation extends Conversation
                     $this->say("Es cualquier acto que causa daño no accidental, usando la fuerza física o algún tipo de arma u objeto que pueda provocarte o no lesiones ya sean internas, externas o ambas. En este tipo te violencia también entra la violencia acida la cual se usa para atacar a mujeres con el objetivo de causarles daños físicos graves y permanentes.");
                     $this->say("Algunos ejemplos: pellizcos; empujones; bofetadas; jalones de cabello; golpes en cualquier parte del cuerpo; mordidas, etc.");
                     $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoce s, está o ha estado en situación de violencia física, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente();
+                }
+                elseif($selectedValue == 'Psicologica') {
 
-                } else {
-                   $this->askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente();
+                }
+                elseif($selectedValue == 'Sexual') {
+
+                }
+                elseif($selectedValue == 'Patrimonial') {
+
                 }
             }
 
@@ -321,6 +328,17 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas = $selectedValue;
+                $Respuestaspreguntas=[$this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente,$this->HasSentidoMiedoSobreTuSeguridad,$this->HasTenidoLesionesFisicas,$this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas];
+
+                $this->say('Existen lugares especializados de protección en los que puedes recibir atención integral de forma gratuita, segura y confidencial. Recuerda que las violencias son un delito y puedes denunciarlo. Te invitamos a conocer planes de acción. ');
+
+                if(in_array('Si',$Respuestaspreguntas)){
+                        $this->askPlanesDeAccionProteccionSituacionViolencia();
+
+                }else{
+                    $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                }
+
             }
 
 
@@ -329,8 +347,33 @@ class GuetzaConversation extends Conversation
 
 
     }
+    public function askPlanesDeAccionProteccionSituacionViolencia(): void
+    {
+        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Planes de acción y protección ante situaciones de violencia')
+            ->fallback('Edad no valida')
+            ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
+            ->addButtons([
+                Button::create('Sexual')->value('Sexual'),
+                Button::create('Física')->value('Fisica'),
+                Button::create('Psicológica')->value('Psicologica'),
+
+            ]);
+
+        $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Sexual', 'Fisica','Psicologica'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+            }
 
 
+        }, ['askPlanesDeAccionProteccionSituacionViolenciaid']);
+
+
+
+    }
 
     public function askQuieresSaberqueHacerHeridaLesion(): void
     {
