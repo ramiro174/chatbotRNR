@@ -20,7 +20,7 @@ class GuetzaConversation extends Conversation
     protected String $HasSentidoMiedoSobreTuSeguridad;
     protected String $HasTenidoLesionesFisicas;
     protected String $TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas;
-    protected int $tiempoRespuesta;
+    protected int $tiempoRespuesta=2;
 
     public function run()
     {
