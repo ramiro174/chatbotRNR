@@ -50,6 +50,7 @@ class GuetzaConversation extends Conversation
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue(); // will be either 'yes' or 'no'
+            $this->say($selectedValue);
             $selectedText = $answer->getText(); // will be either 'Of course' or 'Hell no!'
             if (!in_array($selectedValue, ['Mujer', 'Hombre', 'Otra'])) {
                 $this->say("Haz click en un opcion valida");
@@ -75,6 +76,8 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->edad = $answer->getText();
+                $this->say($this->edad );
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askEstado();
             }
 
