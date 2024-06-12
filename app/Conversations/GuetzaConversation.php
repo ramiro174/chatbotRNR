@@ -16,11 +16,11 @@ class GuetzaConversation extends Conversation
     protected String $genero;
     protected String $orientacionNecesitas;
     protected String $QuieresSaberSituacionRiesgo;
-
     protected String $AlgunaVezHanEmpujadoGolpeadoAgreFisicamente;
     protected String $HasSentidoMiedoSobreTuSeguridad;
     protected String $HasTenidoLesionesFisicas;
     protected String $TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas;
+    protected int $tiempoRespuesta;
 
     public function run()
     {
@@ -29,10 +29,10 @@ class GuetzaConversation extends Conversation
 
     public function askName(): void
     {
-        $this->ask('me gustaría conocer tu nombre o cómo deseas que te llame?', function (Answer $answer) {
+        $this->ask('¿Me gustaría conocer tu nombre o cómo deseas que te llame?', function (Answer $answer) {
             // Save result
             $this->firstname = $answer->getText();
-
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
             //$this->say(');
             $this->askGenero();
         });
@@ -55,13 +55,12 @@ class GuetzaConversation extends Conversation
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->genero = $selectedValue;
-                $this->say($selectedText);
                 $this->askEdad();
             }
         }, ['askGeneroid']);
     }
-
     public function askEdad()
     {
 
@@ -82,7 +81,6 @@ class GuetzaConversation extends Conversation
 
         }, ['askEdad']);
     }
-
     public function askEstado()
     {
         $this->ask('¿En que Estado de la República te encuentras en este momento?', function (Answer $answer) {
@@ -93,7 +91,6 @@ class GuetzaConversation extends Conversation
 
         });
     }
-
     public function askOrientacionNecesitas(): void
     {
         $question = Question::create($this->firstname . ' ¿la orientación que necesitas es para ti o para alguna mujer que conoces?')
@@ -115,7 +112,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['askOrientacionNecesitasid']);
     }
-
     public function askQuieresSaberSituacionRiesgo(): void
     {
         $question = Question::create(' ¿Quieres saber que hacer en caso de necesitar algún servicio de emergencia?')
@@ -141,7 +137,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['askQuieresSaberSituacionRiesgoid']);
     }
-
     public function askIdentificamosServiciosAtencionMujeres(): void
     {
         $this->say("Identificamos los siguientes servicios de atención a las mujeres en tu entidad.");
