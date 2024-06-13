@@ -21,6 +21,41 @@
             #botmanChatRoot{
                 padding-bottom:350px;
             }
+
+            .chatbot:has(.msg):has(div):has(p):has(.response-right)
+           {
+                -webkit-box-pack: end!important;
+                -webkit-justify-content: flex-end!important;
+                -ms-flex-pack: end!important;
+                justify-content: flex-end!important;
+                -webkit-box-align: end!important;
+                -webkit-align-items: flex-end!important;
+                -ms-flex-align: end!important;
+                align-items: flex-end!important;
+            }
+            .chatbot .msg{
+                box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.75);
+                -webkit-box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.75);
+                -moz-box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.75);
+                background-color:white;
+            }
+            .textarea{
+                -webkit-box-shadow: 0px -1px 8px 0px rgba(0,0,0,0.75);
+                -moz-box-shadow: 0px -1px 8px 0px rgba(0,0,0,0.75);
+                box-shadow: 0px -1px 8px 0px rgba(0,0,0,0.75);
+            }
+
+            .visitor .msg{
+                box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
+                -webkit-box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
+                -moz-box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
+                background-color:#25D366;
+            }
+            .chatbot:has(.msg):has(div):has(p):has(.response-right) .msg
+            {
+                background-color:#25D366;
+            }
+
         </style>
     </head>
     <body class="antialiased">

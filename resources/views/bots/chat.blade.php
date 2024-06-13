@@ -2,7 +2,7 @@
     // Example ussage of the fullscreen widget
     const welcomeMessage = "{{ $welcome }}";
     const chatServer = "/api/botman";
- 
+
     // Create a new observer instance:
     const observer = new MutationObserver(function() {
         if (document.getElementById('botmanChatRoot')) {
@@ -14,8 +14,11 @@
     });
 
     // Set configuration object:
-    const config = { childList: true };
-    
+    const config = { childList: true
+
+
+    };
+
     // Start the observer
     observer.observe(document.body, config);
 
