@@ -227,8 +227,11 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if ($selectedValue == 'Fisica') {
                     $this->say("Es cualquier acto que causa daño no accidental, usando la fuerza física o algún tipo de arma u objeto que pueda provocarte o no lesiones ya sean internas, externas o ambas. En este tipo te violencia también entra la violencia acida la cual se usa para atacar a mujeres con el objetivo de causarles daños físicos graves y permanentes.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->say("Algunos ejemplos: pellizcos; empujones; bofetadas; jalones de cabello; golpes en cualquier parte del cuerpo; mordidas, etc.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoce s, está o ha estado en situación de violencia física, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente();
                 }
                 elseif($selectedValue == 'Psicologica') {
