@@ -21,16 +21,27 @@ class GuetzaConversation extends Conversation
     protected String $HasSentidoMiedoSobreTuSeguridad;
     protected String $HasTenidoLesionesFisicas;
     protected String $TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas;
-    protected int $tiempoRespuesta=1;
+    protected String $AlguienCercanoCriticaMenospreciaBurla;
+    protected String $SientesAlguienTuVidaLimitaTusDesiciones;
+    protected String $TeHanExcluidoDeliberadamenteDeActividades;
+    protected String $SientesMiedoAnsiedadConstante;
+
+    protected String $AlguienPresionadoParticiparActividadesSexuales;
+    protected String $HasAccedidoRealizarActivadesSexuales;
+    protected String $AlguienUtilizadoDrogasIncapacitarte;
+    protected String $HasTenidoActividadesSexualesSinConsentimiento ;
+
+
+
+    protected int $tiempoRespuesta=2;
 
     public function run()
     {
         $this->askName();
     }
-
     public function askName(): void
     {
-        $this->ask('¿Me gustaría conocer tu nombre o cómo deseas que te llame ?', function (Answer $answer) {
+        $this->ask('¿Me gustaría conocer tu nombre o cómo deseas que te llame?', function (Answer $answer) {
             // Save result
             $this->firstname = $answer->getText();
             $this->bot->typesAndWaits($this->tiempoRespuesta);
@@ -211,7 +222,6 @@ class GuetzaConversation extends Conversation
             Button::create('Económica')->value('Económica'),
             Button::create('Digital')->value('Digital'),
             Button::create('¿Solo mi pareja puede ejercer violencia?')->value('¿Solo mi pareja puede ejercer violencia?'),
-
         ]);
 
         $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
@@ -235,9 +245,22 @@ class GuetzaConversation extends Conversation
                     $this->askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente();
                 }
                 elseif($selectedValue == 'Psicologica') {
-
+                    $this->say("Es cualquier acto u omisión que dañe tu estabilidad psicológica, que puede consistir en: negligencia, abandono, descuido reiterado, celotipia, insultos, humillaciones, devaluación, marginación, indiferencia, infidelidad, comparaciones destructivas, rechazo, restricción a la autodeterminación y amenazas, las cuales te pueden generar consecuencias, secuelas o efectos, tales como depresión, aislamiento, devaluación de la autoestima e incluso ideación o intentos de suicidio.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Otros ejemplos: criticarte cómo te vistes o hablas; revisar tu celular o redes sociales; minimizar tus opiniones; ridiculizarte, dejarte de hablar, exigirte le digas a dónde vas o con quien estas; etc.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoce s, está o ha estado en situación de violencia psicología, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlguienCercanoCriticaMenospreciaBurla();
                 }
                 elseif($selectedValue == 'Sexual') {
+                    $this->say("Es cualquier acto que te degrada o daña tu cuerpo y/o tu sexualidad y que por tanto atenta contra tu libertad, dignidad e integridad física. Es una expresión de abuso de poder al denigrarte y concebirte como objeto.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Algunos ejemplos: presionarte a tener relaciones sexuales; chantajearte para tener relaciones sexuales, obligarte a ver material pornográfico o realizar alguna práctica sexual que te desagrada, tocamientos sobre la ropa o debajo de ella sin tu autorización; etc.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia sexual, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlguienPresionadoParticiparActividadesSexuales();
 
                 }
                 elseif($selectedValue == 'Patrimonial') {
@@ -354,7 +377,6 @@ class GuetzaConversation extends Conversation
                 $this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $Respuestaspreguntas=[$this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente,$this->HasSentidoMiedoSobreTuSeguridad,$this->HasTenidoLesionesFisicas,$this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas];
-
                 $this->say('Existen lugares especializados de protección en los que puedes recibir atención integral de forma gratuita, segura y confidencial. Recuerda que las violencias son un delito y puedes denunciarlo. Te invitamos a conocer planes de acción. ');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array('Si',$Respuestaspreguntas)){
@@ -399,7 +421,6 @@ class GuetzaConversation extends Conversation
 
 
     }
-
     public function askQuieresSaberqueHacerHeridaLesion(): void
     {
         $question = Question::create('¿Quieres saber que hacer en caso de alguna herida o lesión?')
@@ -424,6 +445,250 @@ class GuetzaConversation extends Conversation
                 }
             }
         }, ['askQuieresSaberqueHacerHeridaLesionid']);
+
+
+    }
+
+    public function askAlguienCercanoCriticaMenospreciaBurla(): void
+    {
+        $question_AlguienCercanoCriticaMenospreciaBurla = Question::create('¿Alguien cercano te critica, te menosprecia o se burla de ti, teniendo impacto en tu autoestima?')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlguienCercanoCriticaMenospreciaBurlaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_AlguienCercanoCriticaMenospreciaBurla, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlguienCercanoCriticaMenospreciaBurla = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSientesAlguienTuVidaLimitaTusDesiciones();
+            }
+
+
+        }, ['askAlguienCercanoCriticaMenospreciaBurlaid']);
+
+
+
+    }
+    public function askSientesAlguienTuVidaLimitaTusDesiciones(): void
+    {
+        $question_askSientesAlguienTuVidaLimitaTusDesiciones = Question::create('¿Sientes que alguien en tu vida limita tus decisiones y acciones?')
+            ->fallback('Edad no valida')
+            ->callbackId('askSientesAlguienTuVidaLimitaTusDesicionesid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askSientesAlguienTuVidaLimitaTusDesiciones, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->SientesAlguienTuVidaLimitaTusDesiciones = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHanExcluidoDeliberadamenteDeActividades();
+            }
+
+
+        }, ['askSientesAlguienTuVidaLimitaTusDesicionesid']);
+
+
+
+    }
+    public function askTeHanExcluidoDeliberadamenteDeActividades(): void
+    {
+        $question_askTeHanExcluidoDeliberadamenteDeActividades = Question::create('¿Te han excluido deliberadamente de actividades o decisiones importantes como castigo?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeHanExcluidoDeliberadamenteDeActividadesid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askTeHanExcluidoDeliberadamenteDeActividades, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeHanExcluidoDeliberadamenteDeActividades = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSientesMiedoAnsiedadConstante();
+            }
+
+
+        }, ['askTeHanExcluidoDeliberadamenteDeActividadesid']);
+
+
+
+    }
+    public function askSientesMiedoAnsiedadConstante(): void
+    {
+        $question_askSientesMiedoAnsiedadConstante = Question::create('¿Sientes miedo o ansiedad constante alrededor de una persona en particular debido a su comportamiento hacia ti?')
+            ->fallback('Edad no valida')
+            ->callbackId('askSientesMiedoAnsiedadConstanteid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askSientesMiedoAnsiedadConstante, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SientesMiedoAnsiedadConstante = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $Respuestaspreguntas=[$this->AlguienCercanoCriticaMenospreciaBurla, $this->SientesAlguienTuVidaLimitaTusDesiciones, $this->TeHanExcluidoDeliberadamenteDeActividades, $this->SientesMiedoAnsiedadConstante];
+                $this->say('Existen lugares especializados de protección en los que puedes recibir atención integral de forma gratuita, segura y confidencial. Recuerda que las violencias son un delito y puedes denunciarlo. Te invitamos a conocer planes de acción. ');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if(in_array('Si',$Respuestaspreguntas)){
+                    $this->askPlanesDeAccionProteccionSituacionViolencia();
+
+                }else{
+                    $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                }
+
+
+            }
+
+
+        }, ['askSientesMiedoAnsiedadConstanteid']);
+
+
+
+    }
+
+
+    public function askAlguienPresionadoParticiparActividadesSexuales(): void
+    {
+        $question_askAlguienPresionadoParticiparActividadesSexuales = Question::create('¿Alguien te ha presionado para participar en actividades sexuales en contra de tu voluntad?')
+            ->fallback('Edad no valida')
+            ->callbackId('$askAlguienPresionadoParticiparActividadesSexualesid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askAlguienPresionadoParticiparActividadesSexuales, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlguienPresionadoParticiparActividadesSexuales = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHasAccedidoRealizarActivadesSexuales();
+            }
+
+
+        }, ['$askAlguienPresionadoParticiparActividadesSexualesid']);
+
+
+
+    }
+    public function askHasAccedidoRealizarActivadesSexuales(): void
+    {
+        $question_askHasAccedidoRealizarActivadesSexuales = Question::create('¿Alguien te ha presionado para participar en actividades sexuales en contra de tu voluntad?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasAccedidoRealizarActivadesSexualesid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askHasAccedidoRealizarActivadesSexuales, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HasAccedidoRealizarActivadesSexuales = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askAlguienUtilizadoDrogasIncapacitarte();
+            }
+
+
+        }, ['askHasAccedidoRealizarActivadesSexualesid']);
+
+
+
+    }
+    public function askAlguienUtilizadoDrogasIncapacitarte(): void
+    {
+        $question_askAlguienUtilizadoDrogasIncapacitarte = Question::create('¿Alguien ha utilizado drogas o alcohol para incapacitarte con el fin de cometer actos sexuales en tu contra? ')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlguienUtilizadoDrogasIncapacitarteid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askAlguienUtilizadoDrogasIncapacitarte, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlguienUtilizadoDrogasIncapacitarte = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHasTenidoActividadesSexualesSinConsentimiento();
+            }
+
+
+        }, ['askAlguienUtilizadoDrogasIncapacitarteid']);
+
+
+
+    }
+    public function askHasTenidoActividadesSexualesSinConsentimiento(): void
+    {
+        $question_askHasTenidoActividadesSexualesSinConsentimiento = Question::create('¿Has  tenido actividades sexuales sin tu consentimiento?')
+            ->fallback('Edad no valida')
+            ->callbackId('askSientesMiedoAnsiedadConstanteid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question_askHasTenidoActividadesSexualesSinConsentimiento, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HasTenidoActividadesSexualesSinConsentimiento  = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $Respuestaspreguntas=[$this->AlguienPresionadoParticiparActividadesSexuales, $this->HasAccedidoRealizarActivadesSexuales, $this->AlguienUtilizadoDrogasIncapacitarte, $this->HasTenidoActividadesSexualesSinConsentimiento ];
+                $this->say('Existen lugares especializados de protección en los que puedes recibir atención integral de forma gratuita, segura y confidencial. Recuerda que las violencias son un delito y puedes denunciarlo. Te invitamos a conocer planes de acción. ');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if(in_array('Si',$Respuestaspreguntas)){
+                    $this->askPlanesDeAccionProteccionSituacionViolencia();
+
+                }else{
+                    $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                }
+
+
+            }
+
+
+        }, ['askSientesMiedoAnsiedadConstanteid']);
+
 
 
     }
