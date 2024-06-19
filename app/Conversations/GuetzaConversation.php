@@ -31,6 +31,25 @@ class GuetzaConversation extends Conversation
     protected String $AlguienUtilizadoDrogasIncapacitarte;
     protected String $HasTenidoActividadesSexualesSinConsentimiento ;
 
+    protected String $HasExperimentadoPresionFirmarContraVoluntad;
+    protected String $AlguienDestruidoIntencionalmenteBienesMateriales;
+    protected String $TeHanImpedidoTrabajarOEstudiarLimitar;
+    protected String $AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento;
+
+    protected String $HasExperimentadoPresionAsumirDeudasCompromisos;
+    protected String $AlguienCercanoATiControlaTusIngresos;
+    protected String $TeHanNegadoRecursosEconomicos;
+    protected String $TeHanImpedidoTrabajarOEstudiarLimitarFinanciera;
+
+    protected String $TeSientesPresionadaActuarPerderContactoHijos;
+    protected String $TuParejaExparejaImpedidoComuniquesHijasHijos;
+    protected String $HasNotadoTuParejaUtilizaHijasHijos;
+    protected String $TeSientesExcluidaDecisionesImportantesHijasHijos;
+
+
+
+
+
 
 
     protected int $tiempoRespuesta=2;
@@ -220,6 +239,7 @@ class GuetzaConversation extends Conversation
             Button::create('Sexual')->value('Sexual'),
             Button::create('Patrimonial')->value('Patrimonial'),
             Button::create('Económica')->value('Económica'),
+            Button::create('Vicaria')->value('Vicaria'),
             Button::create('Digital')->value('Digital'),
             Button::create('¿Solo mi pareja puede ejercer violencia?')->value('¿Solo mi pareja puede ejercer violencia?'),
         ]);
@@ -229,7 +249,7 @@ class GuetzaConversation extends Conversation
 
             $this->say('<div class="response-right">'.  $answer->getText().'</div>');
 
-            if (!in_array($selectedValue, ['Fisica', 'Psicologica','Sexual','Patrimonial'])) {
+            if (!in_array($selectedValue, ['Fisica', 'Psicologica','Sexual','Patrimonial','Económica','Vicaria','Digital','¿Solo mi pareja puede ejercer violencia?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -264,6 +284,43 @@ class GuetzaConversation extends Conversation
 
                 }
                 elseif($selectedValue == 'Patrimonial') {
+                    $this->say("Es cualquier acto u omisión que afecta tu supervivencia, se manifiesta en: la transformación, sustracción, destrucción, retención o extracción de objetos, documentos personales, bienes y valores, derechos patrimoniales o recursos económicos destinados a satisfacer tus necesidades, puede abarcar los daños a los bienes comunes o propios.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Algunos ejemplos: que dañen a tus mascotas, te rompan tus pertenencias, sustraigan tus papeles  e identificaciones, restricción en tus bienes y valores, que escondan tu correspondencia, vendan o regalen tus cosas sin tu consentimiento, etc.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia patrimonial, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasExperimentadoPresionFirmarContraVoluntad();
+
+                }
+                elseif($selectedValue == 'Económica') {
+                    $this->say("Es toda acción u omisión de la persona agresora que afecte la supervivencia económica. Se manifiesta a través delimitaciones encaminadas a controlar el ingreso de sus percepciones económicas, así como la percepción de un salario menor por igual trabajo, dentro de un mismo centro laboral.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Algunos ejemplos: negar recursos financieros, control de ingresos, limitación de autonomía financiera, perdida intencional de bienes o recursos, restringir el derecho al trabajo, etc.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia económica, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasExperimentadoPresionAsumirDeudasCompromisos();
+
+                }
+                elseif($selectedValue == 'Económica') {
+                    $this->say("Es toda acción u omisión de la persona agresora que afecte la supervivencia económica. Se manifiesta a través delimitaciones encaminadas a controlar el ingreso de sus percepciones económicas, así como la percepción de un salario menor por igual trabajo, dentro de un mismo centro laboral.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Algunos ejemplos: negar recursos financieros, control de ingresos, limitación de autonomía financiera, perdida intencional de bienes o recursos, restringir el derecho al trabajo, etc.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia económica, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasExperimentadoPresionAsumirDeudasCompromisos();
+
+                }
+                elseif($selectedValue == 'Vicaria') {
+                    $this->say("Tiene como objetivo dañar a la mujer a través de sus seres queridos y especialmente de sus hijas e hijos. El padre ejerce una violencia extrema contra sus criaturas, llegando incluso a causarles la muerte.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Algunos ejemplos: respecto a hijas e hijos, amenazas, insultos, humillaciones, interrupción de tratamientos médicos, entre otras acciones, con el objetivo de causar un daño permanente y un dolor extremo a la mujer.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia vicaria, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTeSientesPresionadaActuarPerderContactoHijasHijos();
 
                 }
             }
@@ -302,6 +359,8 @@ class GuetzaConversation extends Conversation
 
 
     }
+
+
     public function askHasSentidoMiedoSobreTuSeguridad(): void
     {
         $question_HasSentidoMiedoSobreTuSeguridad = Question::create('¿Has sentido miedo sobre tu seguridad  física por parte de tu pareja, familiar o alguna persona cercana?')
@@ -421,6 +480,7 @@ class GuetzaConversation extends Conversation
 
 
     }
+
     public function askQuieresSaberqueHacerHeridaLesion(): void
     {
         $question = Question::create('¿Quieres saber que hacer en caso de alguna herida o lesión?')
@@ -693,5 +753,290 @@ class GuetzaConversation extends Conversation
 
     }
 
+    public function askHasExperimentadoPresionFirmarContraVoluntad(): void
+    {
+        $question = Question::create('¿Has experimentado presión para firmar documentos financieros o legales en contra de tu voluntad o sin comprender completamente las implicaciones?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasExperimentadoPresionFirmarContraVoluntadid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->HasExperimentadoPresionFirmarContraVoluntad = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askAlguienDestruidoIntencionalmenteBienesMateriales();
+            }
+        }, ['askHasExperimentadoPresionFirmarContraVoluntadid']);
+    }
+    public function askAlguienDestruidoIntencionalmenteBienesMateriales(): void
+    {
+        $question = Question::create('¿Alguien ha destruido intencionalmente tus bienes materiales o propiedades como forma de control o castigo?')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlguienDestruidoIntencionalmenteBienesMaterialesid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlguienDestruidoIntencionalmenteBienesMateriales = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHanImpedidoTrabajarOEstudiarLimitar();
+            }
+        }, ['askAlguienDestruidoIntencionalmenteBienesMaterialesid']);
+    }
+    public function askTeHanImpedidoTrabajarOEstudiarLimitar(): void
+    {
+        $question = Question::create('¿Te han impedido trabajar o estudiar como forma de limitar tu independencia financiera?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeHanImpedidoTrabajarOEstudiarLimitarid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHanImpedidoTrabajarOEstudiarLimitar = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askAlgunaPersonaCercanaUtilizadoBienesSinConsentimiento();
+            }
+        }, ['askTeHanImpedidoTrabajarOEstudiarLimitarid']);
+    }
+    public function askAlgunaPersonaCercanaUtilizadoBienesSinConsentimiento(): void
+    {
+        $question = Question::create('¿Alguna persona cercana a ti ha utilizado tus bienes o propiedades sin tu consentimiento o de manera abusiva?')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlgunaPersonaCercanaUtilizadoBienesSinConsentimientoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->enproceso();
+            }
+        }, ['askAlgunaPersonaCercanaUtilizadoBienesSinConsentimientoid']);
+    }
+
+
+    public function askHasExperimentadoPresionAsumirDeudasCompromisos(): void
+    {
+        $question = Question::create('¿Has experimentado presión para asumir deudas o compromisos financieros que no deseabas asumir?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasExperimentadoPresionAsumirDeudasCompromisosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->HasExperimentadoPresionAsumirDeudasCompromisos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askAlguienCercanoATiControlaTusIngresos();
+            }
+        }, ['askHasExperimentadoPresionAsumirDeudasCompromisosid']);
+    }
+    public function askAlguienCercanoATiControlaTusIngresos(): void
+    {
+        $question = Question::create('¿Alguien cercano a ti controla tus ingresos económicos, impidiéndote tomar decisiones sobre el dinero que ganas o administrar tus recursos?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHalguienCercanoATiControlaTusIngresosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlguienCercanoATiControlaTusIngresos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHanNegadoRecursosEconomicos();
+            }
+        }, ['askHalguienCercanoATiControlaTusIngresosid']);
+    }
+    public function askTeHanNegadoRecursosEconomicos(): void
+    {
+        $question = Question::create('¿Te han negado recursos económicos para cubrir tus necesidades básicas, como alimento, vivienda o atención médica?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeHanNegadoRecursosEconomicosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeHanNegadoRecursosEconomicos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHanImpedidoTrabajarOEstudiarLimitarFinanciera();
+            }
+        }, ['askTeHanNegadoRecursosEconomicosid']);
+    }
+    public function askTeHanImpedidoTrabajarOEstudiarLimitarFinanciera(): void
+    {
+        $question = Question::create('¿Te han impedido trabajar o estudiar como forma de limitar tu independencia financiera?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeHanImpedidoTrabajarOEstudiarLimitarFinancieraid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeHanImpedidoTrabajarOEstudiarLimitarFinanciera = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->enproceso();
+            }
+        }, ['askTeHanImpedidoTrabajarOEstudiarLimitarFinancieraid']);
+    }
+
+
+    public function askTeSientesPresionadaActuarPerderContactoHijasHijos(): void
+    {
+        $question = Question::create('¿Te sientes presionada a actuar de cierta manera por miedo a perder contacto con tus hijos o hijas?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeSientesPresionadaActuarPerderContactoHijosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeSientesPresionadaActuarPerderContactoHijos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTuParejaExparejaImpedidoComuniquesHijasHijos();
+            }
+        }, ['askTeSientesPresionadaActuarPerderContactoHijosid']);
+    }
+    public function askTuParejaExparejaImpedidoComuniquesHijasHijos(): void
+    {
+        $question = Question::create('¿Tu pareja o expareja ha impedido que te comuniques con tus hijas e hijos?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTuParejaExparejaImpedidoComuniquesHijasHijosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TuParejaExparejaImpedidoComuniquesHijasHijos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHasNotadoTuParejaUtilizaHijasHijos();
+            }
+        }, ['askTeSientesPresionadaActuarPerderContactoHijosid']);
+    }
+    public function askHasNotadoTuParejaUtilizaHijasHijos(): void
+    {
+        $question = Question::create('¿Has notado que tu pareja utiliza a los hijos e hijas para chantajearte emocionalmente?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasNotadoTuParejaUtilizaHijasHijosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->HasNotadoTuParejaUtilizaHijasHijos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeSientesExcluidaDecisionesImportantesHijasHijos();
+            }
+        }, ['askHasNotadoTuParejaUtilizaHijasHijosid']);
+    }
+    public function askTeSientesExcluidaDecisionesImportantesHijasHijos(): void
+    {
+        $question = Question::create('¿Te sientes excluida de decisiones importantes relacionadas con tus hijos o hijas?')
+            ->fallback('Edad no valida')
+            ->callbackId('TeSientesExcluidaDecisionesImportantesHijasHijosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeSientesExcluidaDecisionesImportantesHijasHijos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->enproceso();
+            }
+        }, ['TeSientesExcluidaDecisionesImportantesHijasHijosid']);
+    }
+
+
+    public function enproceso(): void
+    {
+
+        $this->say("aqui voy!!!! :)");
+    }
 
 }
