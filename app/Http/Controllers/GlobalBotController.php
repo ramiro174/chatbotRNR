@@ -25,6 +25,8 @@ class GlobalBotController extends BotController
             }
         });
 
+
+
         $botman->listen();
     }
 }

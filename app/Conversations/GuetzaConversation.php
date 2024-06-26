@@ -25,26 +25,37 @@ class GuetzaConversation extends Conversation
     protected String $SientesAlguienTuVidaLimitaTusDesiciones;
     protected String $TeHanExcluidoDeliberadamenteDeActividades;
     protected String $SientesMiedoAnsiedadConstante;
-
+//
     protected String $AlguienPresionadoParticiparActividadesSexuales;
     protected String $HasAccedidoRealizarActivadesSexuales;
     protected String $AlguienUtilizadoDrogasIncapacitarte;
     protected String $HasTenidoActividadesSexualesSinConsentimiento ;
-
+//
     protected String $HasExperimentadoPresionFirmarContraVoluntad;
     protected String $AlguienDestruidoIntencionalmenteBienesMateriales;
     protected String $TeHanImpedidoTrabajarOEstudiarLimitar;
     protected String $AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento;
-
+//
     protected String $HasExperimentadoPresionAsumirDeudasCompromisos;
     protected String $AlguienCercanoATiControlaTusIngresos;
     protected String $TeHanNegadoRecursosEconomicos;
     protected String $TeHanImpedidoTrabajarOEstudiarLimitarFinanciera;
-
+//
     protected String $TeSientesPresionadaActuarPerderContactoHijos;
     protected String $TuParejaExparejaImpedidoComuniquesHijasHijos;
     protected String $HasNotadoTuParejaUtilizaHijasHijos;
     protected String $TeSientesExcluidaDecisionesImportantesHijasHijos;
+//
+    protected String $HasRecibidoAmenazasATravezMensajesRedesCorreo;
+    protected String $AlguienHaDifundidoInformacionFalsaLinea;
+    protected String $HasExperimentadoRoboIdentidadLineaSuplantacion;
+    protected String $TeHanPresionadoEnviarFotosIntimasInformacionPersonal;
+
+//
+    protected String $EnEventoViolenciaSexualHuboExposicionRiesgo;
+    protected String $SucedioInmediato;
+    protected String $TengoMasInformacionSepasHAcerDespuesEvento;
+
 
 
 
@@ -57,6 +68,7 @@ class GuetzaConversation extends Conversation
     public function run()
     {
         $this->askName();
+       // $this->askSucedioInmediato();
     }
     public function askName(): void
     {
@@ -213,12 +225,13 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->AquiTengoOpcionesParaTi = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->say('<div class="response-right">'.  $selectedText.'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if ($selectedValue == 'Identificar las violencias') {
 
                     $this->askQuieroSaberIdentificarViolencias();
-                } else {
+                } elseif($selectedValue == 'PlanesAccionProteccion') {
+                    $this->askPlanesDeAccionProteccionSituacionViolencia();
                 }
             }
 
@@ -228,6 +241,7 @@ class GuetzaConversation extends Conversation
 
 
     }
+    //Quiero saber cómo identificar las violencias
     public function askQuieroSaberIdentificarViolencias(): void
     {
         $question_AquiTengoUnasOpcionesParaTi = Question::create('Aquí tengo unas opciones para ti, selecciona la que mejor se ajuste a lo que necesitas:')
@@ -247,7 +261,7 @@ class GuetzaConversation extends Conversation
         $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
             $selectedValue = $answer->getValue();
 
-            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+            $this->say('<div class="response-right"> prueba'.  $answer->getText().'</div>');
 
             if (!in_array($selectedValue, ['Fisica', 'Psicologica','Sexual','Patrimonial','Económica','Vicaria','Digital','¿Solo mi pareja puede ejercer violencia?'])) {
                 $this->say("Haz click en un opcion valida");
@@ -323,6 +337,27 @@ class GuetzaConversation extends Conversation
                     $this->askTeSientesPresionadaActuarPerderContactoHijasHijos();
 
                 }
+                elseif($selectedValue == 'Digital') {
+
+                    $this->say("Es la violencia que se comete a través de medios digitales como redes sociales, correo electrónico o aplicaciones de mensajería móvil, causando daños a la dignidad, la integridad y/o la seguridad.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Algunos ejemplos: Actos de acoso, hostigamiento, amenazas, insultos, vulneración de datos e información privada, mensajes de odio, difusión de contenido sexual sin consentimiento.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Puede darse de varias formas; cualquier acto donde una persona grabe videos o audios, tome fotografías edite o disimule material sexual íntimo de otra persona mediante engaños. Este material también pudo haberse creado de manera consensuada, sin embargo, la exposición, distribución, difusión, exhibición, transmisión, comercialización, oferta, intercambio o compartir a través de cualquier medio virtual sin consentimiento de la mujer, también se considera violencia digital.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia digital, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasRecibidoAmenazasATravezMensajesRedesCorreo();
+
+
+
+                }
+                elseif($selectedValue == '¿Solo mi pareja puede ejercer violencia?') {
+                    $this->say("se cometen más de 10 feminicidios al día y de acuerdo a la ENCUESTA NACIONAL SOBRE LA DINÁMICA DE LAS RELACIONES EN LOS HOGARES (ENDIREH), 7 de cada 10 mujeres mayores de 15 años han experimentado alguna situación de violencia de género en su vida.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askPlanesDeAccionProteccionSituacionViolencia();
+
+                }
             }
 
 
@@ -331,6 +366,7 @@ class GuetzaConversation extends Conversation
 
 
     }
+    //física
     public function askAlgunaVezHanEmpujadoGolpeadoAgreFisicamente(): void
     {
         $question_AlgunaVezHanEmpujadoGolpeadoAgreFisicamente = Question::create('¿Alguna vez te han empujado, golpeado o agredido físicamente?')
@@ -359,8 +395,6 @@ class GuetzaConversation extends Conversation
 
 
     }
-
-
     public function askHasSentidoMiedoSobreTuSeguridad(): void
     {
         $question_HasSentidoMiedoSobreTuSeguridad = Question::create('¿Has sentido miedo sobre tu seguridad  física por parte de tu pareja, familiar o alguna persona cercana?')
@@ -453,33 +487,6 @@ class GuetzaConversation extends Conversation
 
 
     }
-    public function askPlanesDeAccionProteccionSituacionViolencia(): void
-    {
-        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Planes de acción y protección ante situaciones de violencia')
-            ->fallback('Edad no valida')
-            ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
-            ->addButtons([
-                Button::create('Sexual')->value('Sexual'),
-                Button::create('Física')->value('Fisica'),
-                Button::create('Psicológica')->value('Psicologica'),
-
-            ]);
-
-        $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
-            $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Sexual', 'Fisica','Psicologica'])) {
-                $this->say("Haz click en un opcion valida");
-                $this->repeat();
-            } else {
-
-            }
-
-
-        }, ['askPlanesDeAccionProteccionSituacionViolenciaid']);
-
-
-
-    }
 
     public function askQuieresSaberqueHacerHeridaLesion(): void
     {
@@ -509,6 +516,7 @@ class GuetzaConversation extends Conversation
 
     }
 
+    //Psicologica
     public function askAlguienCercanoCriticaMenospreciaBurla(): void
     {
         $question_AlguienCercanoCriticaMenospreciaBurla = Question::create('¿Alguien cercano te critica, te menosprecia o se burla de ti, teniendo impacto en tu autoestima?')
@@ -631,7 +639,7 @@ class GuetzaConversation extends Conversation
 
     }
 
-
+    //sexual
     public function askAlguienPresionadoParticiparActividadesSexuales(): void
     {
         $question_askAlguienPresionadoParticiparActividadesSexuales = Question::create('¿Alguien te ha presionado para participar en actividades sexuales en contra de tu voluntad?')
@@ -753,6 +761,7 @@ class GuetzaConversation extends Conversation
 
     }
 
+    //patrimonial
     public function askHasExperimentadoPresionFirmarContraVoluntad(): void
     {
         $question = Question::create('¿Has experimentado presión para firmar documentos financieros o legales en contra de tu voluntad o sin comprender completamente las implicaciones?')
@@ -844,7 +853,7 @@ class GuetzaConversation extends Conversation
         }, ['askAlgunaPersonaCercanaUtilizadoBienesSinConsentimientoid']);
     }
 
-
+    //Económica
     public function askHasExperimentadoPresionAsumirDeudasCompromisos(): void
     {
         $question = Question::create('¿Has experimentado presión para asumir deudas o compromisos financieros que no deseabas asumir?')
@@ -938,7 +947,7 @@ class GuetzaConversation extends Conversation
         }, ['askTeHanImpedidoTrabajarOEstudiarLimitarFinancieraid']);
     }
 
-
+    //Vicaria
     public function askTeSientesPresionadaActuarPerderContactoHijasHijos(): void
     {
         $question = Question::create('¿Te sientes presionada a actuar de cierta manera por miedo a perder contacto con tus hijos o hijas?')
@@ -1030,6 +1039,251 @@ class GuetzaConversation extends Conversation
                 $this->enproceso();
             }
         }, ['TeSientesExcluidaDecisionesImportantesHijasHijosid']);
+    }
+
+    //Digital
+    public function askHasRecibidoAmenazasATravezMensajesRedesCorreo(): void
+    {
+        $question = Question::create('¿Has recibido amenazas, insultos o acoso a través de mensajes de texto, redes sociales o correo electrónico?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasRecibidoAmenazasATravezMensajesRedesCorreoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->HasRecibidoAmenazasATravezMensajesRedesCorreo = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askAlguienHaDifundidoInformacionFalsaLinea();
+            }
+        }, ['askHasRecibidoAmenazasATravezMensajesRedesCorreoid']);
+    }
+    public function askAlguienHaDifundidoInformacionFalsaLinea(): void
+    {
+        $question = Question::create('¿Alguien ha difundido información falsa o dañina sobre ti en línea?')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlguienHaDifundidoInformacionFalsaLineaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlguienHaDifundidoInformacionFalsaLinea = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHasExperimentadoRoboIdentidadLineaSuplantacion();
+            }
+        }, ['askAlguienHaDifundidoInformacionFalsaLineaid']);
+    }
+    public function askHasExperimentadoRoboIdentidadLineaSuplantacion(): void
+    {
+        $question = Question::create('¿Has experimentado el robo de identidad en línea o la suplantación de tu identidad en redes sociales?')
+            ->fallback('Edad no valida')
+            ->callbackId('askHasExperimentadoRoboIdentidadLineaSuplantacionid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->HasExperimentadoRoboIdentidadLineaSuplantacion = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHanPresionadoEnviarFotosIntimasInformacionPersonal();
+            }
+        }, ['askHasExperimentadoRoboIdentidadLineaSuplantacionid']);
+    }
+    public function askTeHanPresionadoEnviarFotosIntimasInformacionPersonal(): void
+    {
+        $question = Question::create('¿Te han presionado para enviar fotos íntimas o información personal en línea?')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeHanPresionadoEnviarFotosIntimasInformacionPersonalid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeHanPresionadoEnviarFotosIntimasInformacionPersonal = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->enproceso();
+            }
+        }, ['askTeHanPresionadoEnviarFotosIntimasInformacionPersonalid']);
+    }
+
+
+
+    //Planes de acción y protección ante situaciones de violencia
+    public function askPlanesDeAccionProteccionSituacionViolencia(): void
+    {
+        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Planes de acción y protección ante situaciones de violencia')
+            ->fallback('Edad no valida')
+            ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
+            ->addButtons([
+                Button::create('Sexual')->value('Sexual'),
+                Button::create('Física')->value('Fisica'),
+                Button::create('Psicológica')->value('Psicologica'),
+
+            ]);
+
+        $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Sexual', 'Fisica','Psicologica'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } elseif($selectedValue=='Sexual') {
+                $this->askEnEventoViolenciaSexualHuboExposicionRiesgo();
+            }
+
+
+        }, ['askPlanesDeAccionProteccionSituacionViolenciaid']);
+
+
+
+    }
+    public function askEnEventoViolenciaSexualHuboExposicionRiesgo(): void
+    {
+        $question = Question::create('¿En el evento de violencia sexual hubo una exposición de riesgo? Es decir, hubo contacto con fluidos transmisibles como sangre, semen, líquido preseminal, lubricación vaginal, leche materna, u otros.')
+            ->fallback('Edad no valida')
+            ->callbackId('askEnEventoViolenciaSexualHuboExposicionRiesgoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->EnEventoViolenciaSexualHuboExposicionRiesgo = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Si'){
+                        $this->askSucedioInmediato();
+                }else{
+
+                }
+
+            }
+        }, ['askEnEventoViolenciaSexualHuboExposicionRiesgoid']);
+    }
+    public function askSucedioInmediato(): void
+    {
+        $question = Question::create('¿Sucedió en lo inmediato?')
+            ->fallback('Edad no valida')
+            ->callbackId('askSucedioInmediatoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->SucedioInmediato = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Si'){
+                    $this->say("Debes saber que tienes derecho a la Profilaxis Post Exposición (PPE) "."<br> <ul>"."
+                                <li> La PPE es la administración de medicamentos antirretrovirales para disminuir los riesgos de infección por VIH y otras ITS.</li> 
+                                <li> Este procedimiento debe realizarse preferentemente dentro de las primaras 48 y hasta las 72 horas después de la exposición de riegos y durante los siguientes 28 días de forma ininterrumpida.</li> 
+                                <li>Los medicamentos antirretrovirales se utilizan para evitar la multiplicación del virus, es muy importante aclarar que la administración de estos medicamentos puede tener algunos efectos secundarios entre los que se encuentra; náusea, vómito, diarrea, fiebre, erupción cutánea y dolor muscular, por lo que en caso de presentar alguno de los síntomas descritos debes acudir con la o el médico.
+                                En caso de que decidas recibir la PPE, esta puede ser proporcionada por instituciones de salud, tales como los CAPASITS (Centros Ambulatorios para la Prevención y Atención en SIDA e Infecciones de Transmisión Sexual) y en los Servicios de Atención Integral Hospitalaria. (Hay en todas las Entidades de la República).
+                                </li></ul>");
+                    $this->askTengoMasInformacionSepasHAcerDespuesEvento();
+
+                }else{
+               //hoja 15
+                }
+
+
+
+            }
+        }, ['askSucedioInmediatoid']);
+    }
+    public function askTengoMasInformacionSepasHAcerDespuesEvento():void
+    {
+        $question = Question::create('Tengo más información para que sepas que hacer después de un evento de violencia sexual')
+            ->fallback('Edad no valida')
+            ->callbackId('askTengoMasInformacionSepasHAcerDespuesEventoid')
+            ->addButtons([
+                Button::create("Aqui tengo algunos numeros de servicios de atencion en tu entidad")->value('Aqui tengo algunos numeros de servicios de atencion en tu entidad'),
+                Button::create("Anticoncepción de emergencia")->value('Anticoncepción de emergencia'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Aqui tengo algunos numeros de servicios de atencion en tu entidad', 'Anticoncepción de emergencia'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TengoMasInformacionSepasHAcerDespuesEvento = $selectedValue;
+                $this->say('<div class="response-right">' . $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Aqui tengo algunos numeros de servicios de atencion en tu entidad'){
+                    $this->askLineasAtencionEspecializadaDerechosSexualesFiltro();
+                }elseif($selectedValue=='Anticoncepción de emergencia'){
+                    $this->say("Es la administración de hormonas (contenidas en las píldoras anticonceptivas a mayores dosis) en las primeras 72 hrs. del evento de riesgo. Las cuales pueden evitar el embarazo a través de detener la liberación de los óvulos o la fecundación. Este método NO debe usarse como planificación familiar y es muy importante saber que NO previene infecciones de transmisión sexual ni VIH.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTieneDerechoPuedesolicitarGuardarEvidencia();
+                }
+
+
+            }
+        }, ['askTengoMasInformacionSepasHAcerDespuesEventoid']);
+    }
+
+    public function askLineasAtencionEspecializadaDerechosSexualesFiltro(): void
+    {
+
+        $this->say("Líneas de atención especializada en derechos sexuales y reproductivos por filtro");
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTieneDerechoPuedesolicitarGuardarEvidencia();
+
+
+    }
+    public function askTieneDerechoPuedesolicitarGuardarEvidencia(): void
+    {
+
+        $this->say("<ul>
+                    <li>1.Tienes derecho a recibir atención integral gratuita y especializada, así como a recibir orientación sobre procesos jurídicos y atención a tu salud.</li>
+                    <li>2. Puedes solicitar acompañamiento cuando lo desees. Existen instituciones públicas y de sociedad civil que te  pueden otorgar atención de manera inmediata y gratuita.</li>
+                    <li>3. Guarda evidencias de lo sucedido, sin que ello te ponga en riesgo. (puedes guardar ropa, fotos u otros objetos).</li>
+                </ul>");
+
+
     }
 
 
