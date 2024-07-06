@@ -57,6 +57,16 @@ class GuetzaConversation extends Conversation
     protected String $TengoMasInformacionSepasHAcerDespuesEvento;
 
 
+    protected String $AquiTemuestroPlanesAccionFisica;
+    protected String $SiyaIdentificasteSituacionPeligro;
+
+    protected String $DebesSaberTienesDerechoSobreDerechoSexuales;
+
+
+
+
+
+
 
 
 
@@ -69,6 +79,7 @@ class GuetzaConversation extends Conversation
     {
         $this->askName();
        // $this->askSucedioInmediato();
+      //  $this->askAquiTengoUnasOpcionesParaTi();
     }
     public function askName(): void
     {
@@ -208,8 +219,8 @@ class GuetzaConversation extends Conversation
             ->callbackId('askAquiTengoUnasOpcionesParaTiid')
             ->addButtons([
             Button::create('Identificar las violencias')->value('Identificar las violencias'),
-            Button::create('Planes de acción y protección ante situaciones de violencia')->value('PlanesAccionProteccion'),
-            Button::create('Información sobre derechos sexuales y reproductivos.')->value('InforDerechosSexRepro'),
+            Button::create('Planes de acción y protección ante situaciones de violencia')->value('Planes de acción y protección ante situaciones de violencia'),
+            Button::create('Información sobre derechos sexuales y reproductivos')->value('Información sobre derechos sexuales y reproductivos'),
             Button::create('Orientación psicológica')->value('OrienPsicologica'),
             Button::create('Me comunique con anterioridad y necesito atención. ')->value('MeComunicoAnterioridad'),
             Button::create('Información adicional')->value('InformacionAdicional'),
@@ -220,18 +231,22 @@ class GuetzaConversation extends Conversation
             $selectedValue = $answer->getValue();
             $selectedText = $answer->getText();
 
-            if (!in_array($selectedValue, ['Identificar las violencias', 'PlanesAccionProteccion','InforDerechosSexRepro','OrienPsicologica','MeComunicoAnterioridad','InformacionAdicional','DerechosSexRepro'])) {
+            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','OrienPsicologica','MeComunicoAnterioridad','InformacionAdicional','DerechosSexRepro'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->AquiTengoOpcionesParaTi = $selectedValue;
                 $this->say('<div class="response-right">'.  $selectedText.'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if ($selectedValue == 'Identificar las violencias') {
 
+                if ($selectedValue == 'Identificar las violencias') {
                     $this->askQuieroSaberIdentificarViolencias();
-                } elseif($selectedValue == 'PlanesAccionProteccion') {
+                }
+                elseif($selectedValue == 'Planes de acción y protección ante situaciones de violencia') {
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
+                }
+                elseif($selectedValue == 'Información sobre derechos sexuales y reproductivos') {
+                    $this->askDebesSaberTienesDerechoSobreDerechoSexuales();
                 }
             }
 
@@ -261,7 +276,7 @@ class GuetzaConversation extends Conversation
         $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
             $selectedValue = $answer->getValue();
 
-            $this->say('<div class="response-right"> prueba'.  $answer->getText().'</div>');
+            $this->say('<div class="response-right"> '.  $answer->getText().'</div>');
 
             if (!in_array($selectedValue, ['Fisica', 'Psicologica','Sexual','Patrimonial','Económica','Vicaria','Digital','¿Solo mi pareja puede ejercer violencia?'])) {
                 $this->say("Haz click en un opcion valida");
@@ -1145,18 +1160,27 @@ class GuetzaConversation extends Conversation
             ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
             ->addButtons([
                 Button::create('Sexual')->value('Sexual'),
-                Button::create('Física')->value('Fisica'),
-                Button::create('Psicológica')->value('Psicologica'),
+                Button::create('Física')->value('Física'),
+                Button::create('Psicológica')->value('Psicológica'),
+                Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta? '),
+
 
             ]);
 
         $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Sexual', 'Fisica','Psicologica'])) {
+            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } elseif($selectedValue=='Sexual') {
                 $this->askEnEventoViolenciaSexualHuboExposicionRiesgo();
+            } elseif($selectedValue=='Física'){
+                $this->askAquiTemuestroPlanesAccionFisica();
+            } elseif($selectedValue=='Psicológica'){
+                $this->say('Tus contactos pueden llamarte, acudir a tu casa o al lugar donde te encuentres para cerciorarse de que estés bien, así como frenar la situación de violencia y en el momento oportuno, poder salir del lugar con cualquier excusa, evitando que la situación de peligro se agrave');
+
+            } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'){
+                $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, romper con la relación, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan');
             }
 
 
@@ -1165,6 +1189,7 @@ class GuetzaConversation extends Conversation
 
 
     }
+    //sexual
     public function askEnEventoViolenciaSexualHuboExposicionRiesgo(): void
     {
         $question = Question::create('¿En el evento de violencia sexual hubo una exposición de riesgo? Es decir, hubo contacto con fluidos transmisibles como sangre, semen, líquido preseminal, lubricación vaginal, leche materna, u otros.')
@@ -1264,7 +1289,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['askTengoMasInformacionSepasHAcerDespuesEventoid']);
     }
-
     public function askLineasAtencionEspecializadaDerechosSexualesFiltro(): void
     {
 
@@ -1285,8 +1309,264 @@ class GuetzaConversation extends Conversation
 
 
     }
+    //Fisica
+    public function askAquiTemuestroPlanesAccionFisica():void
+    {
+        $question = Question::create('Aquí te muestro planes de acción y protección ante situaciones de violencia fisica')
+            ->fallback('Edad no valida')
+            ->callbackId('askAquiTemuestroPlanesAccionFisicaid')
+            ->addButtons([
+                Button::create("Antes de un evento de violencia")->value('Antes de un evento de violencia'),
+                Button::create("Ante violencia física y la persona agresora está armada")->value('Ante violencia física y la persona agresora está armada'),
+                Button::create("Para protegerte fuera de la casa, escuela o lugar de trabajo, considera los siguientes puntos")->value('Para protegerte fuera de la casa, escuela o lugar de trabajo, considera los siguientes puntos'),
+                Button::create("Lo que puedes hacer si llegan a discutir y la situación se pone peligrosa")->value('Lo que puedes hacer si llegan a discutir y la situación se pone peligrosa'),
+                Button::create("Qué hacer si la persona agresora intenta secuestrarme")->value('Qué hacer si la persona agresora intenta secuestrarme'),
+                Button::create("Existen otras estrategias que podemos crear conjuntamente y compartir")->value('Existen otras estrategias que podemos crear conjuntamente y compartir'),
+                Button::create("Si la persona agresora ha dejado la casa")->value('Si la persona agresora ha dejado la casa'),
+                Button::create("Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia")->value('Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia'),
+                Button::create("¿Qué hacer si una mujer, niña o adolescente está desaparecida?")->value('¿Qué hacer si una mujer, niña o adolescente está desaparecida?'),
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, [
+                'Antes de un evento de violencia',
+                'Ante violencia física y la persona agresora está armada',
+                'Para protegerte fuera de la casa, escuela o lugar de trabajo, considera los siguientes puntos',
+                'Lo que puedes hacer si llegan a discutir y la situación se pone peligrosa',
+                'Qué hacer si la persona agresora intenta secuestrarme',
+                'Existen otras estrategias que podemos crear conjuntamente y compartir',
+                'Si la persona agresora ha dejado la casa',
+                'Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia',
+                '¿Qué hacer si una mujer, niña o adolescente está desaparecida?'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            }
+            $this->AquiTemuestroPlanesAccionFisica = $selectedValue;
+            $this->say('<div class="response-right">' . $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            if($selectedValue == 'Antes de un evento de violencia'){
+                $this->askSiyaIdentificasteSituacionPeligro();
+            }elseif($selectedValue == 'Ante violencia física y la persona agresora está armada'){
+                $this->say('Recuerda que un arma puede ser punzo cortante (cuchillos, navajas, etc.) o de fuego. Ten constante comunicación con tus contactos y/o redes de apoyo, quienes pueden llamarte y mantenerse en línea contigo mientras acuden a tu casa para frenar la situación de violencia y en el momento oportuno, poder salir del lugar y recibir la atención médica en caso de que lo necesites. ');
+            }elseif($selectedValue == 'Para protegerte fuera de la casa, escuela o lugar de trabajo, considera los siguientes puntos'){
+                $this->say('Cambia regularmente las rutas de tu trayecto. Haz compras en lugares diferentes. Mantén los números telefónicos de emergencia contigo todo el tiempo. Comparte tu ubicación con los contactos que elegiste en la APP de Sendero Violeta, ¡descargala! o con cualquier otra persona de tu confianza. Evita utilizar tu celular si vas caminando o manejando. Antes de salir o entrar a algún lugar mira a tu alrededor y observa si no está la persona agresora o hay algo extraño en el entorno.');
+
+            }elseif($selectedValue == 'Lo que puedes hacer si llegan a discutir y la situación se pone peligrosa'){
+                $this->say('Haz lo posible por moverte hacia un lugar cerca de la puerta o por donde puedas salir sin peligro
+                            No entres a los baños o la cocina (a menos que allí haya una salida). Aléjate de lugares donde haya objetos pesados o con los que pueden lastimarte (esculturas, cuchillos, tijeras, etc.). 
+                            Ve a alguna habitación donde haya un teléfono (llama al 911 o alguna red de apoyo) o una ventana grande donde puedas salir sin lastimarte. 
+                            Recuerda que tú eres la única persona que puede decidir cuál es el mejor momento para dejar la casa. Sin ponerte en mayor peligro, espera la oportunidad hasta que puedas salir. 
+                            Si la situación se vuelve peligrosa y te das cuenta de que no hay cómo salir inmediatamente, hazle caso a la persona agresora en ese momento, hasta que se tranquilice. Debes protegerte hasta que esté fuera de peligro.
+                            Si te han golpeado, busca ayuda médica y en la medida de lo posible, trata de tomarte fotos de las heridas, es importante para tener evidencias. ');
+            }
+            elseif($selectedValue == 'Qué hacer si la persona agresora intenta secuestrarme'){
+                $this->say('No desestimes tus presentimientos, ni minimices las situaciones de riesgo ¡No estás sola¡ Si han salido y de pronto te das cuenta de que toma una dirección distinta, percibes algo extraño, no te dice a donde van o lo que responde no te hace sentir segura puedes compartir tu ubicación con algún contacto o redes de apoyo. También pueden llamarte en ese momento como si te estuviera saludando para que puedas decirle por donde vas. Después de unos 15 min puede volverte a llamar con algún pretexto para que se cerciore de que estas bien. Si no contestas es importante que tus contactos notifiquen a las autoridades correspondientes. ');
+
+            }
+            elseif($selectedValue == 'Existen otras estrategias que podemos crear conjuntamente y compartir'){
+                $this->say('Te compartimos líneas de Atención especializada (diferenciando psicología feminista (los CEAR) de atención psicológica).');
+
+            }
+            elseif($selectedValue == 'Si la persona agresora ha dejado la casa'){
+                $this->say('Se sugiere cambiar cerraduras nuevas en las puertas, porque recuerda que él todavía puede tener una copia de las llaves.  Ponle seguros a las ventanas por si él intenta abrir o forzarlas. Comparte con alguna vecina o vecino de tu confianza a grandes rasgos tu situación para que te pueda informar si la persona agresora se presenta o lo ven rondando cerca.   Informa a la escuela o al centro de cuidado de tus hijas/os quién tiene permiso para recogerlas/os. Si tienes una orden de protección entrégale una copia al personal de la escuela.  Si no cuentas con una orden de protección puedes tramitarla. Cambia el número de teléfono fijo o celular y no llames a la persona agresora desde ellos. ');
+            }
+            elseif($selectedValue == 'Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia'){
+                $this->say('Tu seguridad y bienestar, así como la de tus hijas e hijos es lo más importante
+                    <br>
+                    <ul>
+                    <li>1. Identifica cuáles son los lugares más seguros. 
+                    Detecten el lugar más seguro dentro de casa donde no haya objetos punzo cortantes o pesados. Dependiendo de su edad, busquen conjuntamente lugares seguros para “esconderse” y permanecer en silencio hasta que tú le vayas a buscar.
+                    </li>
+                    <li>
+                    2. Identifica quienes son las personas de confianza.
+                    Plática con tus hijas e hijos sobre las personas a quienes pueden llamar si hay un evento violento o la persona vecina con quien puedes acudir si el ambiente en casa se pone tenso. 
+                    </li>
+                    <li>
+                    3. Mantener distancia en un lugar seguro ante un evento violento. 
+                    Enséñales a tus hijas e hijos a no intervenir ni interponerse si hay un evento violento, a alejarse y mantenerse en el lugar seguro que han identificado. 
+                    </li>
+                    <li>
+                    4. Pedir ayuda. Si su edad lo permite, enséñales a llamar al 911, mandar mensaje celular a un familiar o a salir sin que se pongan en riesgo para buscar ayuda con las y los vecinos. 
+                    </li>
+                    <li>
+                    5. Desarrolla un Plan de seguridad. 
+                    Hay muchas formas de hacerlo, una de ellas es utilizar el juego “qué haría si…” contáctanos y podemos orientarte sobre cómo hacerlo.
+                    </li>
+                    </ul>');
+            }
+
+            elseif($selectedValue == '¿Qué hacer si una mujer, niña o adolescente está desaparecida?'){
+                $this->say('<ul>
+                            <li>1. Recabar información sobre la niña o la mujer desaparecida (datos generales, descripción física, fotos recientes, datos laborales o escolares, si existían antecedentes de violencias).
+                            Informar a las autoridades: 
+                            </li>
+                            <li>
+                            2. Puedes acudir a un Ministerio Público, recuerda que NO pueden pedirte esperar 72 horas para iniciar la investigación, deben realizarla de inmediato. Te harán una entrevista para que puedas compartir los datos e información que recabaste. 
+                            Si el Ministerio Público al que acudiste no es una Fiscalía Especializada deberán iniciar la carpeta de investigación y remitirla a la Fiscalía Especializada del Estado.
+                            De igual forma puedes acudir de forma presencial ante la autoridad más cercana a tu domicilio, tiene la obligación de atenderte. 
+                            Vía telefónica
+                            </li>
+                            <li>
+                            3. También puedes realizar un reporte de desaparición vía telefónica a la comisión Nacional de Búsqueda al 5513099024/ 8000287783, al correo  cnbreportadesaparecidos.segob.mx.
+                            Ten contigo la información sobre la niña o la mujer desaparecida (datos generales, descripción física, fotos recientes, datos laborales o escolares, si existían antecedentes de violencias).
+                            Recuerda: las autoridades deben atenderte de forma empática e inmediata.
+                            Siembre deben otorgarte un trato digno y no desestimar tu denuncia o reporte con comentarios discriminatorio o machistas.
+                            Las autoridades tienen la obligación de recabar la información y canalizarte de forma inmediata con las instancias especializadas.
+                            </li>
+                            </ul>');
+             $this->askTeMuestroMasAccionesViolenciaFisica();
+            }
+
+        }, ['askAquiTemuestroPlanesAccionFisicaid']);
+    }
+    public function askTeMuestroMasAccionesViolenciaFisica():void
+    {
+        $question = Question::create('Te muestro mas opciones de acciones de Violencia Fisica')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeMuestroMasAccionesViolenciaFisicaid')
+            ->addButtons([
+                Button::create("Alerta Amber y Protocolo")->value('Alerta Amber y Protocolo'),
+                Button::create("Has uso de tu denuncia en la CNDH")->value('Has uso de tu denuncia en la CNDH'),
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Prepara con tiempo','Identifica personas conocidas, amigas o familiares que puedan apoyarte','Identificamos los siguientes servicios de atención a las mujeres en tu entidad','Identificamos los siguientes servicios de atención a las mujeres en tu entidad'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            }
+            $this->TeMuestroMasAccionesViolenciaFisica = $selectedValue;
+            $this->say('<div class="response-right">' . $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            if($selectedValue == 'Alerta Amber y Protocolo') {
+                $this->say('Tienes derecho a solicitar la Alerta Amber, en caso de niñas y adolescentes al 8000085400 y el Protocolo alba en caso de mujeres desaparecidas. (Ambas alertas las puedes solicitar al momento de realizar la denuncia o reporte). También puedes apoyarte de Organizaciones de la Sociedad Civil y difundir en redes sociales la ficha de búsqueda.  <a href="https://www.idheas.org.mx/ ">https://www.idheas.org.mx/ </a>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            }
+            if($selectedValue == 'Has uso de tu denuncia en la CNDH') {
+                $this->say('<ul><li> 1. También puedes presentarle en línea https://atencionciuadana.com CNDH 55 5681 8125  /   55 5490 7400 </li> <li> 2. Realiza tu reporte La fiscalía Especializada y Comisiones de Búsqueda deben expedir una ficha de búsqueda que contenga: nombre completo; fotografía; descripción física, última fecha y lugar en dónde fue vista; último contacto que se tuvo con ella (precisando el evento) y vestimenta que llevaba puesta el día de su desaparición.  Si así lo deseas, puedes participar de forma activa en la búsqueda y puedes solicitar a las autoridades; los videos de vigilancia; acceso a investigación de perfiles de redes sociales; geolocalización de cualquier dispositivo; comunicación inmediata con hospitales, terminales de autobuses, aeropuertos y otros espacios; documentos de antecedentes de violencias.  </li></ul>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            }
 
 
+
+        }, ['askTeMuestroMasAccionesViolenciaFisicaid']);
+    }
+    public function askSiyaIdentificasteSituacionPeligro():void
+    {
+        $question = Question::create('Si ya identificaste que estás en una situación de peligro, temes por tu vida y la de tus hijas e hijos o sientes que estas en extremo riesgo llama a la policía')
+            ->fallback('Edad no valida')
+            ->callbackId('askSiyaIdentificasteSituacionPeligroid')
+            ->addButtons([
+                Button::create("Prepara con tiempo")->value('Prepara con tiempo'),
+                Button::create("Identifica personas conocidas, amigas o familiares que puedan apoyarte")->value('Identifica personas conocidas, amigas o familiares que puedan apoyarte'),
+                Button::create("Identificamos los siguientes servicios de atención a las mujeres en tu entidad")->value('Identificamos los siguientes servicios de atención a las mujeres en tu entidad')
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Prepara con tiempo','Identifica personas conocidas, amigas o familiares que puedan apoyarte','Identificamos los siguientes servicios de atención a las mujeres en tu entidad','Identificamos los siguientes servicios de atención a las mujeres en tu entidad'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            }
+            $this->SiyaIdentificasteSituacionPeligro = $selectedValue;
+            $this->say('<div class="response-right">' . $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            if($selectedValue == 'Prepara con tiempo'){
+                $this->say('Maleta/mochila de emergencia: con ropa, documentos importase y cosas tuyas, y si tienes hijas/os también de ellos, si es posible ten un celular alterno con crédito. Déjalos con alguien de confianza, como una vecina, un familiar, una amistad. No olvides llevar medicamentos si están en algún tratamiento.  
+                            Habla sobre tu plan de seguridad con tus hijas/os: Deben tener una señal que solamente ustedes conozcan que signifique que deben salir de la casa rápidamente, llamar a la policía o pedir apoyo con alguna vecina/o');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say('Postal Wendy');
+
+            }elseif($selectedValue == 'Identifica personas conocidas, amigas o familiares que puedan apoyarte'){
+                $this->say('<b>Redes de apoyo:</b> elige personas conocidas, amigas o familiares que puedan apoyarte, y contáctalas para que estén pendientes de la situación y puedan apoyarte, puedes acordar previamente con ellas claves con emojis para que sepan que significa y llamar a la policía de ser necesario. Memoriza o haz una lista con los números de teléfono de tus amistades, familiares, personas del trabajo o de alguna organización o servicio local en donde te puedan ayudar.  Puedes ir a casa de alguna amistad o familiar, preferible a un lugar donde la persona agresora no se atreva a ir a buscarte o a la casa de alguien que él no conozca. Si no cuenta son una red de apoyo puedes comunicarte con nosotras.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            }elseif($selectedValue == 'Identificamos los siguientes servicios de atención a las mujeres en tu entidad'){
+                $this->say('Líneas de emergencia (filtrando por…');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+            }
+
+
+        }, ['askSiyaIdentificasteSituacionPeligroid']);
+    }
+
+    //Información sobre derechos sexuales y reproductivos
+
+    public function askDebesSaberTienesDerechoSobreDerechoSexuales():void
+    {
+        $question = Question::create('Debes saber que tienes derecho a:')
+            ->fallback('Edad no valida')
+            ->callbackId('askDebesSaberTienesDerechoSobreDerechoSexualesid')
+            ->addButtons([
+                Button::create("Menstruación digna")->value('Menstruación digna'),
+                Button::create("Plenipausia")->value('Plenipausia'),
+                Button::create("Acceder a servicios de salud y atención médica")->value('Acceder a servicios de salud y atención médica'),
+                Button::create("Métodos Anticonceptivos")->value('Métodos Anticonceptivos'),
+
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ["Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos"])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            }
+            $this->DebesSaberTienesDerechoSobreDerechoSexuales = $selectedValue;
+            $this->say('<div class="response-right">' . $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            if($selectedValue == 'Menstruación digna') {
+                $this->say('Garantizar el acceso y abasto de los insumos contribuye a revertir la desigualdad histórica en la que viven niñas, adolescentes y mujeres. Hablar de la menstruación es un derecho y permite resignificarla y vivirla sin tabúes, además facilita identificar las discriminaciones y desigualdades que impactan en la vida de las mujeres.  Nombrar la menstruación sirve para el reconocimiento de la cuerpa, para saber que la sangre anuncia cambios.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+            }
+            elseif($selectedValue == 'Plenipausia') {
+                $this->say('Se refiere a la plenitud que la mujer alcanza en la menopausia cuando rompe con los mitos de esta etapa.
+                            . Identifica que las mujeres somos cíclicas.
+                            . Culturalmente se asocia a la pérdida o a lo negativo, pero desde la medicina de la tierra presupone una conexión con la CREATIVIDAD y la SABIDURIA  de la cuerpa. 
+                            . Es la oportunidad de dedicarse completamente a una misma');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+            }
+            elseif($selectedValue == 'Acceder a servicios de salud y atención médica') {
+                $this->say('Todas las mujeres tienen derecho a acceder a servicios de salud y atención médica, y quienes decidan ser madres, a tener una maternidad segura y libre de todo riesgo durante el proceso reproductivo, es decir desde la intención reproductiva, la concepción, gestación, parto y puerperio. El gozo y el placer también ¡es un derecho!');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+            }
+            elseif($selectedValue == 'Métodos Anticonceptivos') {
+                $this->say('<ul>
+                            <li>Para prevenir un embarazo, empieza a usar un método anticonceptivo, como alguno de los siguientes:
+                            </li>
+                            <li>Un condón interno femenino o uno externo masculino.
+                            </li>
+                            <li>Un método hormonal, como las pastillas, inyecciones o implantes anticonceptivos. De haber tenido un aborto el mismo día que te hagas el aborto. Evitarás un embarazo si empiezas a usar un método hormonal durante los primeros 7 días después del aborto. Pero si esperas más de 7 días para empezar a usarlo, debes usar un condón durante la primera semana, ya que los métodos hormonales toman tiempo para empezar a funcionar y protegerte. 
+                            </li>
+                            <li>	
+                            Te pueden colocar un DIU, en caso de aborto tan pronto como confirmen que el aborto fue exitoso y que no hay infección. Usa condones hasta que te coloquen el DIU.
+                            </li>
+                            <li>
+                            Existen métodos permanentes para que las personas que tienen la certeza de que nunca más quieren tener otro embarazo. La operación llamada “ligadura de trompas” en la que se cortan los tubos que llevan los óvulos al útero, lo que previene el embarazo. También hay una operación llamada “vasectomía” en la que se cortan los tubos que llevan el esperma desde los testículos al pene.  Esto impide que el esperma salga del pene durante la eyaculación, lo que previene el embarazo. 
+                            </li>
+                            </ul>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                $this->say('Te compartimos una APP con toda esta información <b> <a href="https://play.google.com/store/apps/details?id=org.hesperian.Family_Planning">link de la APP</a><b>');
+
+
+            }
+
+
+
+
+        }, ['askDebesSaberTienesDerechoSobreDerechoSexualesid']);
+    }
+
+
+
+
+    //psicologico
     public function enproceso(): void
     {
 
