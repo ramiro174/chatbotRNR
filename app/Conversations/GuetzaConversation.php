@@ -62,10 +62,14 @@ class GuetzaConversation extends Conversation
 
     protected String $DebesSaberTienesDerechoSobreDerechoSexuales;
 
+//Orientación psicológica
+    protected String $TePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico;
 
-
-
-
+// Me comuniqué con anterioridad y necesito atención.
+    protected String $AnteriormenteTeBrindeInformacionRequerias;
+    protected String $CompartemeSugerenciasPropuestas;
+    protected String $HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones;
+    protected String $SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad;
 
 
 
@@ -79,7 +83,7 @@ class GuetzaConversation extends Conversation
     {
         $this->askName();
        // $this->askSucedioInmediato();
-      //  $this->askAquiTengoUnasOpcionesParaTi();
+      // $this->askAquiTengoUnasOpcionesParaTi();
     }
     public function askName(): void
     {
@@ -221,17 +225,17 @@ class GuetzaConversation extends Conversation
             Button::create('Identificar las violencias')->value('Identificar las violencias'),
             Button::create('Planes de acción y protección ante situaciones de violencia')->value('Planes de acción y protección ante situaciones de violencia'),
             Button::create('Información sobre derechos sexuales y reproductivos')->value('Información sobre derechos sexuales y reproductivos'),
-            Button::create('Orientación psicológica')->value('OrienPsicologica'),
-            Button::create('Me comunique con anterioridad y necesito atención. ')->value('MeComunicoAnterioridad'),
-            Button::create('Información adicional')->value('InformacionAdicional'),
-            Button::create('Derechos sexuales y reproductivos')->value('DerechosSexRepro'),
+            Button::create('Orientación psicológica')->value('Orientación psicológica'),
+            Button::create('Me comuniqué con anterioridad y necesito atención')->value('Me comuniqué con anterioridad y necesito atención'),
+            Button::create('Información adicional')->value('Información adicional'),
+            Button::create('Derechos sexuales y reproductivos')->value('Derechos sexuales y reproductivos'),
         ]);
 
         $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             $selectedText = $answer->getText();
 
-            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','OrienPsicologica','MeComunicoAnterioridad','InformacionAdicional','DerechosSexRepro'])) {
+            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','OrienPsicologica','Me comuniqué con anterioridad y necesito atención','Información adicional','Derechos sexuales y reproductivos'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -247,6 +251,12 @@ class GuetzaConversation extends Conversation
                 }
                 elseif($selectedValue == 'Información sobre derechos sexuales y reproductivos') {
                     $this->askDebesSaberTienesDerechoSobreDerechoSexuales();
+                }
+                elseif($selectedValue == 'Orientación psicológica') {
+                    $this->askTePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico();
+                }
+                elseif($selectedValue == 'Me comuniqué con anterioridad y necesito atención') {
+                    $this->askAnteriormenteTeBrindeInformacionRequerias();
                 }
             }
 
@@ -1565,8 +1575,333 @@ class GuetzaConversation extends Conversation
 
 
 
+    //Orientación psicológica
+    public function askTePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico():void
+    {
+        $question = Question::create('Te puedo acompañar con algunas preguntas que te permitan identificar temas de interés en tu proceso psicoterapéutico.')
+            ->fallback('Edad no valida')
+            ->callbackId('askTePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeuticoid')
+            ->addButtons([
 
-    //psicologico
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, [])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            }
+            $this->TePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico = $selectedValue;
+            $this->say('<div class="response-right">' . $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+            if($selectedValue == '') {
+
+            }
+
+
+
+
+
+        }, ['askDebesSaberTienesDerechoSobreDerechoSexualesid']);
+    }
+
+
+
+// Me comuniqué con anterioridad y necesito atención.
+    public function askAnteriormenteTeBrindeInformacionRequerias(): void
+    {
+        $question = Question::create('Anteriormente ¿te brinde la información que requerías?')
+            ->fallback('Edad no valida')
+            ->callbackId('AnteriormenteTeBrindeInformacionRequeriasid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AnteriormenteTeBrindeInformacionRequerias = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Si'){
+                $this->askHeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizacionesFormanParteRNROtros();
+                }else{
+                 $this->askCompartemeTusSugerenciasPropuestas();
+
+                }
+
+
+            }
+        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+    }
+
+    public function askCompartemeTusSugerenciasPropuestas()
+    {
+        $this->ask('Compárteme tus sugerencias o propuestas', function (Answer $answer) {
+            // Save result
+            $this->CompartemeSugerenciasPropuestas = $answer->getText();
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+
+        });
+    }
+    public function askHeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizacionesFormanParteRNROtros(): void
+    {
+        $question = Question::create('He seleccionado algunas atenciones que puedes recibir a través de organizaciones que forman parte de la Red Nacional de Refugios y de otras organizaciones que podrían apoyarte. Selecciona en el siguiente menú la que corresponde a la atención que estas buscando.')
+            ->fallback('Edad no valida')
+            ->callbackId('askHeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizacionesFormanParteRNROtrosid')
+            ->addButtons([
+                Button::create('Atención psicológica')->value('Atención psicológica'),
+                Button::create('Orientación Social')->value('Orientación Social'),
+                Button::create('Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos')->value('Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos'),
+                Button::create('Autogestión económica y economía feminista')->value('Autogestión económica y economía feminista'),
+                Button::create('Orientación jurídica')->value('Orientación jurídica'),
+            ]);
+
+
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Atención psicológica', 'Orientación Social', 'Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos', 'Autogestión económica y economía feminista', 'Orientación jurídica'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Atención psicológica'){
+                    $this->askLíneasAtenciónPsicologiaFeministaOrganizacionesNoFormanParteRNR();
+
+                }elseif($selectedValue=='Orientación Social'){
+                   $this->AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites();
+                }elseif($selectedValue=='Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos'){
+                        $this->askLineasAtencionCEAREjercicioDerSex();
+                }elseif($selectedValue=='Autogestión económica y economía feminista'){
+                    $this->askLineasAtencionCEAREjercicioDerSex();
+                }elseif($selectedValue=='Orientación jurídica'){
+                    $this->askAlgunaOpcionesOrientacionJuridica();
+                }
+
+
+            }
+        }, ['askHeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizacionesFormanParteRNROtrosid']);
+    }
+    public function askLíneasAtenciónPsicologiaFeministaOrganizacionesNoFormanParteRNR()
+    {
+        $this->ask('Líneas de atención  psicología feminista y en caso de organizaciones que no forman parte de la RNR psicológica', function (Answer $answer) {
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+
+        });
+    }
+
+
+    public function AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites():void{
+        $this->say('Al acercarte a Centros de Atención puedes recibir orientación para realizar trámites, para obtener documentos, crear CV o plan de vida.');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad();
+    }
+
+    public function SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad(): void
+    {
+        $question = Question::create('Si te interesa conocer mas sobre programas sociales, tramites o consultas que te pueden ser de utilidad, selecciona:')
+            ->fallback('Edad no valida')
+            ->callbackId('SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidadid')
+            ->addButtons([
+                Button::create('Programas')->value('Programas'),
+                Button::create('Tramites y consultas')->value('Tramites y consultas'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Programas', 'Tramites y consultas'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Programas'){
+                    $this->askprogramas();
+                }elseif($selectedValue=='Tramites y consultas'){
+                    $this->askTramitesCconsultas();
+
+                }
+
+
+            }
+        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+    }
+    public function askprogramas(): void
+    {
+        $this->say('<ul>
+                        <li>Apoyo Económico</li>
+                        <li>Cultivo</li>
+                        <li>Educación</li>
+                        <li>Pensión</li>
+                        <li>Vivienda</li>
+                    </ul>');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askSeFiltraBaseProgramasTramitesConsultas();
+    }
+    public function askTramitesCconsultas(): void
+    {
+        $this->say('<ul>
+                        <li>Educación</li>
+                        <li>Empleo</li>
+                        <li>Finanzas Personales</li>
+                        <li>Identificación</li>
+                        <li>Jurídico</li>
+                        <li>Seguro Social</li>
+                    </ul>');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askSeFiltraBaseProgramasTramitesConsultas();
+    }
+    public function askSeFiltraBaseProgramasTramitesConsultas(): void
+    {
+        $this->say('Se filtra la base de programas tramites y consultas');
+    }
+    public function askLineasAtencionCEAREjercicioDerSex():void{
+        $this->say('Líneas de atención CEAR y ejercicio Der. Sex. (DIF en bd descripción)');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites();
+    }
+
+
+    public function askAlgunaOpcionesOrientacionJuridica(): void
+    {
+        $question = Question::create('a continuación algunos  opciones de Orientación Jurídica')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlgunaOpcionesOrientacionJuridicaid')
+            ->addButtons([
+                Button::create('Solicitar una Orden de protección')->value('Solicitar una Orden de protección'),
+                Button::create('Poner una denuncia por violencia')->value('Poner una denuncia por violencia'),
+                Button::create('Números telefónicos para orientación')->value('Números telefónicos para orientación'),
+
+            ]);
+
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Solicitar una Orden de protección', 'Poner una denuncia por violencia', 'Números telefónicos para orientación'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlgunaOpcionesOrientacionJuridica = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Solicitar una Orden de protección'){
+                    $this->enproceso();
+                } elseif($selectedValue=='Poner una denuncia por violencia'){
+                    $this->askAlgunasOpcionesPonerDenunciaPorViolencia();
+
+                } elseif($selectedValue=='Números telefónicos para orientación'){
+                    $this->say('Líneas de atención  legal');
+
+                }
+
+
+            }
+        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+    }
+    public function askAlgunasOpcionesPonerDenunciaPorViolencia(): void
+    {
+        $question = Question::create('a continuación algunos  opciones de poner denuncia por violencia')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlgunasOpcionesPonerDenunciaPorViolenciaid')
+            ->addButtons([
+                Button::create('¿Qué es una denuncia?')->value('¿Qué es una denuncia?'),
+                Button::create('Tipos de denuncia')->value('Tipos de denuncia'),
+                Button::create('¿Dónde denunciar?')->value('Números telefónicos para orientación'),
+                Button::create('Requisitos para hacer una denuncia')->value('Requisitos para hacer una denuncia')
+            ]);
+
+
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['¿Qué es una denuncia?','Tipos de denuncia','¿Dónde denunciar?','Requisitos para hacer una denuncia'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlgunasOpcionesPonerDenunciaPorViolencia = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='¿Qué es una denuncia?'){
+                    $this->say('informar al ministerio público o a la policía de hechos que constituyen un posible delito.');
+
+                } elseif($selectedValue=='Tipos de denuncia'){
+                    $this->say('<ul>
+                                <li>1. Querella: reportados por la mujer afectada (Violencias). </li>
+                            <li>2. Oficio: no es necesaria la presencia de la víctima (violación, feminicidio).</li>
+                            <li>3. Tentativa: no se llega a la consumación, pero se pone en peligro el bien jurídico.</li>
+                            </ul>');
+
+                } elseif($selectedValue=='¿Dónde denunciar?'){
+                    $this->say('<ul>
+                                    <li>1. FGR</li>
+                                    <li>2. FGJ</li>
+                                    <li>3. Línea: denuncia.org </li>
+                                </ul>');
+
+
+                } elseif($selectedValue=='Requisitos para hacer una denuncia'){
+
+                    $this->say('
+                    <ul>
+                    <li>1. Nombre completo (identificación).</li>
+                    <li>2. Domicilio.</li>
+                    <li>3. Nombre de quien cometió el delito.</li>
+                    <li><ul>4. Narración de los hechos (se sugiere llevar una bitácora descriptiva de los hechos- no es un formato legal).
+                        <li>4.1. Fecha y hora de los hechos.</li>
+                        <li>4.2. Lugar de los hechos.</li>
+                        <li>4.3. Personas que intervinieron en los hechos.</li>
+                        <li>4.4. Identificación de dichas personas.</li>
+                        <li>4.5. Comentar si el delito no es un hecho aislado – nombrar los Antecedentes.</li>
+                    </ul>
+                    </li>
+                    <li>5. Sugerencias: Solicitar el número de carpeta, verificar datos personales correctos, verificar que la narración de los hechos sea correcta, solicitar una copia.</li>
+                    <li>6. Conocer mis derechos humanos.
+                        <ul>
+                        <li>-Derecho a un trato digno.</li>
+                        <li>-No revictimización.</li>
+                        <li>-Orientación jurídica y defensa.</li>
+                        <li>-Acompañamiento médico y psicológico.</li>
+                        <li>-Refugio.</li>
+                        <li>-Interprete.</li>
+                        <li>-Acceso a información procesal.</li>
+                        <li>-Reparación del daño.</li>
+                        <li>-Medidas de protección.</li>
+                        <li>-Órdenes de protección.</li>
+                        <li>-Ajustes o medidas especiales.</li>
+                        </ul>
+                    </li>
+                    </ul>
+                    ');
+
+
+                }
+
+
+            }
+        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+    }
+
+
+
+
     public function enproceso(): void
     {
 
