@@ -71,9 +71,10 @@ class GuetzaConversation extends Conversation
     protected String $HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones;
     protected String $SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad;
 
-
-
-
+    //Información adicional
+    protected String $QuieresSaberQueConsiste;
+    protected String $LaViolenciaPresentaDiferentesAmbitos;
+    protected String $TanProntoComoSeaSeguroHacerlo;
 
 
 
@@ -235,7 +236,7 @@ class GuetzaConversation extends Conversation
             $selectedValue = $answer->getValue();
             $selectedText = $answer->getText();
 
-            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','OrienPsicologica','Me comuniqué con anterioridad y necesito atención','Información adicional','Derechos sexuales y reproductivos'])) {
+            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Derechos sexuales y reproductivos'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -257,6 +258,12 @@ class GuetzaConversation extends Conversation
                 }
                 elseif($selectedValue == 'Me comuniqué con anterioridad y necesito atención') {
                     $this->askAnteriormenteTeBrindeInformacionRequerias();
+                }
+                elseif($selectedValue == 'Información adicional') {
+                    $this->askAlgunasOpcionesInformacionAdicional();
+                }
+                elseif($selectedValue == 'Derechos sexuales y reproductivos') {
+                    //$this->();
                 }
             }
 
@@ -1639,7 +1646,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
-
     public function askCompartemeTusSugerenciasPropuestas()
     {
         $this->ask('Compárteme tus sugerencias o propuestas', function (Answer $answer) {
@@ -1701,14 +1707,11 @@ class GuetzaConversation extends Conversation
 
         });
     }
-
-
     public function AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites():void{
         $this->say('Al acercarte a Centros de Atención puedes recibir orientación para realizar trámites, para obtener documentos, crear CV o plan de vida.');
         $this->bot->typesAndWaits($this->tiempoRespuesta);
         $this->SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad();
     }
-
     public function SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad(): void
     {
         $question = Question::create('Si te interesa conocer mas sobre programas sociales, tramites o consultas que te pueden ser de utilidad, selecciona:')
@@ -1774,8 +1777,6 @@ class GuetzaConversation extends Conversation
         $this->bot->typesAndWaits($this->tiempoRespuesta);
         $this->AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites();
     }
-
-
     public function askAlgunaOpcionesOrientacionJuridica(): void
     {
         $question = Question::create('a continuación algunos  opciones de Orientación Jurídica')
@@ -1902,10 +1903,186 @@ class GuetzaConversation extends Conversation
 
 
 
+//Información adicional
+    public function askAlgunasOpcionesInformacionAdicional(): void
+    {
+        $question = Question::create('a continuación algunos  opciones  información adicional')
+            ->fallback('Edad no valida')
+            ->callbackId('askAlgunasOpcionesPonerDenunciaPorViolenciaid')
+            ->addButtons([
+                Button::create('Ciclo de la violencia')->value('Ciclo de la violencia'),
+                Button::create('Modalidad')->value('Modalidad'),
+                Button::create('¿En qué momento necesito hacer una denuncia?')->value('¿En qué momento necesito hacer una denuncia?'),
+                Button::create('Y tú ¿Vives violencia?')->value('Y tú ¿Vives violencia?'),
+                Button::create('Amor propio')->value('Amor propio')]);
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Ciclo de la violencia', 'Modalidad', '¿En qué momento necesito hacer una denuncia?', 'Y tú ¿Vives violencia?', 'Amor propio'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->AlgunasOpcionesPonerDenunciaPorViolencia = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Ciclo de la violencia'){
+                    $this->say('Conocer las fases de la violencia te permitirá identificar patrones de comportamiento  y tomar medidas preventivas.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askQuieresSaberQueConsiste();
+                }elseif($selectedValue=='Modalidad'){
+                    $this->askLaViolenciaPresentaDiferentesAmbitos();
+
+                }elseif($selectedValue=='¿En qué momento necesito hacer una denuncia?'){
+                    $this->askTanProntoComoSeaSeguroHacerlo();
+                }
+
+
+            }
+        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+    }
+
+    public function askQuieresSaberQueConsiste(): void
+    {
+        $question = Question::create('¿Quieres saber en qué consisten?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberQueConsisteid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->QuieresSaberQueConsiste = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+                    $this->say('<ul>
+                                <li>
+                                <b>FASE 1</b></br>
+                                Empieza con burlas sobre lo que hablas y haces, hay gritos y amenazas bajo la excusa de que haces las cosas mal.
+                                Esta fase es llamada Acumulación de tensión.
+                                </li>
+                                <li>
+                                <b>FASE 2</b></br>
+                                Sin importar si has hechos cosas para evitar el enojo de la otra persona llega el momento de la agresión.
+                                Fase conocida como Explosión violenta.
+                                </li>
+                                <li>
+                                <b>FASE 3</b></br>
+                                Después de la violencia la persona agresora pide perdón, promete que no va a volver a actuar así, piensas que la relación ha cambiado y vuelves a confiar, pero vuelve a la Fase 1 y así repetidamente.
+                                La fase se conoce como la Luna de Miel.
+                                </li>
+                                </ul>');
+                }else{
+                   $this->Terminar();
+                }
+
+
+
+            }
+        }, ['QuieresSaberQueConsisteid']);
+    }
+    public function askLaViolenciaPresentaDiferentesAmbitos(): void
+    {
+        $question = Question::create('La violencia se presenta en diferentes ámbitos selecciona aquel del que quieras conocer más.')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberQueConsisteid')
+            ->addButtons([
+                Button::create('Familiar')->value('Familiar'),
+                Button::create('Laboral o docente')->value('Laboral o docente'),
+                Button::create('Institucional')->value('Institucional'),
+                Button::create('Feminicida')->value('Feminicida'),
+                Button::create('Alerta de violencia de género contra las mujeres')->value('Alerta de violencia de género contra las mujeres'),
+
+            ]);
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Familiar', 'Laboral o docente', 'Institucional', 'Feminicida', 'Alerta de violencia de género contra las mujeres'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->LaViolenciaPresentaDiferentesAmbitos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Familiar'){
+                    $this->say('La violencia familiar es el acto abusivo de poder u omisión intencional, dirigido a dominar, someter, controlar o agredir de manera física, verbal, psicológica, patrimonial, económica y sexual a las mujeres, dentro o fuera del domicilio familiar, cuya persona agresora tenga o haya tenido relación de parentesco por consanguinidad o afinidad, de matrimonio, concubinato o mantenga o  hayan mantenido una relación de hecho.');
+                }elseif($selectedValue=='Laboral o docente'){
+                    $this->say('Se ejerce por las personas que tienen un vínculo laboral, docente o análogo con la víctima, independientemente de la relación jerárquica, consistente en un acto o una omisión en abuso de poder que daña la autoestima, salud, integridad, libertad y seguridad de la víctima, e impide su desarrollo y atenta contra la igualdad.
+                                Puede consistir en un solo evento dañino o en una serie de eventos cuya suma produce el daño. También incluye el acoso o el hostigamiento sexual.
+                                La violencia laboral se constituye por la negativa ilegal a contratar a la víctima o a respetar su permanencia o condiciones generales de trabajo; la descalificación del trabajo realizado, las amenazas, la intimidación, las humillaciones, la explotación, el impedimento a las mujeres de llevar a cabo el período de lactancia previsto en la ley y todo tipo de discriminación por condición de género.
+                                La violencia docente se constituye por aquellas conductas que dañen la autoestima de las alumnas con actos de discriminación por su sexo, edad, condición social, académica, limitaciones o características físicas, que les infligen maestras o maestros.
+                                El hostigamiento sexual es el ejercicio del poder, en una relación de subordinación real de la víctima frente a la persona agresora en los ámbitos laboral o escolar. Se expresa en conductas verbales, física o ambas, relacionadas con la sexualidad de connotación lasciva.
+                                El acoso sexual es una forma de violencia en la que, si bien no existe la subordinación, hay un ejercicio abusivo de poder que conlleva a un estado de indefensión y de riesgo para la víctima, independientemente de que se realice en uno o varios eventos. 
+                                ');
+                }elseif($selectedValue=='Institucional'){
+                        $this->say('Son los actos u omisiones de las y los servidores públicos de cualquier orden de gobierno que discriminen o tengan como fin dilatar, obstaculizar o impedir el goce y ejercicio de los derechos humanos de las mujeres así como su acceso  al disfrute de políticas públicas destinadas a prevenir, atender, investigar, sancionar y erradicar los diferentes tipos de violencia. ');
+                }
+            elseif($selectedValue=='Feminicida') {
+                    $this->say('La violencia feminicida es la forma extrema de violencia de género contra las mujeres, producto de la violación de sus derechos humanos, en los ámbitos público y privado, conformada por el conjunto de conductas misóginas que pueden conllevar impunidad social y del Estado y puede culminar en homicidio y otras formas de muerte violenta de mujeres');
+            }
+            elseif($selectedValue=='Alerta de violencia de género contra las mujeres') {
+                $this->say('La alerta de violencia de género es el conjunto de acciones gubernamentales de emergencia para enfrentar y erradicar la violencia feminicida en un territorio determinado, ya sea ejercida por individuos o por la propia comunidad.');
+                }
+
+
+            }
+        }, ['QuieresSaberQueConsisteid']);
+    }
+    public function askTanProntoComoSeaSeguroHacerlo(): void
+    {
+        $question = Question::create('Tan pronto como sea seguro hacerlo.')
+            ->fallback('Edad no valida')
+            ->callbackId('TanProntoComoSeaSeguroHacerloid')
+            ->addButtons([
+                Button::create('¿Necesitas algún servicio de emergencia en este momento?')->value('¿Necesitas algún servicio de emergencia en este momento?'),
+                Button::create('Identifica los tipos de violencia')->value('Identifica los tipos de violencia'),
+            ]);
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['¿Necesitas algún servicio de emergencia en este momento?', 'Identifica los tipos de violencia'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TanProntoComoSeaSeguroHacerlo = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='¿Necesitas algún servicio de emergencia en este momento?'){
+                    $this->say('Solo los si de este menú');
+                }elseif($selectedValue=='Identifica los tipos de violencia') {
+                    $this->askQuieroSaberIdentificarViolencias();
+                }
+
+
+            }
+        }, ['QuieresSaberQueConsisteid']);
+    }
+
+
+
+
+
+//Derechos sexuales y reproductivos
     public function enproceso(): void
     {
 
         $this->say("aqui voy!!!! :)");
+    }
+
+    public function askTerminar(): void
+    {
+
+    $this->say("Proceso de Terminar");
     }
 
 }
