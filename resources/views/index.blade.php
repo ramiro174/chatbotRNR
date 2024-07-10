@@ -15,8 +15,14 @@
         </style>
 
         <style>
+
+            html, body{
+                background-color:#ebe6ec!important;
+                background-image:none!important
+            }
             body {
                 font-family: 'Nunito', sans-serif;
+
             }
             #botmanChatRoot{
                 padding-bottom:350px;
@@ -49,11 +55,17 @@
                 box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
                 -webkit-box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
                 -moz-box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
-                background-color:#25D366;
+                background-color:#7f5090;
+                color:white
             }
             .chatbot:has(.msg):has(div):has(p):has(.response-right) .msg
             {
-                background-color:#25D366;
+                background-color:#7f5090;
+                color:white
+            }
+
+            .btn{
+                background-color:#008b34!important
             }
 
         </style>
