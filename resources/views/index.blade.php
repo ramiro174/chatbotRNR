@@ -69,7 +69,7 @@
             }
 
             .chatbot:before {
-                content:url('https://cdn.icon-icons.com/icons2/1151/PNG/512/1486505254-display-menu-mobile-mobile-menu-phone-menu_81429.png');
+                content:url('https://chatbot.mapadeaccesoalajusticiarnr.com.mx/robot.png');
                 display: inline-block;
                 padding-right: 3px;
                 vertical-align: middle;
