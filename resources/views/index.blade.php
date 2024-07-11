@@ -68,6 +68,16 @@
                 background-color:#008b34!important
             }
 
+            .chatbot:before {
+                content:url('https://cdn.icon-icons.com/icons2/1151/PNG/512/1486505254-display-menu-mobile-mobile-menu-phone-menu_81429.png');
+                display: inline-block;
+                padding-right: 3px;
+                vertical-align: middle;
+                font-weight: 900;
+
+                height:30px
+            }
+
         </style>
     </head>
     <body class="antialiased">
