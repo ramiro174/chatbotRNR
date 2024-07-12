@@ -17,7 +17,7 @@
         <style>
 
             html, body{
-                background-color:#ebe6ec!important;
+                background-color: #7d6993 !important;
                 background-image:none!important
             }
             body {
@@ -55,12 +55,12 @@
                 box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
                 -webkit-box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
                 -moz-box-shadow: 0px 2px 5px -1px rgba(0,0,0,0.75);
-                background-color:#7f5090;
+                background-color: #00a403;
                 color:white
             }
             .chatbot:has(.msg):has(div):has(p):has(.response-right) .msg
             {
-                background-color:#7f5090;
+                background-color:#00a403;
                 color:white
             }
 
@@ -68,15 +68,19 @@
                 background-color:#008b34!important
             }
 
+            .chatbot:has(.msg):has(div):has(p):has(.response-right):before {
+                content:none;
+                height:80px
+            }
             .chatbot:before {
                 content:url('https://chatbot.mapadeaccesoalajusticiarnr.com.mx/robot.png');
                 display: inline-block;
                 padding-right: 3px;
                 vertical-align: middle;
                 font-weight: 900;
-
-                height:30px
+                height:80px
             }
+
 
         </style>
     </head>
