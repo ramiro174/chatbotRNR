@@ -24,9 +24,7 @@
                 font-family: 'Nunito', sans-serif;
 
             }
-            #botmanChatRoot{
-                padding-bottom:350px;
-            }
+
 
             .chatbot:has(.msg):has(div):has(p):has(.response-right)
            {
@@ -80,8 +78,10 @@
                 font-weight: 900;
                 height:80px
             }
-
-
+            #messageArea{
+                height:calc(100vh - 100px);
+                paddign-bottom:100px;
+            }
         </style>
     </head>
     <body class="antialiased">

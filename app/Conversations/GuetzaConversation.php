@@ -184,11 +184,12 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Anterior')->value('Anterior'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -197,9 +198,11 @@ class GuetzaConversation extends Conversation
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askIdentificamosServiciosAtencionMujeres();
-                } else {
+                } elseif($selectedValue=='No') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askAquiTengoUnasOpcionesParaTi();
+                }else{
+                    $this->askOrientacionNecesitas();
                 }
             }
         }, ['askQuieresSaberSituacionRiesgoid']);
@@ -230,13 +233,14 @@ class GuetzaConversation extends Conversation
             Button::create('Me comuniqué con anterioridad y necesito atención')->value('Me comuniqué con anterioridad y necesito atención'),
             Button::create('Información adicional')->value('Información adicional'),
             Button::create('Derechos sexuales y reproductivos')->value('Derechos sexuales y reproductivos'),
+            Button::create('Anterior')->value('Anterior'),
         ]);
 
         $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             $selectedText = $answer->getText();
 
-            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Derechos sexuales y reproductivos'])) {
+            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Derechos sexuales y reproductivos','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -264,6 +268,9 @@ class GuetzaConversation extends Conversation
                 }
                 elseif($selectedValue == 'Derechos sexuales y reproductivos') {
                     //$this->();
+                }
+                elseif($selectedValue == 'Anterior') {
+                    $this->askQuieresSaberSituacionRiesgo();
                 }
             }
 

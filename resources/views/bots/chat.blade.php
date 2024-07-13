@@ -10,6 +10,22 @@
             window.BotmanInstance.chatServer = chatServer;
             window.chatInstance.sayAsBot(welcomeMessage);
             disconectObserver();
+
+            const inputtext = document.getElementById("userText");
+            const div = document.getElementById("messageArea");
+
+            div.addEventListener("scroll",(event)=>{
+                console.log(event)
+            })
+
+            inputtext.addEventListener("keyup", function(event) {
+                if (event.code === 'Enter') {
+                     let div = document.getElementById("messageArea");
+                    div.scrollTop = div.scrollHeight+200;
+                    console.log(div,div.scrollHeight)
+                }
+            });
+
         }
     });
 
@@ -25,6 +41,8 @@
     function disconectObserver() {
         observer.disconnect();
     }
+
+
 
 </script>
 @vite(['resources/js/botman/fullscreen.js', 'resources/css/chat.css'])
