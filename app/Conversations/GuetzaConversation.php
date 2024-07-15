@@ -1187,13 +1187,14 @@ class GuetzaConversation extends Conversation
                 Button::create('Física')->value('Física'),
                 Button::create('Psicológica')->value('Psicológica'),
                 Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta? '),
+                Button::create('Anterior')->value('Anterior'),
 
 
             ]);
 
         $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica'])) {
+            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } elseif($selectedValue=='Sexual') {
@@ -1205,6 +1206,9 @@ class GuetzaConversation extends Conversation
 
             } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'){
                 $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, romper con la relación, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan');
+
+            } elseif($selectedValue=='Anterior'){
+                $this->askAquiTengoUnasOpcionesParaTi();
             }
 
 
