@@ -350,6 +350,7 @@ class GuetzaConversation extends Conversation
             Button::create('Vicaria')->value('Vicaria'),
             Button::create('Digital')->value('Digital'),
             Button::create('¿Solo mi pareja puede ejercer violencia?')->value('¿Solo mi pareja puede ejercer violencia?'),
+            Button::create('Anterior')->value('Anterior'),
         ]);
 
         $this->ask($question_AquiTengoUnasOpcionesParaTi, function (Answer $answer) {
@@ -357,7 +358,7 @@ class GuetzaConversation extends Conversation
 
             $this->say('<div class="response-right"> '.  $answer->getText().'</div>');
 
-            if (!in_array($selectedValue, ['Fisica', 'Psicologica','Sexual','Patrimonial','Económica','Vicaria','Digital','¿Solo mi pareja puede ejercer violencia?'])) {
+            if (!in_array($selectedValue, ['Anterior','Fisica', 'Psicologica','Sexual','Patrimonial','Económica','Vicaria','Digital','¿Solo mi pareja puede ejercer violencia?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -450,6 +451,11 @@ class GuetzaConversation extends Conversation
                     $this->say("se cometen más de 10 feminicidios al día y de acuerdo a la ENCUESTA NACIONAL SOBRE LA DINÁMICA DE LAS RELACIONES EN LOS HOGARES (ENDIREH), 7 de cada 10 mujeres mayores de 15 años han experimentado alguna situación de violencia de género en su vida.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
+
+                }
+                elseif($selectedValue == 'Anterior') {
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAquiTengoUnasOpcionesParaTi();
 
                 }
             }
@@ -571,6 +577,8 @@ class GuetzaConversation extends Conversation
 
                 }else{
                     $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askMensajeDespedida();
                 }
 
             }

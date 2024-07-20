@@ -19,8 +19,14 @@
 
             html, body{
                 background-color: #7d6993 !important;
-                background-image:none!important
+                background-image:url("/fondo.png")!important;
+                background-repeat: no-repeat, repeat!important;
+                background-position: center;
+
+
             }
+
+
             body {
                 font-family: 'Nunito', sans-serif;
 
