@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/b1dbb5aa1c.js" crossorigin="anonymous"></script>
 
         <!-- Styles -->
         <style>
@@ -82,6 +83,49 @@
                 height:calc(100vh - 100px);
                 paddign-bottom:100px;
             }
+
+            .social-bar {
+                display: flex;
+                justify-content: space-around;
+                width: 200px;
+                background-color: #fff;
+                padding: 10px;
+
+            }
+
+            .icon {
+                display: block;
+                width: 35px;
+                height: 35px;
+                background-size: cover;
+                transition: transform 0.3s;
+                color:white;
+                font-size:20px;
+                text-align:center;
+                border-radius: 7px;
+                line-height: 35px;
+            }
+
+            .icon:hover {
+                transform: scale(1.1);
+            }
+
+            .facebook {
+                background-color:#00a403;
+            }
+
+            .twitter {
+                background-color:#00a403;
+            }
+
+            .instagram {
+                background-color:#00a403;
+            }
+
+            .youtube {
+                background-color:#00a403;
+            }
+
         </style>
     </head>
     <body class="antialiased">

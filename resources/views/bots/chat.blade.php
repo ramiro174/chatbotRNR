@@ -12,17 +12,15 @@
             disconectObserver();
 
             const inputtext = document.getElementById("userText");
-            const div = document.getElementById("messageArea");
 
-            div.addEventListener("scroll",(event)=>{
-                console.log(event)
-            })
+
+            inputtext.placeholder = "Escribe aqui tu mensaje";
 
             inputtext.addEventListener("keyup", function(event) {
                 if (event.code === 'Enter') {
                      let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+200;
-                    console.log(div,div.scrollHeight)
+
                 }
             });
 

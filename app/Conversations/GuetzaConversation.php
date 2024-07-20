@@ -2,89 +2,134 @@
 
 namespace App\Conversations;
 
+use App\Models\Instituciones_Organizaciones;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 class GuetzaConversation extends Conversation
 {
-    protected String $firstname;
-    protected String $email;
-    protected String $edad;
-    protected String $estado_republica;
-    protected String $genero;
-    protected String $orientacionNecesitas;
-    protected String $QuieresSaberSituacionRiesgo;
-    protected String $AquiTengoOpcionesParaTi;
-    protected String $AlgunaVezHanEmpujadoGolpeadoAgreFisicamente;
-    protected String $HasSentidoMiedoSobreTuSeguridad;
-    protected String $HasTenidoLesionesFisicas;
-    protected String $TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas;
-    protected String $AlguienCercanoCriticaMenospreciaBurla;
-    protected String $SientesAlguienTuVidaLimitaTusDesiciones;
-    protected String $TeHanExcluidoDeliberadamenteDeActividades;
-    protected String $SientesMiedoAnsiedadConstante;
+    protected string $firstname;
+    protected string $email;
+    protected string $edad;
+    protected string $estado_republica;
+    protected string $genero;
+    protected string $orientacionNecesitas;
+    protected string $QuieresSaberSituacionRiesgo;
+    protected string $AquiTengoOpcionesParaTi;
+    protected string $AlgunaVezHanEmpujadoGolpeadoAgreFisicamente;
+    protected string $HasSentidoMiedoSobreTuSeguridad;
+    protected string $HasTenidoLesionesFisicas;
+    protected string $TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas;
+    protected string $AlguienCercanoCriticaMenospreciaBurla;
+    protected string $SientesAlguienTuVidaLimitaTusDesiciones;
+    protected string $TeHanExcluidoDeliberadamenteDeActividades;
+    protected string $SientesMiedoAnsiedadConstante;
 //
-    protected String $AlguienPresionadoParticiparActividadesSexuales;
-    protected String $HasAccedidoRealizarActivadesSexuales;
-    protected String $AlguienUtilizadoDrogasIncapacitarte;
-    protected String $HasTenidoActividadesSexualesSinConsentimiento ;
+    protected string $AlguienPresionadoParticiparActividadesSexuales;
+    protected string $HasAccedidoRealizarActivadesSexuales;
+    protected string $AlguienUtilizadoDrogasIncapacitarte;
+    protected string $HasTenidoActividadesSexualesSinConsentimiento;
 //
-    protected String $HasExperimentadoPresionFirmarContraVoluntad;
-    protected String $AlguienDestruidoIntencionalmenteBienesMateriales;
-    protected String $TeHanImpedidoTrabajarOEstudiarLimitar;
-    protected String $AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento;
+    protected string $HasExperimentadoPresionFirmarContraVoluntad;
+    protected string $AlguienDestruidoIntencionalmenteBienesMateriales;
+    protected string $TeHanImpedidoTrabajarOEstudiarLimitar;
+    protected string $AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento;
 //
-    protected String $HasExperimentadoPresionAsumirDeudasCompromisos;
-    protected String $AlguienCercanoATiControlaTusIngresos;
-    protected String $TeHanNegadoRecursosEconomicos;
-    protected String $TeHanImpedidoTrabajarOEstudiarLimitarFinanciera;
+    protected string $HasExperimentadoPresionAsumirDeudasCompromisos;
+    protected string $AlguienCercanoATiControlaTusIngresos;
+    protected string $TeHanNegadoRecursosEconomicos;
+    protected string $TeHanImpedidoTrabajarOEstudiarLimitarFinanciera;
 //
-    protected String $TeSientesPresionadaActuarPerderContactoHijos;
-    protected String $TuParejaExparejaImpedidoComuniquesHijasHijos;
-    protected String $HasNotadoTuParejaUtilizaHijasHijos;
-    protected String $TeSientesExcluidaDecisionesImportantesHijasHijos;
+    protected string $TeSientesPresionadaActuarPerderContactoHijos;
+    protected string $TuParejaExparejaImpedidoComuniquesHijasHijos;
+    protected string $HasNotadoTuParejaUtilizaHijasHijos;
+    protected string $TeSientesExcluidaDecisionesImportantesHijasHijos;
 //
-    protected String $HasRecibidoAmenazasATravezMensajesRedesCorreo;
-    protected String $AlguienHaDifundidoInformacionFalsaLinea;
-    protected String $HasExperimentadoRoboIdentidadLineaSuplantacion;
-    protected String $TeHanPresionadoEnviarFotosIntimasInformacionPersonal;
+    protected string $HasRecibidoAmenazasATravezMensajesRedesCorreo;
+    protected string $AlguienHaDifundidoInformacionFalsaLinea;
+    protected string $HasExperimentadoRoboIdentidadLineaSuplantacion;
+    protected string $TeHanPresionadoEnviarFotosIntimasInformacionPersonal;
 
 //
-    protected String $EnEventoViolenciaSexualHuboExposicionRiesgo;
-    protected String $SucedioInmediato;
-    protected String $TengoMasInformacionSepasHAcerDespuesEvento;
+    protected string $EnEventoViolenciaSexualHuboExposicionRiesgo;
+    protected string $SucedioInmediato;
+    protected string $TengoMasInformacionSepasHAcerDespuesEvento;
 
 
-    protected String $AquiTemuestroPlanesAccionFisica;
-    protected String $SiyaIdentificasteSituacionPeligro;
+    protected string $AquiTemuestroPlanesAccionFisica;
+    protected string $SiyaIdentificasteSituacionPeligro;
 
-    protected String $DebesSaberTienesDerechoSobreDerechoSexuales;
+    protected string $DebesSaberTienesDerechoSobreDerechoSexuales;
 
 //Orientación psicológica
-    protected String $TePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico;
+    protected string $TePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico;
 
 // Me comuniqué con anterioridad y necesito atención.
-    protected String $AnteriormenteTeBrindeInformacionRequerias;
-    protected String $CompartemeSugerenciasPropuestas;
-    protected String $HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones;
-    protected String $SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad;
+    protected string $AnteriormenteTeBrindeInformacionRequerias;
+    protected string $CompartemeSugerenciasPropuestas;
+    protected string $HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones;
+    protected string $SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad;
 
     //Información adicional
-    protected String $QuieresSaberQueConsiste;
-    protected String $LaViolenciaPresentaDiferentesAmbitos;
-    protected String $TanProntoComoSeaSeguroHacerlo;
+    protected string $QuieresSaberQueConsiste;
+    protected string $LaViolenciaPresentaDiferentesAmbitos;
+    protected string $TanProntoComoSeaSeguroHacerlo;
 
 
 
-    protected int $tiempoRespuesta=2;
+    //terminar
+    protected string $AntesQueTeVayasMeGustariaConversacionResultoUtil;
+    protected string $CompartemeTusSugerenciasPropuestas;
+    protected string $RecomendariasGuetzaPersonasConoces;
+    protected string $ConsiderasInformacionBrindadaPuedesIntegrarDiaADia;
+
+    protected int $tiempoRespuesta = 2;
+
+    public static function ListarOrganizaciones(Collection $listaInsOrg): string
+    {
+
+
+        $lista = $listaInsOrg->map(function ($ins) {
+            return "<b>".  $ins->Institucion_Organizacion."</b>" .
+                ", " .
+                $ins->Estado .
+                ", " .
+                $ins->Municipio ."</br>" .
+                "Dias de Atencion: " .
+                $ins->Dias_de_atencion .
+                ", Horario: " .
+                $ins->Horario .
+                ", Servicio: " .
+                $ins->Caracteristica .
+                ",  Telefono: " .
+                $ins->Telefono ."</br>".
+                "Correo: " .
+                $ins->Email .
+                ", Pagina Web:  <a  style='color:purple' href=\"$ins->Pagina_web\">" .
+                $ins->Pagina_web ."</a>" .
+                ", Facebook :  <a  style='color:purple'  href=\"$ins->Facebook\">" .
+                $ins->Facebook ."</a>" .
+                ", Instagram  <a  style='color:purple'  href=\"$ins->Instagram\">" .
+                $ins->Instagram ."</a>" .
+                ",  Twitter: <a  style='color:purple'  href=\"$ins->Twitter\">" .
+                $ins->Twitter."</a>" ;
+        });
+    return  Arr::join($lista->toArray(),' </br></br>');
+
+    }
+
 
     public function run()
     {
-        $this->askName();
+       $this->askName();
+        //$this->askIdentificamosServiciosAtencionMujeres();
        // $this->askSucedioInmediato();
       // $this->askAquiTengoUnasOpcionesParaTi();
+        //$this->askTerminar();
     }
     public function askName(): void
     {
@@ -196,7 +241,7 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue == 'Si') {
-                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->bot->typesAndWaits(8);
                     $this->askIdentificamosServiciosAtencionMujeres();
                 } elseif($selectedValue=='No') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
@@ -209,14 +254,24 @@ class GuetzaConversation extends Conversation
     }
     public function askIdentificamosServiciosAtencionMujeres(): void
     {
+
+        $edad= $this->edad?$this->edad:0;
+        $estado= $this->estado_republica?$this->estado_republica:"";
+
+            $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::edadMenorMujer($edad)
+                ->estadoRepublica($estado)
+                ->orWhere(function ($q) use ($edad) {
+                    return $q->edadMenorHombre($edad);
+                })
+
+                ->get());
+
         $this->say("Identificamos los siguientes servicios de atención a las mujeres en tu entidad.");
-        $this->say("Líneas de emergencia (filtrando por:
-                    -mujeres menores de 17 años, 
-                    -mujeres
-                    -hombres
-                    -otras identidades
-                    -estado)");
+        $this->say($instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
         $this->say("MUJERES:En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
+
+        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
 
 
     }
@@ -545,6 +600,7 @@ class GuetzaConversation extends Conversation
             } else {
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue = 'Si') {
+                    $this->bot->typesAndWaits(10);
                     $this->askIdentificamosServiciosAtencionMujeres();
                 } else {
                     $this->askEdad();
@@ -1657,16 +1713,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
-    public function askCompartemeTusSugerenciasPropuestas()
-    {
-        $this->ask('Compárteme tus sugerencias o propuestas', function (Answer $answer) {
-            // Save result
-            $this->CompartemeSugerenciasPropuestas = $answer->getText();
-            $this->bot->typesAndWaits($this->tiempoRespuesta);
-
-
-        });
-    }
     public function askHeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizacionesFormanParteRNROtros(): void
     {
         $question = Question::create('He seleccionado algunas atenciones que puedes recibir a través de organizaciones que forman parte de la Red Nacional de Refugios y de otras organizaciones que podrían apoyarte. Selecciona en el siguiente menú la que corresponde a la atención que estas buscando.')
@@ -2090,10 +2136,138 @@ class GuetzaConversation extends Conversation
         $this->say("aqui voy!!!! :)");
     }
 
-    public function askTerminar(): void
+
+
+
+    //Terminar
+    public function askAntesQueTeVayasMeGustariaConversacionResultoUtil(): void
+    {
+        $question = Question::create('Antes de que te vayas me gustaría saber: ¿nuestra conversación te resulto útil?')
+            ->fallback('Edad no valida')
+            ->callbackId('AntesQueTeVayasMeGustariaConversacionResultoUtilid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->AntesQueTeVayasMeGustariaConversacionResultoUtil = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+                        $this->askRecomendariasGuetzaPersonasConoces();
+                }else{
+                    $this->CompartemeTusSugerenciasPropuestas();
+                }
+
+
+
+            }
+        }, ['AntesQueTeVayasMeGustariaConversacionResultoUtilid']);
+    }
+    public function askRecomendariasGuetzaPersonasConoces(): void
+    {
+        $question = Question::create('¿Recomendarías Guetza a las personas que conoces? ')
+            ->fallback('Edad no valida')
+            ->callbackId('RecomendariasGuetzaPersonasConocesid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->RecomendariasGuetzaPersonasConoces = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+
+                    $this->askConsiderasInformacionBrindadaPuedesIntegrarDiaADia();
+
+            }
+        }, ['RecomendariasGuetzaPersonasConocesid']);
+    }
+    public function askConsiderasInformacionBrindadaPuedesIntegrarDiaADia(): void
+    {
+        $question = Question::create('¿Consideras que la información brindada la puedes integrar a tu día a día? ')
+            ->fallback('Edad no valida')
+            ->callbackId('ConsiderasInformacionBrindadaPuedesIntegrarDiaADiaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->ConsiderasInformacionBrindadaPuedesIntegrarDiaADia = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askMensajeDespedida();
+
+
+            }
+        }, ['ConsiderasInformacionBrindadaPuedesIntegrarDiaADiaid']);
+    }
+
+
+    public function askCompartemeTusSugerenciasPropuestas()
     {
 
-    $this->say("Proceso de Terminar");
+        $question = Question::create('Compárteme tus sugerencias o propuestas')
+            ->fallback('Edad no valida')
+            ->callbackId('askCompartemeTusSugerenciasPropuestasid');
+
+        $this->ask($question, function (Answer $answer) {
+
+            if (!($answer->getText())) {
+                $this->say("Al parecer no  escribiste nada puedes compartir tus sugerencias o propuestas");
+                $this->repeat();
+            } else {
+                $this->CompartemeTusSugerenciasPropuestas = $answer->getText();
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askMensajeDespedida();
+            }
+
+
+        }, ['askCompartemeTusSugerenciasPropuestasid']);
+    }
+
+
+    public function askMensajeDespedida(): void
+    {
+        $this->say("Muchas gracias por compartirnos tus opiniones, recuerda que aquí estaré cuando lo necesites.");
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->say('Si deseas saber más sobre la organización nacional de la que formo parte te dejo aquí el link de nuestro sitio web donde podrás encontrar todo lo que hacemos y cada uno de los servicios que brindamos, los cuales son totalmente gratuitos.
+                </br>
+                     </br>
+                <a  style="color:purple"  href="https://rednacionalderefugios.org.mx/">https://rednacionalderefugios.org.mx/</a>
+                </br>
+                </br>
+                Te invito a seguir a la Red Nacional de Refugios en todas nuestras redes sociales.
+                </br>
+                
+                <div class="social-bar">
+                    <a href="https://rednacionalderefugios.org.mx/" class="icon facebook" target="_blank"><span class="fa fa-facebook-f"></span></a>
+                    <a href="https://twitter.com/RNRoficial" class="icon twitter" target="_blank"><span class="fa fa-twitter"></span></a>
+                    <a href="https://www.youtube.com/channel/UCIqcnApw7a7UpmTToVViGZQ/videos" class="icon youtube" target="_blank"><span class="fa fa-youtube"></span></a>
+                    <a href="https://www.instagram.com/redrefugiosmx/" class="icon instagram" target="_blank"><span class="fa fa-instagram"></span></a>
+                </div>
+                
+        ');
+
+
+
+
     }
 
 }
