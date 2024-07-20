@@ -20,13 +20,10 @@
             html, body{
                 background-color: #7d6993 !important;
                 background-image:url("/fondo.png")!important;
-                background-repeat: no-repeat, repeat!important;
+                background-repeat: no-repeat, repeat;
+                background-size:500px;
                 background-position: center;
-
-
             }
-
-
             body {
                 font-family: 'Nunito', sans-serif;
 
