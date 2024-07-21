@@ -12,10 +12,12 @@ use Illuminate\Support\Arr;
 
 class GuetzaConversation extends Conversation
 {
-    protected string $firstname;
+    protected string $nombre;
     protected string $email;
     protected string $edad;
     protected string $estado_republica;
+    protected string $SiEstasAcompanadoMujerEllaTuEncuentranRiesgo;
+
     protected string $genero;
     protected string $orientacionNecesitas;
     protected string $QuieresSaberSituacionRiesgo;
@@ -135,7 +137,7 @@ class GuetzaConversation extends Conversation
     {
         $this->ask('¿Me gustaría conocer tu nombre o cómo deseas que te llame?', function (Answer $answer) {
             // Save result
-            $this->firstname = $answer->getText();
+            $this->nombre = $answer->getText();
             $this->bot->typesAndWaits($this->tiempoRespuesta);
             //$this->say(');
             $this->askGenero();
@@ -144,19 +146,19 @@ class GuetzaConversation extends Conversation
 
     public function askGenero(): void
     {
-        $question = Question::create($this->firstname . ' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques')
+        $question = Question::create($this->nombre . ' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askGeneroid')
             ->addButtons([
                 Button::create('Mujer')->value('Mujer'),
                 Button::create('Hombre')->value('Hombre'),
-                Button::create('Otra identidad de genero')->value('Otra'),
+                Button::create('Otra identidad de genero')->value('Otra identidad de genero'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue(); // will be either 'yes' or 'no'
 
             $selectedText = $answer->getText(); // will be either 'Of course' or 'Hell no!'
-            if (!in_array($selectedValue, ['Mujer', 'Hombre', 'Otra'])) {
+            if (!in_array($selectedValue, ['Mujer', 'Hombre', 'Otra identidad de genero'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -194,13 +196,100 @@ class GuetzaConversation extends Conversation
             // Save result
             $this->estado_republica = $answer->getText();
             $this->bot->typesAndWaits($this->tiempoRespuesta);
-            $this->askOrientacionNecesitas();
+            if(in_array($this->genero, ['Hombre','Otra identidad de genero'])) {
+                $this->askSiEstasAcompanadoMujerEllaTuEncuentranRiesgo();
+
+            }else{
+                $this->askOrientacionNecesitas();
+            }
+
+
 
         });
     }
+    public function askSiEstasAcompanadoMujerEllaTuEncuentranRiesgo(): void
+    {
+        $question = Question::create($this->nombre . ' Si estas acompañando a una mujer y ella o tú se encuentran en riesgo, tengo opciones de líneas de emergencia en tu localidad o a nivel federal.')
+            ->fallback('no seleccionate una opción valida')
+            ->callbackId('SiEstasAcompanadoMujerEllaTuEncuentranRiesgoid')
+            ->addButtons([
+                Button::create('Emergencia')->value('Emergencia'),
+                Button::create('Necesito apoyo')->value('Necesito apoyo'),
+                Button::create('Información adicional')->value('Información adicional'),
+                Button::create('Anterior')->value('Anterior'),
+                Button::create('Terminar')->value('Terminar'),
+
+            ]);
+
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Emergencia', 'Necesito apoyo', 'Información adicional', 'Anterior', 'Terminar'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SiEstasAcompanadoMujerEllaTuEncuentranRiesgo = $selectedValue;
+                $this->say('<div class="response-right">'.   $selectedValue.'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Emergencia') {
+               $this->askLineasEmergenciaFiltro();
+                }
+                else if($selectedValue=='Necesito apoyo'){
+                $this->askLineasApoyoOtrasIdentidadesFiltro();
+                }
+                else if($selectedValue=='Información adicional'){
+          ///estaba aqui
+                    $this->askAlgunasOpcionesInformacionAdicional();
+                }
+                else if($selectedValue=='Anterior'){
+                    $this->askQuieresSaberSituacionRiesgo();
+                }
+                else if($selectedValue=='Terminar'){
+                 $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+                }
+
+
+
+//
+
+
+            }
+        }, ['SiEstasAcompanadoMujerEllaTuEncuentranRiesgoid']);
+    }
+    public function askLineasEmergenciaFiltro(): void
+    {
+        $estado= $this->estado_republica?:"";
+        $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::estadoRepublica($estado)->ClasificacionEmergencia()->get());
+        $this->say("<b>Líneas de emergencia</b>   </br></br>".   $instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+
+    }
+    public function askLineasApoyoOtrasIdentidadesFiltro(): void
+    {
+        $estado= $this->estado_republica?:"";
+        $this->say('Como organización, es fundamental que nos especialicemos, en este caso trabajamos con mujeres, niñas y niños en situación de violencia.Te proporcionare números cercanos a tu localidad donde puedas recibir atención especializada.');
+
+        $genero=  $this->genero;
+        $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::estadoRepublica($estado)
+            ->ClasificacionNo([
+                "Emergencia",
+                "Atención especializada (Referencia a Refugio y Orientación ante situaciones de violencia por ejemplo CEAR)"
+            ])
+            ->Identidad($genero)
+            ->get()
+        );
+        $this->say("<b>Líneas de Apoyo</b></br></br>".   $instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+
+    }
+
+
     public function askOrientacionNecesitas(): void
     {
-        $question = Question::create($this->firstname . ' ¿la orientación que necesitas es para ti o para alguna mujer que conoces?')
+        $question = Question::create($this->nombre . ' ¿la orientación que necesitas es para ti o para alguna mujer que conoces?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askOrientacionNecesitasid')
             ->addButtons([
@@ -241,11 +330,18 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue == 'Si') {
-                    $this->bot->typesAndWaits(8);
+                    $this->bot->typesAndWaits(5);
                     $this->askIdentificamosServiciosAtencionMujeres();
                 } elseif($selectedValue=='No') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                    if($this->edad<=17){
+                    $this->say( $this->nombre.' me interesa mucho tu seguridad y bienestar. Por eso, sugiero puedas buscar compañía de una persona adulta de confianza. Hay ocasiones en las que es importante tener a alguien mayor que pueda apoyarte si lo necesitas.');
+                    }
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askAquiTengoUnasOpcionesParaTi();
+
+
                 }else{
                     $this->askOrientacionNecesitas();
                 }
@@ -269,12 +365,21 @@ class GuetzaConversation extends Conversation
         $this->say("Identificamos los siguientes servicios de atención a las mujeres en tu entidad.");
         $this->say($instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->say("MUJERES:En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
+
+        if($this->edad<=17){
+            $this->say("Es importante que identifiques a una persona adulta que pueda apoyarte cuando la situación de violencia se presente, así como tener un plan de seguridad, aquí puedes encontrar algunas acciones que sin importantes tomes en cuenta POSTAL WENDY");
+
+        }else{
+            $this->say("MUJERES:En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
+        }
+
+
 
         $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
 
 
     }
+   ///Principal
     public function askAquiTengoUnasOpcionesParaTi(): void
     {
         $question_AquiTengoUnasOpcionesParaTi = Question::create('Aquí tengo unas opciones para ti, selecciona la que mejor se ajuste a lo que necesitas:')
@@ -335,6 +440,7 @@ class GuetzaConversation extends Conversation
 
 
     }
+    ///Principal
     //Quiero saber cómo identificar las violencias
     public function askQuieroSaberIdentificarViolencias(): void
     {
@@ -1383,9 +1489,18 @@ class GuetzaConversation extends Conversation
     }
     public function askLineasAtencionEspecializadaDerechosSexualesFiltro(): void
     {
-
-        $this->say("Líneas de atención especializada en derechos sexuales y reproductivos por filtro");
+        $estado= $this->estado_republica?:"";
+        $instituciones=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Clasificaciones([
+                    "Acceso a derechos sexuales (Interrupción del embarazo, denuncias)"
+                ])
+                ->Identidad("Mujer")
+                ->get()
+            );
+        $this->say("<b>Líneas de atención especializada en derechos sexuales y reproductivos</b>   </br></br>".   $instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
+
         $this->askTieneDerechoPuedesolicitarGuardarEvidencia();
 
 
@@ -1398,7 +1513,7 @@ class GuetzaConversation extends Conversation
                     <li>2. Puedes solicitar acompañamiento cuando lo desees. Existen instituciones públicas y de sociedad civil que te  pueden otorgar atención de manera inmediata y gratuita.</li>
                     <li>3. Guarda evidencias de lo sucedido, sin que ello te ponga en riesgo. (puedes guardar ropa, fotos u otros objetos).</li>
                 </ul>");
-
+    $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
 
     }
     //Fisica
@@ -1417,11 +1532,13 @@ class GuetzaConversation extends Conversation
                 Button::create("Si la persona agresora ha dejado la casa")->value('Si la persona agresora ha dejado la casa'),
                 Button::create("Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia")->value('Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia'),
                 Button::create("¿Qué hacer si una mujer, niña o adolescente está desaparecida?")->value('¿Qué hacer si una mujer, niña o adolescente está desaparecida?'),
+                Button::create("Anterior")->value('Anterior'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue, [
+                'Anterior',
                 'Antes de un evento de violencia',
                 'Ante violencia física y la persona agresora está armada',
                 'Para protegerte fuera de la casa, escuela o lugar de trabajo, considera los siguientes puntos',
@@ -1442,8 +1559,14 @@ class GuetzaConversation extends Conversation
                 $this->askSiyaIdentificasteSituacionPeligro();
             }elseif($selectedValue == 'Ante violencia física y la persona agresora está armada'){
                 $this->say('Recuerda que un arma puede ser punzo cortante (cuchillos, navajas, etc.) o de fuego. Ten constante comunicación con tus contactos y/o redes de apoyo, quienes pueden llamarte y mantenerse en línea contigo mientras acuden a tu casa para frenar la situación de violencia y en el momento oportuno, poder salir del lugar y recibir la atención médica en caso de que lo necesites. ');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
+
             }elseif($selectedValue == 'Para protegerte fuera de la casa, escuela o lugar de trabajo, considera los siguientes puntos'){
                 $this->say('Cambia regularmente las rutas de tu trayecto. Haz compras en lugares diferentes. Mantén los números telefónicos de emergencia contigo todo el tiempo. Comparte tu ubicación con los contactos que elegiste en la APP de Sendero Violeta, ¡descargala! o con cualquier otra persona de tu confianza. Evita utilizar tu celular si vas caminando o manejando. Antes de salir o entrar a algún lugar mira a tu alrededor y observa si no está la persona agresora o hay algo extraño en el entorno.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
+
 
             }elseif($selectedValue == 'Lo que puedes hacer si llegan a discutir y la situación se pone peligrosa'){
                 $this->say('Haz lo posible por moverte hacia un lugar cerca de la puerta o por donde puedas salir sin peligro
@@ -1452,17 +1575,24 @@ class GuetzaConversation extends Conversation
                             Recuerda que tú eres la única persona que puede decidir cuál es el mejor momento para dejar la casa. Sin ponerte en mayor peligro, espera la oportunidad hasta que puedas salir. 
                             Si la situación se vuelve peligrosa y te das cuenta de que no hay cómo salir inmediatamente, hazle caso a la persona agresora en ese momento, hasta que se tranquilice. Debes protegerte hasta que esté fuera de peligro.
                             Si te han golpeado, busca ayuda médica y en la medida de lo posible, trata de tomarte fotos de las heridas, es importante para tener evidencias. ');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
             }
+
             elseif($selectedValue == 'Qué hacer si la persona agresora intenta secuestrarme'){
                 $this->say('No desestimes tus presentimientos, ni minimices las situaciones de riesgo ¡No estás sola¡ Si han salido y de pronto te das cuenta de que toma una dirección distinta, percibes algo extraño, no te dice a donde van o lo que responde no te hace sentir segura puedes compartir tu ubicación con algún contacto o redes de apoyo. También pueden llamarte en ese momento como si te estuviera saludando para que puedas decirle por donde vas. Después de unos 15 min puede volverte a llamar con algún pretexto para que se cerciore de que estas bien. Si no contestas es importante que tus contactos notifiquen a las autoridades correspondientes. ');
-
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
             }
             elseif($selectedValue == 'Existen otras estrategias que podemos crear conjuntamente y compartir'){
                 $this->say('Te compartimos líneas de Atención especializada (diferenciando psicología feminista (los CEAR) de atención psicológica).');
-
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
             }
             elseif($selectedValue == 'Si la persona agresora ha dejado la casa'){
                 $this->say('Se sugiere cambiar cerraduras nuevas en las puertas, porque recuerda que él todavía puede tener una copia de las llaves.  Ponle seguros a las ventanas por si él intenta abrir o forzarlas. Comparte con alguna vecina o vecino de tu confianza a grandes rasgos tu situación para que te pueda informar si la persona agresora se presenta o lo ven rondando cerca.   Informa a la escuela o al centro de cuidado de tus hijas/os quién tiene permiso para recogerlas/os. Si tienes una orden de protección entrégale una copia al personal de la escuela.  Si no cuentas con una orden de protección puedes tramitarla. Cambia el número de teléfono fijo o celular y no llames a la persona agresora desde ellos. ');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
             }
             elseif($selectedValue == 'Estrategias para implementar con niñas y niños dentro de casa ante situaciones de violencia'){
                 $this->say('Tu seguridad y bienestar, así como la de tus hijas e hijos es lo más importante
@@ -1487,6 +1617,8 @@ class GuetzaConversation extends Conversation
                     Hay muchas formas de hacerlo, una de ellas es utilizar el juego “qué haría si…” contáctanos y podemos orientarte sobre cómo hacerlo.
                     </li>
                     </ul>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeMuestroMasAccionesViolenciaFisica();
             }
 
             elseif($selectedValue == '¿Qué hacer si una mujer, niña o adolescente está desaparecida?'){
@@ -1510,12 +1642,15 @@ class GuetzaConversation extends Conversation
                             </ul>');
              $this->askTeMuestroMasAccionesViolenciaFisica();
             }
+            elseif($selectedValue == 'Anterior'){
+                $this->askPlanesDeAccionProteccionSituacionViolencia();
+            }
 
         }, ['askAquiTemuestroPlanesAccionFisicaid']);
     }
     public function askTeMuestroMasAccionesViolenciaFisica():void
     {
-        $question = Question::create('Te muestro mas opciones de acciones de Violencia Fisica')
+        $question = Question::create('Tengo las siguientes opciones para ti')
             ->fallback('Edad no valida')
             ->callbackId('askTeMuestroMasAccionesViolenciaFisicaid')
             ->addButtons([
@@ -1536,11 +1671,13 @@ class GuetzaConversation extends Conversation
             if($selectedValue == 'Alerta Amber y Protocolo') {
                 $this->say('Tienes derecho a solicitar la Alerta Amber, en caso de niñas y adolescentes al 8000085400 y el Protocolo alba en caso de mujeres desaparecidas. (Ambas alertas las puedes solicitar al momento de realizar la denuncia o reporte). También puedes apoyarte de Organizaciones de la Sociedad Civil y difundir en redes sociales la ficha de búsqueda.  <a href="https://www.idheas.org.mx/ ">https://www.idheas.org.mx/ </a>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
 
             }
             if($selectedValue == 'Has uso de tu denuncia en la CNDH') {
                 $this->say('<ul><li> 1. También puedes presentarle en línea https://atencionciuadana.com CNDH 55 5681 8125  /   55 5490 7400 </li> <li> 2. Realiza tu reporte La fiscalía Especializada y Comisiones de Búsqueda deben expedir una ficha de búsqueda que contenga: nombre completo; fotografía; descripción física, última fecha y lugar en dónde fue vista; último contacto que se tuvo con ella (precisando el evento) y vestimenta que llevaba puesta el día de su desaparición.  Si así lo deseas, puedes participar de forma activa en la búsqueda y puedes solicitar a las autoridades; los videos de vigilancia; acceso a investigación de perfiles de redes sociales; geolocalización de cualquier dispositivo; comunicación inmediata con hospitales, terminales de autobuses, aeropuertos y otros espacios; documentos de antecedentes de violencias.  </li></ul>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
 
             }
 
@@ -1556,11 +1693,12 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create("Prepara con tiempo")->value('Prepara con tiempo'),
                 Button::create("Identifica personas conocidas, amigas o familiares que puedan apoyarte")->value('Identifica personas conocidas, amigas o familiares que puedan apoyarte'),
-                Button::create("Identificamos los siguientes servicios de atención a las mujeres en tu entidad")->value('Identificamos los siguientes servicios de atención a las mujeres en tu entidad')
+                Button::create("Identificamos los siguientes servicios de atención a las mujeres en tu entidad")->value('Identificamos los siguientes servicios de atención a las mujeres en tu entidad'),
+                Button::create("Anterior")->value('Anterior')
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Prepara con tiempo','Identifica personas conocidas, amigas o familiares que puedan apoyarte','Identificamos los siguientes servicios de atención a las mujeres en tu entidad','Identificamos los siguientes servicios de atención a las mujeres en tu entidad'])) {
+            if (!in_array($selectedValue, ['Anterior','Prepara con tiempo','Identifica personas conocidas, amigas o familiares que puedan apoyarte','Identificamos los siguientes servicios de atención a las mujeres en tu entidad'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -1573,19 +1711,47 @@ class GuetzaConversation extends Conversation
                             Habla sobre tu plan de seguridad con tus hijas/os: Deben tener una señal que solamente ustedes conozcan que signifique que deben salir de la casa rápidamente, llamar a la policía o pedir apoyo con alguna vecina/o');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->say('Postal Wendy');
+                $this->askTepuedoApoyarConAlgoMas();
+
 
             }elseif($selectedValue == 'Identifica personas conocidas, amigas o familiares que puedan apoyarte'){
                 $this->say('<b>Redes de apoyo:</b> elige personas conocidas, amigas o familiares que puedan apoyarte, y contáctalas para que estén pendientes de la situación y puedan apoyarte, puedes acordar previamente con ellas claves con emojis para que sepan que significa y llamar a la policía de ser necesario. Memoriza o haz una lista con los números de teléfono de tus amistades, familiares, personas del trabajo o de alguna organización o servicio local en donde te puedan ayudar.  Puedes ir a casa de alguna amistad o familiar, preferible a un lugar donde la persona agresora no se atreva a ir a buscarte o a la casa de alguien que él no conozca. Si no cuenta son una red de apoyo puedes comunicarte con nosotras.');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
+
             }elseif($selectedValue == 'Identificamos los siguientes servicios de atención a las mujeres en tu entidad'){
-                $this->say('Líneas de emergencia (filtrando por…');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askatencionesEspecializadasFiltro();
+            }
+            elseif($selectedValue == 'Anterior'){
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askAquiTemuestroPlanesAccionFisica();
+
+
+
             }
 
 
         }, ['askSiyaIdentificasteSituacionPeligroid']);
     }
+
+    public function askatencionesEspecializadasFiltro(): void
+    {
+        $estado= $this->estado_republica?:"";
+        $instituciones=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Clasificaciones([
+                    "Atención especializada (Referencia a Refugio y Orientación ante situaciones de violencia por ejemplo CEAR)"
+                ])
+                ->Identidad("Mujer")
+                ->get());
+        $this->say("<b>Líneas de atención especializada</b></br></br>".   $instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+
+
+    }
+
 
     //Información sobre derechos sexuales y reproductivos
 
@@ -1971,7 +2137,7 @@ class GuetzaConversation extends Conversation
 //Información adicional
     public function askAlgunasOpcionesInformacionAdicional(): void
     {
-        $question = Question::create('a continuación algunos  opciones  información adicional')
+        $question = Question::create('Selecciona la información adicional de tu interés')
             ->fallback('Edad no valida')
             ->callbackId('askAlgunasOpcionesPonerDenunciaPorViolenciaid')
             ->addButtons([
@@ -2228,6 +2394,7 @@ class GuetzaConversation extends Conversation
     }
 
 
+
     public function askCompartemeTusSugerenciasPropuestas()
     {
 
@@ -2276,6 +2443,36 @@ class GuetzaConversation extends Conversation
 
 
 
+    }
+
+    public function askTepuedoApoyarConAlgoMas(): void
+    {
+        $question = Question::create('¿Te puedo apoyar con algo más?')
+            ->fallback('Edad no valida')
+            ->callbackId('TepuedoApoyarAlgoMasid')
+            ->addButtons([
+                Button::create('Más opciones')->value('Más opciones'),
+                Button::create('Terminar')->value('Terminar'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Más opciones', 'Terminar'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Más opciones'){
+                    $this->askAquiTengoUnasOpcionesParaTi();
+                }elseif($selectedValue=='Terminar'){
+                        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+                }
+
+
+
+            }
+        }, ['TepuedoApoyarAlgoMasid']);
     }
 
 }

@@ -15,7 +15,7 @@ class Instituciones_Organizaciones extends Model
 
     public function scopeEstadoRepublica (Builder $query,string $estado): void
     {
-        $query->where('Estado', 'Like','%'. $estado.'%');
+        $query->where('Estado', 'Like','%'. $estado.'%')->OrWhere('Estado','Nacional');
     }
 
     public function scopeMujer (Builder $query): void
@@ -26,6 +26,24 @@ class Instituciones_Organizaciones extends Model
     {
         $query->where('Hombre', 1);
     }
+    public function scopeOtras_identidades (Builder $query): void
+    {
+        $query->where('Otras_identidades', 1);
+    }
+
+    public function scopeIdentidad (Builder $query, string $identidad): void
+    {
+        if($identidad=="Mujer"){
+            $query->where('Mujer', 1);
+        }elseif ($identidad=="Hombre"){
+            $query->where('Hombre', 1);
+        }elseif($identidad=="Otras_identidades"){
+            $query->where('Otras_identidades', 1);
+        }
+
+    }
+
+
 
     public function scopeEdadMenorMujer (Builder $query,int $edadmenor): void
     {
@@ -35,5 +53,18 @@ class Instituciones_Organizaciones extends Model
     {
         $query->where('Edad_M_Ho', ">=", $edadmenor);
     }
+    public function scopeClasificacionEmergencia (Builder $query): void
+    {
+        $query->where('Clasificacion', 'Emergencia');
+    }
+    public function scopeClasificacionNo (Builder $query,$ClasificacionNo): void
+    {
+        $query->whereNotIn('Clasificacion', $ClasificacionNo);
+    }
+    public function scopeClasificaciones (Builder $query,$ClasificacionNo): void
+    {
+        $query->whereIn('Clasificacion', $ClasificacionNo);
+    }
+
 
 }
