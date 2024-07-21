@@ -1936,12 +1936,30 @@ class GuetzaConversation extends Conversation
     }
     public function askLíneasAtenciónPsicologiaFeministaOrganizacionesNoFormanParteRNR()
     {
-        $this->ask('Líneas de atención  psicología feminista y en caso de organizaciones que no forman parte de la RNR psicológica', function (Answer $answer) {
-            $this->bot->typesAndWaits($this->tiempoRespuesta);
-
-
-        });
+        $this->askLineasAtencionPsicologicasFiltro();
     }
+    public function askLineasAtencionPsicologicasFiltro(): void
+    {
+        $estado= $this->estado_republica?:"";
+        $instituciones=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Psicologica()
+                ->ClasificacionNo([
+                    "Emergencia",
+                    "Acceso a derechos sexuales (Interrupción del embarazo, denuncias)"
+                ])
+                ->Identidad("Mujer")
+                ->get());
+        $this->say("<b>Líneas de atención </b></br></br>".   $instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTepuedoApoyarConAlgoMas();
+
+    }
+
+
+
+
+
     public function AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites():void{
         $this->say('Al acercarte a Centros de Atención puedes recibir orientación para realizar trámites, para obtener documentos, crear CV o plan de vida.');
         $this->bot->typesAndWaits($this->tiempoRespuesta);
@@ -2293,10 +2311,7 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if($selectedValue=='¿Necesitas algún servicio de emergencia en este momento?'){
-
                     $this->askLineasEmergenciaFiltro();
-
-
                 }elseif($selectedValue=='Identifica los tipos de violencia') {
 
                     $this->askQuieroSaberIdentificarViolencias();

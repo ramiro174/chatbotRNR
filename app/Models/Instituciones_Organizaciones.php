@@ -43,8 +43,6 @@ class Instituciones_Organizaciones extends Model
 
     }
 
-
-
     public function scopeEdadMenorMujer (Builder $query,int $edadmenor): void
     {
         $query->where('Edad_M_Mu', ">=", $edadmenor);
@@ -64,6 +62,10 @@ class Instituciones_Organizaciones extends Model
     public function scopeClasificaciones (Builder $query,$ClasificacionNo): void
     {
         $query->whereIn('Clasificacion', $ClasificacionNo);
+    }
+    public function scopePsicologica (Builder $query): void
+    {
+        $query->whereNotNull('Psicologica');
     }
 
 
