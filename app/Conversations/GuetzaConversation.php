@@ -1589,7 +1589,7 @@ class GuetzaConversation extends Conversation
             elseif($selectedValue == 'Existen otras estrategias que podemos crear conjuntamente y compartir'){
                 $this->say('Te compartimos líneas de Atención especializada (diferenciando psicología feminista (los CEAR) de atención psicológica).');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTepuedoApoyarConAlgoMas();
+                $this->askatencionesEspecializadasFiltro();
             }
             elseif($selectedValue == 'Si la persona agresora ha dejado la casa'){
                 $this->say('Se sugiere cambiar cerraduras nuevas en las puertas, porque recuerda que él todavía puede tener una copia de las llaves.  Ponle seguros a las ventanas por si él intenta abrir o forzarlas. Comparte con alguna vecina o vecino de tu confianza a grandes rasgos tu situación para que te pueda informar si la persona agresora se presenta o lo ven rondando cerca.   Informa a la escuela o al centro de cuidado de tus hijas/os quién tiene permiso para recogerlas/os. Si tienes una orden de protección entrégale una copia al personal de la escuela.  Si no cuentas con una orden de protección puedes tramitarla. Cambia el número de teléfono fijo o celular y no llames a la persona agresora desde ellos. ');
@@ -1620,7 +1620,7 @@ class GuetzaConversation extends Conversation
                     </li>
                     </ul>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTeMuestroMasAccionesViolenciaFisica();
+                $this->askatencionesEspecializadasFiltro();
             }
 
             elseif($selectedValue == '¿Qué hacer si una mujer, niña o adolescente está desaparecida?'){
@@ -1749,10 +1749,12 @@ class GuetzaConversation extends Conversation
                 ->get());
         $this->say("<b>Líneas de atención especializada</b></br></br>".   $instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+        $this->askTepuedoApoyarConAlgoMas();
 
 
     }
+
+
 
 
     //Información sobre derechos sexuales y reproductivos
