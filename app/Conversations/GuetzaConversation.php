@@ -265,7 +265,7 @@ class GuetzaConversation extends Conversation
         $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::estadoRepublica($estado)->ClasificacionEmergencia()->get());
         $this->say("<b>Líneas de emergencia</b>   </br></br>".   $instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+        $this->askTepuedoApoyarConAlgoMas();
 
     }
     public function askLineasApoyoOtrasIdentidadesFiltro(): void
@@ -2293,8 +2293,12 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if($selectedValue=='¿Necesitas algún servicio de emergencia en este momento?'){
-                    $this->say('Solo los si de este menú');
+
+                    $this->askLineasEmergenciaFiltro();
+
+
                 }elseif($selectedValue=='Identifica los tipos de violencia') {
+
                     $this->askQuieroSaberIdentificarViolencias();
                 }
 
