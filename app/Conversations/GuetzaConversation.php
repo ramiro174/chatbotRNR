@@ -64,6 +64,8 @@ class GuetzaConversation extends Conversation
 
     protected string $AquiTemuestroPlanesAccionFisica;
     protected string $SiyaIdentificasteSituacionPeligro;
+    protected string $TeMuestroMasAccionesViolenciaFisica;
+
 
     protected string $DebesSaberTienesDerechoSobreDerechoSexuales;
 
@@ -1660,7 +1662,7 @@ class GuetzaConversation extends Conversation
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Prepara con tiempo','Identifica personas conocidas, amigas o familiares que puedan apoyarte','Identificamos los siguientes servicios de atención a las mujeres en tu entidad','Identificamos los siguientes servicios de atención a las mujeres en tu entidad'])) {
+            if (!in_array($selectedValue, ['Alerta Amber y Protocolo','Has uso de tu denuncia en la CNDH'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
