@@ -3,6 +3,7 @@
 namespace App\Conversations;
 
 use App\Models\Instituciones_Organizaciones;
+use App\Models\Programas_Sociales_Tramites;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
@@ -77,6 +78,10 @@ class GuetzaConversation extends Conversation
     protected string $CompartemeSugerenciasPropuestas;
     protected string $HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones;
     protected string $SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad;
+    protected string $Programa;
+    protected string $Tramite;
+
+
 
     //Información adicional
     protected string $QuieresSaberQueConsiste;
@@ -125,6 +130,27 @@ class GuetzaConversation extends Conversation
     return  Arr::join($lista->toArray(),' </br></br>');
 
     }
+    public static function ListarProgramasTramites(Collection $listaInsOrg): string
+    {
+
+
+        $lista = $listaInsOrg->map(function ($ins) {
+            return "<b>".  $ins->Tipo."</b>" .
+                ", Caracteristicas:" .
+                $ins->Caracteristica .
+                ", Dirigido a: " .
+                $ins->Dirigidio_A ."</br>" .
+                "Nombre: " .
+                $ins->Nombre .
+                ", Link:  <a  style='color:purple' href=\"$ins->Link\">";
+
+        });
+    return  Arr::join($lista->toArray(),' </br></br>');
+
+    }
+
+
+
 
 
     public function run()
@@ -1988,7 +2014,7 @@ class GuetzaConversation extends Conversation
                 if($selectedValue=='Programas'){
                     $this->askprogramas();
                 }elseif($selectedValue=='Tramites y consultas'){
-                    $this->askTramitesCconsultas();
+                    $this->askTramitesConsultas();
 
                 }
 
@@ -1996,20 +2022,70 @@ class GuetzaConversation extends Conversation
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
+
     public function askprogramas(): void
     {
-        $this->say('<ul>
-                        <li>Apoyo Económico</li>
-                        <li>Cultivo</li>
-                        <li>Educación</li>
-                        <li>Pensión</li>
-                        <li>Vivienda</li>
-                    </ul>');
-        $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askSeFiltraBaseProgramasTramitesConsultas();
+        $question = Question::create('Cual Programa')
+            ->fallback('Edad no valida')
+            ->callbackId('askprogramasid')
+            ->addButtons([
+                Button::create('Pensión')->value('Pensión'),
+                Button::create('Cultivo')->value('Cultivo'),
+                Button::create('Apoyo economico')->value('Apoyo economico'),
+                Button::create('Educación')->value('Educación'),
+                Button::create('Vivienda')->value('Vivienda')
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Pensión', 'Cultivo', 'Apoyo economico', 'Educación', 'Vivienda'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->Programa = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSeFiltraBaseProgramasTramitesConsultasFiltro('Programa');
+            }
+        }, ['askprogramasid']);
+
+
+
+
+
+
+
+
     }
-    public function askTramitesCconsultas(): void
+    public function askTramitesConsultas(): void
     {
+        $question = Question::create('Cual Tramite')
+            ->fallback('Edad no valida')
+            ->callbackId('askTramitesConsultasid')
+            ->addButtons([
+                Button::create('Identificación')->value('Identificación'),
+                Button::create('Finanzas personales')->value('Finanzas personales'),
+                Button::create('Educación')->value('Educación'),
+                Button::create('Seguridad Social')->value('Seguridad Social'),
+                Button::create('Juridíco')->value('Juridíco'),
+                Button::create('Empleo')->value('Empleo')
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Identificación', 'Finanzas personales', 'Educación', 'Seguridad Social', 'Juridíco', 'Empleo'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->Tramite = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSeFiltraBaseProgramasTramitesConsultasFiltro('Tramite');
+            }
+        }, ['askTramitesConsultasid']);
+
+
+
+
+
         $this->say('<ul>
                         <li>Educación</li>
                         <li>Empleo</li>
@@ -2018,12 +2094,31 @@ class GuetzaConversation extends Conversation
                         <li>Jurídico</li>
                         <li>Seguro Social</li>
                     </ul>');
+
+
+
+
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askSeFiltraBaseProgramasTramitesConsultas();
+        $this->askSeFiltraBaseProgramasTramitesConsultasFiltro();
     }
-    public function askSeFiltraBaseProgramasTramitesConsultas(): void
+
+    public function askSeFiltraBaseProgramasTramitesConsultasFiltro($entorno): void
     {
-        $this->say('Se filtra la base de programas tramites y consultas');
+        if($entorno=='Programa'){
+            $programa=$this->programas;
+            $Programas=  self::ListarProgramasTramites(Programas_Sociales_Tramites::Tipo('Programa')->caracteristica($programa)->get());
+            $this->say("<b>Programas</b></br></br>".   $Programas);
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+            $this->askTepuedoApoyarConAlgoMas();
+
+        }else{
+            $tramite=$this->Tramite;
+            $Programas=  self::ListarProgramasTramites(Programas_Sociales_Tramites::Tipo('Tramites y consultas')->caracteristica($tramite)->get());
+            $this->say("<b>Tramites y Consultas</b></br></br>".   $Programas);
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+            $this->askTepuedoApoyarConAlgoMas();
+        }
+
     }
     public function askLineasAtencionCEAREjercicioDerSex():void{
         $this->say('Líneas de atención CEAR y ejercicio Der. Sex. (DIF en bd descripción)');
@@ -2041,8 +2136,6 @@ class GuetzaConversation extends Conversation
                 Button::create('Números telefónicos para orientación')->value('Números telefónicos para orientación'),
 
             ]);
-
-
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Solicitar una Orden de protección', 'Poner una denuncia por violencia', 'Números telefónicos para orientación'])) {
