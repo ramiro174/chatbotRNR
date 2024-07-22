@@ -135,14 +135,9 @@ class GuetzaConversation extends Conversation
 
 
         $lista = $listaInsOrg->map(function ($ins) {
-            return "<b>".  $ins->Tipo."</b>" .
-                ", Caracteristicas:" .
-                $ins->Caracteristica .
-                ", Dirigido a: " .
-                $ins->Dirigidio_A ."</br>" .
-                "Nombre: " .
-                $ins->Nombre .
-                ", Link:  <a  style='color:purple' href=\"$ins->Link\">";
+            return "<b>".  $ins->Nombre."</b>" .
+                ", Dirigido a: " . $ins->Dirigida_A ."</br>" .
+                "Link:  <a  style='color:purple' href=\"$ins->Link\">".$ins->Nombre."</a>";
 
         });
     return  Arr::join($lista->toArray(),' </br></br>');
@@ -2084,20 +2079,6 @@ class GuetzaConversation extends Conversation
 
 
 
-
-
-        $this->say('<ul>
-                        <li>Educación</li>
-                        <li>Empleo</li>
-                        <li>Finanzas Personales</li>
-                        <li>Identificación</li>
-                        <li>Jurídico</li>
-                        <li>Seguro Social</li>
-                    </ul>');
-
-
-
-
         $this->bot->typesAndWaits($this->tiempoRespuesta);
         $this->askSeFiltraBaseProgramasTramitesConsultasFiltro();
     }
@@ -2105,7 +2086,7 @@ class GuetzaConversation extends Conversation
     public function askSeFiltraBaseProgramasTramitesConsultasFiltro($entorno): void
     {
         if($entorno=='Programa'){
-            $programa=$this->programas;
+            $programa=$this->Programa;
             $Programas=  self::ListarProgramasTramites(Programas_Sociales_Tramites::Tipo('Programa')->caracteristica($programa)->get());
             $this->say("<b>Programas</b></br></br>".   $Programas);
             $this->bot->typesAndWaits($this->tiempoRespuesta);
