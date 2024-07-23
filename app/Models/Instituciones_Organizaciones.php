@@ -67,6 +67,14 @@ class Instituciones_Organizaciones extends Model
     {
         $query->whereNotNull('Psicologica');
     }
+    public function scopeLegal (Builder $query): void
+    {
+        $query->whereNotNull('Legal');
+    }
+    public function scopeDigital (Builder $query): void
+    {
+        $query->whereNotNull('Digital');
+    }
 
 
 }

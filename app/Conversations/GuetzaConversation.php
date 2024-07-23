@@ -52,6 +52,7 @@ class GuetzaConversation extends Conversation
     protected string $HasNotadoTuParejaUtilizaHijasHijos;
     protected string $TeSientesExcluidaDecisionesImportantesHijasHijos;
 //
+    protected string $TeGustariaResponderAlgunasPreguntasViolenciaDigital;
     protected string $HasRecibidoAmenazasATravezMensajesRedesCorreo;
     protected string $AlguienHaDifundidoInformacionFalsaLinea;
     protected string $HasExperimentadoRoboIdentidadLineaSuplantacion;
@@ -69,6 +70,9 @@ class GuetzaConversation extends Conversation
 
 
     protected string $DebesSaberTienesDerechoSobreDerechoSexuales;
+    protected string $TiposdeAborto;
+    protected string $MasInformacionAbortoDilatacion;
+
 
 //Orientación psicológica
     protected string $TePuedoAcompañarAlgunasPreguntasIdentificarProcesoPsicoterapeutico;
@@ -84,9 +88,22 @@ class GuetzaConversation extends Conversation
 
 
     //Información adicional
+
+    protected string $AlgunasOpcionesPonerDenunciaPorViolencia;
     protected string $QuieresSaberQueConsiste;
     protected string $LaViolenciaPresentaDiferentesAmbitos;
     protected string $TanProntoComoSeaSeguroHacerlo;
+    protected string $AlgunasOpcionesInformacionAdicional;
+        //Amor Propio
+    protected string $PuedesIrMedicoSolaAunqueSeaEnfermaGrave;
+    protected string $CreesNoTienesMuchoSentirteOrgullosa;
+    protected string $SiTienesPasarFinSemanaSola;
+    protected string $GeneralmenteDasMasValorOpinaTuPareja;
+    protected string $CuandoTienesTomarDecisionImportanteNoHacerlo;
+
+
+
+
 
 
 
@@ -154,7 +171,7 @@ class GuetzaConversation extends Conversation
         //$this->askIdentificamosServiciosAtencionMujeres();
        // $this->askSucedioInmediato();
       // $this->askAquiTengoUnasOpcionesParaTi();
-        //$this->askTerminar();
+        //$this->askaskTepuedoApoyarConAlgoMas();
     }
     public function askName(): void
     {
@@ -450,7 +467,8 @@ class GuetzaConversation extends Conversation
                     $this->askAlgunasOpcionesInformacionAdicional();
                 }
                 elseif($selectedValue == 'Derechos sexuales y reproductivos') {
-                    //$this->();
+
+                    $this->DerechosSexualesReproductivos();
                 }
                 elseif($selectedValue == 'Anterior') {
                     $this->askQuieresSaberSituacionRiesgo();
@@ -567,14 +585,9 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->say("Algunos ejemplos: Actos de acoso, hostigamiento, amenazas, insultos, vulneración de datos e información privada, mensajes de odio, difusión de contenido sexual sin consentimiento.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->say("Puede darse de varias formas; cualquier acto donde una persona grabe videos o audios, tome fotografías edite o disimule material sexual íntimo de otra persona mediante engaños. Este material también pudo haberse creado de manera consensuada, sin embargo, la exposición, distribución, difusión, exhibición, transmisión, comercialización, oferta, intercambio o compartir a través de cualquier medio virtual sin consentimiento de la mujer, también se considera violencia digital.");
+                    $this->say("<b>La violencia sexual digital</b>. Puede darse de varias formas; cualquier acto donde una persona grabe videos o audios, tome fotografías edite o disimule material sexual íntimo de otra persona mediante engaños. Este material también pudo haberse creado de manera consensuada, sin embargo, la exposición, distribución, difusión, exhibición, transmisión, comercialización, oferta, intercambio o compartir a través de cualquier medio virtual sin consentimiento de la mujer, también se considera violencia digital.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia digital, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
-                    $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->askHasRecibidoAmenazasATravezMensajesRedesCorreo();
-
-
-
+                   $this->askTeGustariaResponderAlgunasPreguntasViolenciaDigital();
                 }
                 elseif($selectedValue == '¿Solo mi pareja puede ejercer violencia?') {
                     $this->say("se cometen más de 10 feminicidios al día y de acuerdo a la ENCUESTA NACIONAL SOBRE LA DINÁMICA DE LAS RELACIONES EN LOS HOGARES (ENDIREH), 7 de cada 10 mujeres mayores de 15 años han experimentado alguna situación de violencia de género en su vida.");
@@ -1274,6 +1287,34 @@ class GuetzaConversation extends Conversation
     }
 
     //Digital
+    public function askTeGustariaResponderAlgunasPreguntasViolenciaDigital(): void
+    {
+        $question = Question::create('¿Te gustaría responder algunas preguntas que te permitan identificar si estas o has estado en situación de violencia digital? Si/No')
+            ->fallback('Edad no valida')
+            ->callbackId('askTeGustariaResponderAlgunasPreguntasViolenciaDigitalid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->TeGustariaResponderAlgunasPreguntasViolenciaDigital = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+               if($selectedValue=='Si'){
+                   $this->askHasRecibidoAmenazasATravezMensajesRedesCorreo();
+               }else{
+                  $this->askatencionesDigitalesFiltro();
+               }
+
+            }
+        }, ['askTeGustariaResponderAlgunasPreguntasViolenciaDigitalid']);
+    }
     public function askHasRecibidoAmenazasATravezMensajesRedesCorreo(): void
     {
         $question = Question::create('¿Has recibido amenazas, insultos o acoso a través de mensajes de texto, redes sociales o correo electrónico?')
@@ -1362,9 +1403,39 @@ class GuetzaConversation extends Conversation
                 $this->TeHanPresionadoEnviarFotosIntimasInformacionPersonal = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->enproceso();
+
+                $respuestaDigital=[$this->HasRecibidoAmenazasATravezMensajesRedesCorreo,
+                $this->AlguienHaDifundidoInformacionFalsaLinea,
+                $this->HasExperimentadoRoboIdentidadLineaSuplantacion,
+                $this->TeHanPresionadoEnviarFotosIntimasInformacionPersonal];
+
+                if(in_array('Si',$respuestaDigital)){
+                    $this->askatencionesDigitalesFiltro();
+                }else{
+                    $this->say("Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+
             }
         }, ['askTeHanPresionadoEnviarFotosIntimasInformacionPersonalid']);
+    }
+    public function askatencionesDigitalesFiltro(): void
+    {
+        $estado= $this->estado_republica?:"";
+        $instituciones=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Identidad("Mujer")
+                ->Digital()
+                ->get()
+           );
+        $this->say("<b>Líneas de atención especializada</b></br></br>".   $instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTepuedoApoyarConAlgoMas();
+
+
     }
 
 
@@ -1784,18 +1855,19 @@ class GuetzaConversation extends Conversation
     {
         $question = Question::create('Debes saber que tienes derecho a:')
             ->fallback('Edad no valida')
-            ->callbackId('askDebesSaberTienesDerechoSobreDerechoSexualesid')
+            ->callbackId('DebesSaberTienesDerechoSobreDerechoSexualesid')
             ->addButtons([
                 Button::create("Menstruación digna")->value('Menstruación digna'),
                 Button::create("Plenipausia")->value('Plenipausia'),
                 Button::create("Acceder a servicios de salud y atención médica")->value('Acceder a servicios de salud y atención médica'),
                 Button::create("Métodos Anticonceptivos")->value('Métodos Anticonceptivos'),
-
-
+                Button::create("Servicios de interrupción del embarazo")->value('Servicios de interrupción del embarazo'),
+                Button::create("Tipos de aborto")->value('Tipos de aborto'),
+                Button::create("¿Quieres saber más?")->value('¿Quieres saber más?'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ["Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos"])) {
+            if (!in_array($selectedValue, ['Tipos de aborto','¿Quieres saber más?',"Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos","Servicios de interrupción del embarazo"])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -1803,9 +1875,11 @@ class GuetzaConversation extends Conversation
             $this->say('<div class="response-right">' . $answer->getText().'</div>');
             $this->bot->typesAndWaits($this->tiempoRespuesta);
 
+
             if($selectedValue == 'Menstruación digna') {
                 $this->say('Garantizar el acceso y abasto de los insumos contribuye a revertir la desigualdad histórica en la que viven niñas, adolescentes y mujeres. Hablar de la menstruación es un derecho y permite resignificarla y vivirla sin tabúes, además facilita identificar las discriminaciones y desigualdades que impactan en la vida de las mujeres.  Nombrar la menstruación sirve para el reconocimiento de la cuerpa, para saber que la sangre anuncia cambios.');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTecompartimosAPPInformacion();
             }
             elseif($selectedValue == 'Plenipausia') {
                 $this->say('Se refiere a la plenitud que la mujer alcanza en la menopausia cuando rompe con los mitos de esta etapa.
@@ -1813,10 +1887,12 @@ class GuetzaConversation extends Conversation
                             . Culturalmente se asocia a la pérdida o a lo negativo, pero desde la medicina de la tierra presupone una conexión con la CREATIVIDAD y la SABIDURIA  de la cuerpa. 
                             . Es la oportunidad de dedicarse completamente a una misma');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTecompartimosAPPInformacion();
             }
             elseif($selectedValue == 'Acceder a servicios de salud y atención médica') {
                 $this->say('Todas las mujeres tienen derecho a acceder a servicios de salud y atención médica, y quienes decidan ser madres, a tener una maternidad segura y libre de todo riesgo durante el proceso reproductivo, es decir desde la intención reproductiva, la concepción, gestación, parto y puerperio. El gozo y el placer también ¡es un derecho!');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTecompartimosAPPInformacion();
             }
             elseif($selectedValue == 'Métodos Anticonceptivos') {
                 $this->say('<ul>
@@ -1834,16 +1910,400 @@ class GuetzaConversation extends Conversation
                             </li>
                             </ul>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-
-                $this->say('Te compartimos una APP con toda esta información <b> <a href="https://play.google.com/store/apps/details?id=org.hesperian.Family_Planning">link de la APP</a><b>');
+                $this->askTecompartimosAPPInformacion();
 
 
             }
+            elseif($selectedValue=='Servicios de interrupción del embarazo'){
+
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say('El aborto en México se despenalizó el 6 de septiembre de 2023 por vía judicial en el Código Penal Federal. Todas las mujeres tienen derecho a acceder a servicios de interrupción del embarazo.
+                             Cualquier institución de salud federal incluido IMSS, ISSSTE y PEMEX, deberán darte el servicio de aborto en todo el país si lo solicitas.
+                            Asimismo, el personal de salud que realice un aborto consentido no podrá ser criminalizado.
+                            ');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askServiciosInterrupcionEmbarazo();
+            }
+            elseif($selectedValue=='Tipos de aborto'){
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTiposdeAborto();
+            }
+            elseif($selectedValue=='¿Quieres saber más?'){
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                $this->askEsmiderechoDecidirFormaLibre();
+            }
+
+        }, ['DebesSaberTienesDerechoSobreDerechoSexualesid']);
+    }
+
+    public function askQuieresSaberMasAborto(): void
+    {
+        $question = Question::create('Quieres saber más?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberMasAbortoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No')
+            ]);
+        $this->ask($question, function (Answer $answer)  {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si','No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberMasAborto = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+
+                   $this->askEsmiderechoDecidirFormaLibreInformada();
+                }
+                else{
+
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['QuieresSaberMasAbortoid']);
+    }
+    public function askQuieresSaberMasAborto2(): void
+    {
+        $question = Question::create('Quieres saber más?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberMasAbortoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No')
+            ]);
+        $this->ask($question, function (Answer $answer)  {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si','No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberMasAborto = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+
+                   $this->askEsmiderechoIdentidadSexual();
+                }
+                else{
+
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['QuieresSaberMasAbortoid']);
+    }
+    public function askQuieresSaberMasAborto3(): void
+    {
+        $question = Question::create('Quieres saber más?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberMasAbortoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No')
+            ]);
+        $this->ask($question, function (Answer $answer)  {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si','No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberMasAborto = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+
+                   $this->askEsmiderechoConQuienQuines();
+                }
+                else{
+
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['QuieresSaberMasAbortoid']);
+    }
+    public function askQuieresSaberMasAborto4(): void
+    {
+        $question = Question::create('Quieres saber más?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberMasAbortoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No')
+            ]);
+        $this->ask($question, function (Answer $answer)  {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si','No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberMasAborto = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+
+                   $this->askEsmiderechoRecibirInformacion();
+                }
+                else{
+
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['QuieresSaberMasAbortoid']);
+    }
+
+    public function askEsmiderechoDecidirFormaLibre(){
+        $this->say('<ul>
+        <li>. Es mi derecho decidir de forma libre y responsable sobre mi cuerpo y mi sexualidad.</li>
+        <li>. Es mi derecho ejercer y disfrutar plenamente mi vida sexual.</li>
+        <li>. Es mi derecho manifestar públicamente mis afectos</li>
+        </ul>
+        ');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askQuieresSaberMasAborto();
+    }
+    public function askEsmiderechoDecidirFormaLibreInformada(){
+        $this->say('<ul>
+        <li>. Es mi derecho decidir de manera libre e informada sobre mi vida reproductiva.</li>
+        <li>. Es mi derecho tener igualdad de oportunidades, trato digno y respeto.</li>
+        <li>. Es mi derecho vivir libre de toda discriminación.</li>
+        </ul>
+        ');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askQuieresSaberMasAborto2();
+    }
+    public function askEsmiderechoIdentidadSexual(){
+        $this->say('<ul>
+            <li>. Es mi derecho la identidad sexual y expresión de género.</li>
+            <li>. Es mi derecho participar en las políticas públicas sobre sexualidad y reproducción.</li>
+            <li>. Es mi derecho gozar de mi sexualidad, sentir placer sexual y vivir mi erotismo.</li>
+            </ul>
+        ');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askQuieresSaberMasAborto3();
+    }
+    public function askEsmiderechoConQuienQuines(){
+        $this->say('<ul>
+            <li>. Es mi derecho decidir con quien o quienes compartir mi vida y mi sexualidad, así como a vivir de manera libre mi orientación sexual.</li>
+            <li>. Es mi derecho el respeto a mi intimidad, mi vida privada y la confidencialidad de mi información.</li>
+            <li>. Es mi derecho vivir libre de cualquier tipo de violencias.</li>
+            </ul>
+        ');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askQuieresSaberMasAborto4();
+    }
+    public function askEsmiderechoRecibirInformacion(){
+        $this->say('<ul>
+          <li>. Es mi derecho recibir información completa, científica y laica sobre sexualidad, métodos de protección y planificación, placer y erotismo.</li>
+          <li>. Es mi derecho recibir educación de la sexualidad de manera integral, libre de prejuicios y estereotipos.</li>
+          <li>. Es mi derecho recibir servicios de salud sexual y salud reproductiva.</li>
+          </ul>
+        ');
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTepuedoApoyarConAlgoMas();
+    }
 
 
 
 
-        }, ['askDebesSaberTienesDerechoSobreDerechoSexualesid']);
+    public function askTiposdeAborto(): void
+    {
+        $question = Question::create('Selecciona algún tema de tu interés sobre servicios de interrupción del embarazo:')
+            ->fallback('Edad no valida')
+            ->callbackId('TiposdeAbortoid')
+            ->addButtons([
+                Button::create('Aborto por aspiración')->value('Aborto por aspiración'),
+                Button::create('Aborto por dilatación y evacuación (D y E)')->value('Aborto por dilatación y evacuación (D y E)'),
+                Button::create('Señales de alerta y qué debes de hacer')->value('Señales de alerta y qué debes de hacer'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Aborto por aspiración','Aborto por dilatación y evacuación (D y E)','Señales de alerta y qué debes de hacer'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TiposdeAborto = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Aborto por aspiración'){
+                    $this->say('Primeras 17 semanas.
+                                El aborto por aspiración es un método de aborto seguro y eficaz en las primeras 17 semanas de embarazo. Una persona capacitada utiliza un equipo de aspiración para remover el tejido y la sangre de la matriz a través de un tubo de plástico flexible llamado cánula.  La succión se crea con una jeringa manual grande (aspiración manual endouterina o AMEU) o una pequeña bomba eléctrica (aspiración eléctrica endouterina AEEU).
+                                El aborto por aspiración toma de 5 a 10 minutos. Por lo general,  se lleva a cabo en un consultorio,  clínica o centro de salud.
+                                Es un método seguro en las primeras 17 semanas de embarazo siempre y cuando lo realice una persona capacitada y con experiencia que utilice equipo desinfectado y técnica estéril.  En este método,  se inserta un tubo de plástico a través del cuello del útero (cérvix)  para remover el tejido y la sangre del útero con la aspiración.  comparados con los abortos por dilatación y evacuación,  los abortos por aspiración tienen un menor riesgo de infección,  sangrado abundante, hemorragia, lesiones en el útero o cuello del útero.
+                                Los abortos por aspiración inseguros,  realizados por personas sin ética o capacitación,  en condiciones de poca limpieza,  son más frecuentes en lugares donde el aborto está criminalizado o prohibido y pueden causar emergencias médicas como infecciones o sangrado abundante.
+                                ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say('Casos en los que no deberías tener un aborto por aspiración. Si tienes un trastorno hemorrágico, estás tomando anticoagulantes,  informa al personal de salud para que puedan planificar el procedimiento de forma adecuada.
+                                El aborto por aspiración no sirve para poner fin a un embarazo ectópico (embarazo en las trompas de Falopio).  Las señales de un embarazo ectópico incluyen dolor abdominal y sangrado.
+                                Después de realizar el aborto,  el personal médico examina el tejido y la sangre que sacó para asegurarse de que se haya eliminado por completo.  Las náuseas deben desaparecer en un día, las molestias de los pechos pueden durar un poco más. 
+                                ');
+
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Aborto por dilatación y evacuación (D y E)'){
+                    $this->say('Más de 14 semanas
+                                La dilatación y evacuación es un método de aborto seguro y eficaz que usa una combinación de aspiración e instrumentos médicos. A menudo se usan medicamentos para ablandar y abrir el cuello uterino antes de realizar el aborto.
+                                Este método se puede usar para embarazos de más de 14 semanas. También se usa para tratar un aborto espontáneo y asegurarse de que todos los tejidos y la sangre restante se remuevan por completo del útero.
+                                No confundas la dilatación y evacuación con la dilatación y curetaje (legrado). En vez de raspar el interior del útero, la dilatación y evacuación emplea succión guiada e instrumentos médicos para remover los tejidos del útero. Este método duele menos y causa menos infecciones que un legrado.
+                                ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askMasInformacionAbortoDilatacion();
+                }
+                elseif($selectedValue=='Señales de alerta y qué debes de hacer'){
+                    $this->say('
+                                Es normal que todos los abortos provoquen sangrado y molestias. Rara vez los abortos provocan sangrado excesivo o dolores demasiado fuertes, pero si esto ocurre pueden tratarse. Consigue ayuda médica si presentas cualquiera de las siguientes señales. Si es posible pide a alguien que te acompañe.
+                                Para todo tipo de aborto: </br>
+                                <ul>
+                                <li>• Sangrado demasiado abundante por la vagina</li>
+                                <li>• Que empapa más de dos toallas higiénicas o compresas en una hora durante dos horas seguidas</li>
+                                <li>• Que provoca mareos o sensación de que te vas a desmayar</li>
+                                <li>• Coágulos más grandes que tu puño</li>
+                                <li>• Dolor constante y fuerte en el vientre,  que empeora y que las medicinas para el dolor no quitan</li>
+                                <li>• Flujo vaginal con mal olor, de color verde o amarillo</li> 
+                                <li>• Fiebre de más de 38 grados</li>
+                                <li>• Un goteo lento y constante de sangre de color rojo vivo también es una señal de alerta.  puede ser una lesión interna que esté sangrando</li>
+                                </ul>
+                   ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say('<b>¿Qué hacer ante señales de alerta?</b> Busca atención médica de inmediato si tienes cualquiera de  estas señales.  necesitas tomar antibióticos para prevenir infecciones y puede ser necesario que te vacíen el útero mediante aspiración.  Necesitas que alguien te ayude y además esté pendiente de que las señales de choque ( shock)  causadas por pérdida demasiada sangre.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                    $this->askTecompartimosAPPInformacion();
+                }
+
+
+            }
+        }, ['TiposdeAbortoid']);
+    }
+    public function askMasInformacionAbortoDilatacion(): void
+    {
+        $question = Question::create('Mas informacion sobre aborto por dilatacion')
+            ->fallback('Edad no valida')
+            ->callbackId('MasInformacionAbortoDilatacionid')
+            ->addButtons([
+                Button::create('¿Cuánto tiempo tarda?')->value('¿Cuánto tiempo tarda?'),
+                Button::create('¿Qué tan seguro es un aborto por dilatación y evacuación?')->value('¿Qué tan seguro es un aborto por dilatación y evacuación?'),
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['¿Cuánto tiempo tarda?','¿Qué tan seguro es un aborto por dilatación y evacuación?'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->MasInformacionAbortoDilatacion = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='¿Cuánto tiempo tarda?'){
+                    $this->say('Por lo general agrandar el cuello del útero con medicinas o dilatadores toma unas horas Si está cerca de las 14 semanas de embarazo, y de 1 a 2 días si el embarazo está más avanzado. Una vez que el cuello del útero se ha abierto lo suficiente, el aborto dura aproximadamente 20 minutos o más, dependiendo de cuánto tiempo lleve el embarazo.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='¿Qué tan seguro es un aborto por dilatación y evacuación?'){
+                    $this->say('Es seguro a partir de las 14 semanas siempre y cuando lo realice una persona capacitada con experiencia y con instrumentos esterilizados (desinfectados). Con este método,  primero se ablanda y dilata el cuello uterino para que el tubo de aspiración y los instrumentos puedan remover el tejido y la sangre del aborto. Para prevenir infecciones,  es sumamente importante que la persona que realice el aborto use equipo esterilizado. En comparación con los abortos con pastillas o por aspiración los abortos por dilatación y evacuación tienen un mayor riesgo de infección,  sangrado abundante y lesiones en el útero o cuello del útero.  Pero estos problemas no son comunes cuando el personal médico tiene experiencia.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+
+
+
+            }
+        }, ['MasInformacionAbortoDilatacionid']);
+    }
+    public function askServiciosInterrupcionEmbarazo(): void
+    {
+        $question = Question::create('Selecciona algún tema de tu interés sobre servicios de interrupción del embarazo:')
+            ->fallback('Edad no valida')
+            ->callbackId('AnteriormenteTeBrindeInformacionRequeriasid')
+            ->addButtons([
+                Button::create('Aborto')->value('Aborto'),
+                Button::create('Aborto con pastillas')->value('Aborto con pastillas'),
+                Button::create('Acerca de las medicinas para abortar')->value('Acerca de las medicinas para abortar'),
+                Button::create('Casos en los que no hay que usar pastillas para abortar')->value('Casos en los que no hay que usar pastillas para abortar'),
+                Button::create('Las señales de embarazo desaparecen')->value('Las señales de embarazo desaparecen'),
+                Button::create('Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos')->value('Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos')
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Aborto', 'Aborto con pastillas', 'Acerca de las medicinas para abortar', 'Casos en los que no hay que usar pastillas para abortar','Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos','Las señales de embarazo desaparecen'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->AnteriormenteTeBrindeInformacionRequerias = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Aborto'){
+                    $this->say('Para saber cuál método de aborto es mejor para ti, necesitas saber cuántas semanas de embarazo tienes.  Es posible que algunos métodos no estén disponibles donde vives. El aborto con pastillas se puede realizar durante las primeras 25 semanas de embarazo, pero es más eficaz para interrumpir un embarazo antes de las 13 semanas. El aborto por aspiración puede realizarse a más tardar en la semana 17 y el aborto por dilatación y evacuación puede realizarse a partir de las 14 semanas.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Acerca de las medicinas para abortar'){
+                    $this->say('13 a 25 semanas. Cuando un aborto se realiza con medicamentos,  se llama aborto médico o aborto con pastillas. Un aborto con pastillas dura más tiempo y expulsa una mayor cantidad de tejido que los abortos que se realizan antes de estas semanas. El misoprostol es un medicamento común que puede interrumpir el embarazo de forma segura y eficaz, similar a un aborto espontáneo natural.  Puede usarse  solo,  y es aún más efectivo cuando se usa junto con la mifepristona,  una medicina que solo se usa para abortos');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Acerca de las medicinas para abortar'){
+                    $this->say('<b>El misoprostol</b> hace que el útero se contraiga con fuerza y expulse el tejido y la sangre del aborto. Este medicamento está disponible en muchos lugares porque también se usa para tratar las úlceras estomacales y el sagrado muy abundante después de dar a luz.  Todas las marcas de misoprostol se pueden usar de tres formas diferentes: dejando que se disuelva debajo de la lengua,  entre el interior de las mejillas y las encías,  o profundo en la vagina (solamente donde el aborto es legal).
+                                </br><b>La mifepristona</b> siempre debe usarse junto con el misoprostol.  Este impide que la hormona progesterona continúe la gestación y hace que el aborto salga más fácilmente. Para tener un aborto seguro y eficaz,  los hombres trans y las personas no binarias que toman testosterona deben usar las mismas dosis de mifepristona y misoprostol que las personas que no toman testosterona.
+                                El personal de salud no debe preguntar a los pacientes si hicieron algo para interrumpir el embarazo. Nadie tiene la obligación de decirle al personal de salud si su aborto fue provocado o natural.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Casos en los que no hay que usar pastillas para abortar'){
+                    $this->say('<ul>
+                   <li> • Has tenido dolor o sangrado durante este embarazo.</li>
+                   <li> • Tienes un problema de salud grave, como enfermedad del corazón o anemia severa, un trastorno de sangrado como la hemofilia,  o insuficiencia suprarrenal crónica.</li>
+                    <li>• Estás tomando un medicamento anticoagulante,  como warfarina, dabigatrán o rivaroxaban.</li>
+                    <li>• Si alguna vez has tenido una reacción alérgica a la mifepristona o al misoprostol.</li>
+                    <li>• Si tienes un DIU en el útero.  Puedes abortar con pastillas después de que te quiten el DIU.</li></ul>
+                    Las pastillas para abortar no sirven para poner fin a un embarazo ectópico (embarazo en las trompas de Falopio).  Las señales de un embarazo ectópico incluyen dolor abdominal o sangrado.  Encuentra más información sobre este tema y sobre el embarazo ectópico que puede ser mortal.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Las señales de embarazo desaparecen'){
+                    $this->say('<ul>
+                                <li>Si tuviste un aborto por aspiración o por dilatación y evacuación: todas las señales del embarazo, incluso las náuseas y las molestias de los pechos, deben desaparecer en un día.</li>
+                                <li>Si tuviste un aborto con pastillas:  las náuseas generalmente desaparecen en las primeras 24 horas, pero las molestias de los pechos pueden continuar por una a dos semanas.</li>
+                                </ul>
+                                Si no desaparecen las señales de embarazo, tales como la náusea y el dolor de los pechos, es posible que el embarazo siga ahí, ya sea dentro de la matriz o en las trompas de falopio (embarazo ectópico). Las hormonas del embarazo permanecen en el cuerpo unas tres semanas después de un aborto, por lo que una prueba de embarazo casera saldrá positiva incluso si el aborto se completó con éxito. Si las señales de embarazo continúan después de una o dos semanas, puedes hacerte una ecografía (ultrasonido) en un centro de salud o un hospital para confirmar si el aborto funcionó.
+                                </br>Puedes volver a embarazarte poco después de tener un aborto, incluso antes de que te vuelva la regla. 
+                                ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos'){
+                    $this->say('Tus derechos sexuales y reproductivos están vinculados con la seguridad, la libertad, la integridad física, las decisiones sobre sexualidad, la maternidad y el rechazo a toda forma de violencia, discriminación y opresión. ');
+                    $this->say('Los he convertido en frases para que los puedas sentir tuyos, los tengo en grupos de tres en tres.');
+
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askEsmiderechoDecidirFormaLibre();
+                }
+
+
+            }
+        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+    }
+
+
+
+
+
+    public function askTecompartimosAPPInformacion(){
+        $this->say('Te compartimos una APP con toda esta información <b> <a style="color:purple" href="https://hesperian.org/apps-moviles/"> hesperian</a><b>');
+        $this->askTepuedoApoyarConAlgoMas();
     }
 
 
@@ -1944,9 +2404,18 @@ class GuetzaConversation extends Conversation
                 }elseif($selectedValue=='Orientación Social'){
                    $this->AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites();
                 }elseif($selectedValue=='Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos'){
-                        $this->askLineasAtencionCEAREjercicioDerSex();
+                        $this->askLineasAtencionCEAREjercicioDerSexFiltro(
+                            [
+                                "Atención especializada (Referencia a Refugio y Orientación ante situaciones de violencia por ejemplo CEAR)",
+                                "Acceso a derechos sexuales (Interrupción del embarazo, denuncias)"
+                            ]
+                        );
                 }elseif($selectedValue=='Autogestión económica y economía feminista'){
-                    $this->askLineasAtencionCEAREjercicioDerSex();
+                     $this->askLineasAtencionCEAREjercicioDerSexFiltro(
+                         [
+                             "Atención especializada (Referencia a Refugio y Orientación ante situaciones de violencia por ejemplo CEAR)",
+                         ]
+                     );
                 }elseif($selectedValue=='Orientación jurídica'){
                     $this->askAlgunaOpcionesOrientacionJuridica();
                 }
@@ -2017,7 +2486,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
-
     public function askprogramas(): void
     {
         $question = Question::create('Cual Programa')
@@ -2079,8 +2547,7 @@ class GuetzaConversation extends Conversation
 
 
 
-        $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askSeFiltraBaseProgramasTramitesConsultasFiltro();
+
     }
 
     public function askSeFiltraBaseProgramasTramitesConsultasFiltro($entorno): void
@@ -2101,10 +2568,22 @@ class GuetzaConversation extends Conversation
         }
 
     }
-    public function askLineasAtencionCEAREjercicioDerSex():void{
-        $this->say('Líneas de atención CEAR y ejercicio Der. Sex. (DIF en bd descripción)');
+    public function askLineasAtencionCEAREjercicioDerSexFiltro($clasificacion):void{
+
+
+
+        $estado=$this->estado_republica;
+        $Programas=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Identidad("Mujer")
+                ->Clasificaciones($clasificacion)
+
+                ->get()
+            );
+        $this->say("<b>Líneas de Atención Especializada</b></br></br>".   $Programas);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites();
+        $this->askTepuedoApoyarConAlgoMas();
+
     }
     public function askAlgunaOpcionesOrientacionJuridica(): void
     {
@@ -2134,14 +2613,27 @@ class GuetzaConversation extends Conversation
                     $this->askAlgunasOpcionesPonerDenunciaPorViolencia();
 
                 } elseif($selectedValue=='Números telefónicos para orientación'){
-                    $this->say('Líneas de atención  legal');
-
+                    $this->askLineasAtencionLegalFiltro();
                 }
-
-
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
+
+    public function askLineasAtencionLegalFiltro():void{
+        $estado=$this->estado_republica;
+        $Programas=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Identidad("Mujer")
+                ->Legal()
+                ->get()
+        );
+        $this->say("<b>Líneas de Atención Legal</b></br></br>".   $Programas);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTepuedoApoyarConAlgoMas();
+
+    }
+
+
     public function askAlgunasOpcionesPonerDenunciaPorViolencia(): void
     {
         $question = Question::create('a continuación algunos  opciones de poner denuncia por violencia')
@@ -2235,7 +2727,7 @@ class GuetzaConversation extends Conversation
     {
         $question = Question::create('Selecciona la información adicional de tu interés')
             ->fallback('Edad no valida')
-            ->callbackId('askAlgunasOpcionesPonerDenunciaPorViolenciaid')
+            ->callbackId('askAlgunasOpcionesInformacionAdicionalid')
             ->addButtons([
                 Button::create('Ciclo de la violencia')->value('Ciclo de la violencia'),
                 Button::create('Modalidad')->value('Modalidad'),
@@ -2250,7 +2742,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
 
-                $this->AlgunasOpcionesPonerDenunciaPorViolencia = $selectedValue;
+                $this->AlgunasOpcionesInformacionAdicional = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
@@ -2263,12 +2755,195 @@ class GuetzaConversation extends Conversation
 
                 }elseif($selectedValue=='¿En qué momento necesito hacer una denuncia?'){
                     $this->askTanProntoComoSeaSeguroHacerlo();
+
+                }
+                elseif($selectedValue=='Y tú ¿Vives violencia?'){
+                    $this->say('aqui voy!!! y tu vives');
+                }
+                elseif($selectedValue=='Amor propio'){
+                    $this->say('Se adentra en la posibilidad que tenemos las mujeres de construir nuevas narrativas, lenguajes y símbolos sobre nuestros cuerpos y crear nuevas formas de ser y estar en el mundo. Lejos de las exigencias capitalistas de los modelos hegemónicos de belleza.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say('Tengo 5 preguntas para ti');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askPuedesIrMedicoSolaAunqueSeaEnfermaGrave();
                 }
 
 
             }
-        }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
+        }, ['askAlgunasOpcionesInformacionAdicionalid']);
     }
+
+    public function askPuedesIrMedicoSolaAunqueSeaEnfermaGrave(): void
+    {
+        $question = Question::create('¿Puedes ir al medico tu sola aunque sea una enfermedad grave?')
+            ->fallback('Edad no valida')
+            ->callbackId('PuedesIrMedicoSolaAunqueSeaEnfermaGraveid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->PuedesIrMedicoSolaAunqueSeaEnfermaGrave = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                $this->askCreesNoTienesMuchoSentirteOrgullosa();
+
+
+            }
+        }, ['PuedesIrMedicoSolaAunqueSeaEnfermaGraveid']);
+    }
+    public function askCreesNoTienesMuchoSentirteOrgullosa(): void
+    {
+        $question = Question::create('¿Crees que no tienes mucho por lo que sentirte orgullosa?')
+            ->fallback('Edad no valida')
+            ->callbackId('CreesNoTienesMuchoSentirteOrgullosaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->CreesNoTienesMuchoSentirteOrgullosa = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSiTienesPasarFinSemanaSola();
+
+
+
+            }
+        }, ['CreesNoTienesMuchoSentirteOrgullosaid']);
+    }
+    public function askSiTienesPasarFinSemanaSola(): void
+    {
+        $question = Question::create('¿Si tienes que pasar el fin de semana sola, ¿te aburres, te sientes mal y tienes que llamar a todo el mundo?')
+            ->fallback('Edad no valida')
+            ->callbackId('SiTienesPasarFinSemanaSolaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SiTienesPasarFinSemanaSola = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                $this->askGeneralmenteDasMasValorOpinaTuPareja();
+
+
+            }
+        }, ['SiTienesPasarFinSemanaSolaid']);
+    }
+    public function askGeneralmenteDasMasValorOpinaTuPareja(): void
+    {
+        $question = Question::create('¿Generalmente, le das más valor a lo que opina tu pareja, tus amistades o tu familia que a tus propias opiniones?')
+            ->fallback('Edad no valida')
+            ->callbackId('GeneralmenteDasMasValorOpinaTuParejaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->GeneralmenteDasMasValorOpinaTuPareja = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askCuandoTienesTomarDecisionImportanteNoHacerlo();
+            }
+        }, ['GeneralmenteDasMasValorOpinaTuParejaid']);
+    }
+    public function askCuandoTienesTomarDecisionImportanteNoHacerlo(): void
+    {
+        $question = Question::create('¿Cuando tienes que tomar una decisión importante, no puedes hacerlo sin consultar a alguien más? ')
+            ->fallback('Edad no valida')
+            ->callbackId('CuandoTienesTomarDecisionImportanteNoHacerloid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->CuandoTienesTomarDecisionImportanteNoHacerlo = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $AmorPropi=[$this->PuedesIrMedicoSolaAunqueSeaEnfermaGrave, $this->CreesNoTienesMuchoSentirteOrgullosa, $this->SiTienesPasarFinSemanaSola, $this->GeneralmenteDasMasValorOpinaTuPareja, $this->CuandoTienesTomarDecisionImportanteNoHacerlo];
+                if(in_array('Si',$AmorPropi)){
+                    $this->say('La RNR te puede poner en contacto con profesionales  con formación y experiencia necesaria para darte orientación especializada y herramientas que pueden ser benéficas para ti. ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askLineasAtencionAmorPropioFiltro();
+                }else{
+                    $this->say('Has contestado acertadamente cinco preguntas sobre amor propio para seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas, puedes buscar talleres u orientación psicológica. Si te interesa selecciona si, para brindarte un contacto.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askLineasAtencionAmorPropioFiltro();
+                }
+
+
+            }
+        }, ['CuandoTienesTomarDecisionImportanteNoHacerloid']);
+    }
+    public function askLineasAtencionAmorPropioFiltro(): void
+    {
+        $estado= $this->estado_republica?:"";
+        $genero= $this->genero?:"";
+        if($genero=='Mujer'){
+            $Ins=Instituciones_Organizaciones::estadoRepublica($estado)->Identidad($genero)
+                ->Clasificaciones(["Atención especializada (Referencia a Refugio y Orientación ante situaciones de violencia por ejemplo CEAR)", "Otra"])
+                ->whereOr(function ($query) {
+                    return $query->Legal();
+                })
+                ->whereOr(function ($query) {
+                    return $query->Digital();
+                })
+                ->get();
+
+        }else{
+            $Ins=Instituciones_Organizaciones::estadoRepublica($estado)->Identidad($genero)
+                ->Clasificaciones(["Atención especializada (Referencia a Refugio y Orientación ante situaciones de violencia por ejemplo CEAR)", "Otra"])
+                ->where("Edad_M_Ho", ">=", 18)
+                ->whereOr(function ($query) {
+                    return $query->Legal();
+                })
+                ->whereOr(function ($query) {
+                    return $query->Digital();
+                })
+                ->get();
+
+        }
+         $instituciones=  self::ListarOrganizaciones($Ins);
+
+        $this->say("<b>Líneas de atención </b></br></br>".   $instituciones);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTepuedoApoyarConAlgoMas();
+
+    }
+
+
+
+
 
     public function askQuieresSaberQueConsiste(): void
     {
@@ -2308,7 +2983,7 @@ class GuetzaConversation extends Conversation
                                 </li>
                                 </ul>');
                 }else{
-                   $this->Terminar();
+                   $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
@@ -2401,6 +3076,57 @@ class GuetzaConversation extends Conversation
 
 
 //Derechos sexuales y reproductivos
+
+public function askDerechosSexualesReproductivos(){
+
+    $question = Question::create('Te presento alguno Derechos sexuales reproductivos')
+        ->fallback('Edad no valida')
+        ->callbackId('DerechosSexualesReproductivosid')
+        ->addButtons([
+            Button::create('Placer sexual')->value('Placer sexual'),
+            Button::create('Consentir')->value('Consentir'),
+            Button::create('Salud Sexual')->value('Salud Sexual'),
+            Button::create('Feminicida')->value('Feminicida'),
+            Button::create('Alerta de violencia de género contra las mujeres')->value('Alerta de violencia de género contra las mujeres'),
+
+        ]);
+
+    $this->ask($question, function (Answer $answer) {
+        $selectedValue = $answer->getValue();
+        if (!in_array($selectedValue, ['Familiar', 'Laboral o docente', 'Institucional', 'Feminicida', 'Alerta de violencia de género contra las mujeres'])) {
+            $this->say("Haz click en un opcion valida");
+            $this->repeat();
+        } else {
+
+            $this->LaViolenciaPresentaDiferentesAmbitos = $selectedValue;
+            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+            if($selectedValue=='Familiar'){
+                $this->say('La violencia familiar es el acto abusivo de poder u omisión intencional, dirigido a dominar, someter, controlar o agredir de manera física, verbal, psicológica, patrimonial, económica y sexual a las mujeres, dentro o fuera del domicilio familiar, cuya persona agresora tenga o haya tenido relación de parentesco por consanguinidad o afinidad, de matrimonio, concubinato o mantenga o  hayan mantenido una relación de hecho.');
+            }elseif($selectedValue=='Laboral o docente'){
+                $this->say('Se ejerce por las personas que tienen un vínculo laboral, docente o análogo con la víctima, independientemente de la relación jerárquica, consistente en un acto o una omisión en abuso de poder que daña la autoestima, salud, integridad, libertad y seguridad de la víctima, e impide su desarrollo y atenta contra la igualdad.
+                                Puede consistir en un solo evento dañino o en una serie de eventos cuya suma produce el daño. También incluye el acoso o el hostigamiento sexual.
+                                La violencia laboral se constituye por la negativa ilegal a contratar a la víctima o a respetar su permanencia o condiciones generales de trabajo; la descalificación del trabajo realizado, las amenazas, la intimidación, las humillaciones, la explotación, el impedimento a las mujeres de llevar a cabo el período de lactancia previsto en la ley y todo tipo de discriminación por condición de género.
+                                La violencia docente se constituye por aquellas conductas que dañen la autoestima de las alumnas con actos de discriminación por su sexo, edad, condición social, académica, limitaciones o características físicas, que les infligen maestras o maestros.
+                                El hostigamiento sexual es el ejercicio del poder, en una relación de subordinación real de la víctima frente a la persona agresora en los ámbitos laboral o escolar. Se expresa en conductas verbales, física o ambas, relacionadas con la sexualidad de connotación lasciva.
+                                El acoso sexual es una forma de violencia en la que, si bien no existe la subordinación, hay un ejercicio abusivo de poder que conlleva a un estado de indefensión y de riesgo para la víctima, independientemente de que se realice en uno o varios eventos. 
+                                ');
+            }elseif($selectedValue=='Institucional'){
+                $this->say('Son los actos u omisiones de las y los servidores públicos de cualquier orden de gobierno que discriminen o tengan como fin dilatar, obstaculizar o impedir el goce y ejercicio de los derechos humanos de las mujeres así como su acceso  al disfrute de políticas públicas destinadas a prevenir, atender, investigar, sancionar y erradicar los diferentes tipos de violencia. ');
+            }
+            elseif($selectedValue=='Feminicida') {
+                $this->say('La violencia feminicida es la forma extrema de violencia de género contra las mujeres, producto de la violación de sus derechos humanos, en los ámbitos público y privado, conformada por el conjunto de conductas misóginas que pueden conllevar impunidad social y del Estado y puede culminar en homicidio y otras formas de muerte violenta de mujeres');
+            }
+            elseif($selectedValue=='Alerta de violencia de género contra las mujeres') {
+                $this->say('La alerta de violencia de género es el conjunto de acciones gubernamentales de emergencia para enfrentar y erradicar la violencia feminicida en un territorio determinado, ya sea ejercida por individuos o por la propia comunidad.');
+            }
+
+
+        }
+    }, ['DerechosSexualesReproductivosid']);
+
+}
+
     public function enproceso(): void
     {
 
