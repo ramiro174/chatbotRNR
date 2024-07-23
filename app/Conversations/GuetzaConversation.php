@@ -2982,6 +2982,8 @@ class GuetzaConversation extends Conversation
                                 La fase se conoce como la Luna de Miel.
                                 </li>
                                 </ul>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTepuedoApoyarConAlgoMas();
                 }else{
                    $this->askTepuedoApoyarConAlgoMas();
                 }
@@ -3017,6 +3019,8 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if($selectedValue=='Familiar'){
                     $this->say('La violencia familiar es el acto abusivo de poder u omisión intencional, dirigido a dominar, someter, controlar o agredir de manera física, verbal, psicológica, patrimonial, económica y sexual a las mujeres, dentro o fuera del domicilio familiar, cuya persona agresora tenga o haya tenido relación de parentesco por consanguinidad o afinidad, de matrimonio, concubinato o mantenga o  hayan mantenido una relación de hecho.');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTepuedoApoyarConAlgoMas();
                 }elseif($selectedValue=='Laboral o docente'){
                     $this->say('Se ejerce por las personas que tienen un vínculo laboral, docente o análogo con la víctima, independientemente de la relación jerárquica, consistente en un acto o una omisión en abuso de poder que daña la autoestima, salud, integridad, libertad y seguridad de la víctima, e impide su desarrollo y atenta contra la igualdad.
                                 Puede consistir en un solo evento dañino o en una serie de eventos cuya suma produce el daño. También incluye el acoso o el hostigamiento sexual.
@@ -3025,14 +3029,22 @@ class GuetzaConversation extends Conversation
                                 El hostigamiento sexual es el ejercicio del poder, en una relación de subordinación real de la víctima frente a la persona agresora en los ámbitos laboral o escolar. Se expresa en conductas verbales, física o ambas, relacionadas con la sexualidad de connotación lasciva.
                                 El acoso sexual es una forma de violencia en la que, si bien no existe la subordinación, hay un ejercicio abusivo de poder que conlleva a un estado de indefensión y de riesgo para la víctima, independientemente de que se realice en uno o varios eventos. 
                                 ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTepuedoApoyarConAlgoMas();
                 }elseif($selectedValue=='Institucional'){
                         $this->say('Son los actos u omisiones de las y los servidores públicos de cualquier orden de gobierno que discriminen o tengan como fin dilatar, obstaculizar o impedir el goce y ejercicio de los derechos humanos de las mujeres así como su acceso  al disfrute de políticas públicas destinadas a prevenir, atender, investigar, sancionar y erradicar los diferentes tipos de violencia. ');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
             elseif($selectedValue=='Feminicida') {
                     $this->say('La violencia feminicida es la forma extrema de violencia de género contra las mujeres, producto de la violación de sus derechos humanos, en los ámbitos público y privado, conformada por el conjunto de conductas misóginas que pueden conllevar impunidad social y del Estado y puede culminar en homicidio y otras formas de muerte violenta de mujeres');
-            }
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
+                }
             elseif($selectedValue=='Alerta de violencia de género contra las mujeres') {
                 $this->say('La alerta de violencia de género es el conjunto de acciones gubernamentales de emergencia para enfrentar y erradicar la violencia feminicida en un territorio determinado, ya sea ejercida por individuos o por la propia comunidad.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
