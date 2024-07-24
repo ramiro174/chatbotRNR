@@ -378,7 +378,7 @@ class GuetzaConversation extends Conversation
     }
     public function askQuieresSaberSituacionRiesgo(): void
     {
-        $question = Question::create(' ¿Quieres saber que hacer en caso de necesitar algún servicio de emergencia?')
+        $question = Question::create('¿Quieres saber que hacer en una situación de riesgo?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askQuieresSaberSituacionRiesgoid')
             ->addButtons([
@@ -396,11 +396,11 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue == 'Si') {
-                    $this->bot->typesAndWaits(5);
-                    $this->askIdentificamosServiciosAtencionMujeres();
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askQuieresSabernecesitarServicioEmergencia();
+
                 } elseif($selectedValue=='No') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-
                     if($this->edad<=17){
                     $this->say( $this->nombre.' me interesa mucho tu seguridad y bienestar. Por eso, sugiero puedas buscar compañía de una persona adulta de confianza. Hay ocasiones en las que es importante tener a alguien mayor que pueda apoyarte si lo necesitas.');
                     }
@@ -414,6 +414,80 @@ class GuetzaConversation extends Conversation
             }
         }, ['askQuieresSaberSituacionRiesgoid']);
     }
+    public function askQuieresSabernecesitarServicioEmergencia(): void
+    {
+        $question = Question::create('¿Quieres saber que hacer en caso de necesitar algún servicio de emergencia?')
+            ->fallback('no seleccionate una opción valida')
+            ->callbackId('QuieresSabernecesitarServicioEmergenciaid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+                Button::create('Anterior')->value('Anterior'),
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No','Anterior'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->say('<div class="response-right">'.   $selectedValue.'</div>');
+                $this->QuieresSabernecesitarServicioEmergencia = $selectedValue;
+                if ($selectedValue == 'Si') {
+                    $this->bot->typesAndWaits(2);
+                   $this->askIdentificamosServiciosAtencionMujeres();
+                } elseif($selectedValue=='No') {
+
+                    $this->askQuieresSaberCasoHeridaLesion();
+
+                }
+                else{
+                    $this->askQuieresSaberSituacionRiesgo();
+                }
+            }
+        }, ['QuieresSabernecesitarServicioEmergenciaid']);
+    }
+    public function askQuieresSaberCasoHeridaLesion(): void
+    {
+        $question = Question::create('¿Quieres saber que hacer en caso de alguna herida o lesión?')
+            ->fallback('no seleccionate una opción valida')
+            ->callbackId('QuieresSaberCasoHeridaLesionid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No'),
+                Button::create('Anterior')->value('Anterior'),
+
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si', 'No','Anterior'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->say('<div class="response-right">'.   $selectedValue.'</div>');
+                $this->QuieresSaberCasoHeridaLesion = $selectedValue;
+                if ($selectedValue == 'Si') {
+                    $this->say('¿Necesitas contactar con servicios de emergencia, como la policía, los bomberos y los servicios médicos?');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askIdentificamosServiciosAtencionMujeres();
+                } elseif($selectedValue=='No') {
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    if($this->edad<=17){
+                        $this->say( $this->nombre.' me interesa mucho tu seguridad y bienestar. Por eso, sugiero puedas buscar compañía de una persona adulta de confianza. Hay ocasiones en las que es importante tener a alguien mayor que pueda apoyarte si lo necesitas.');
+                    }
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAquiTengoUnasOpcionesParaTi();
+                }
+                else{
+                    $this->askQuieresSabernecesitarServicioEmergencia();
+                }
+            }
+        }, ['QuieresSaberCasoHeridaLesionid']);
+    }
+
+
+
+
     public function askIdentificamosServiciosAtencionMujeres(): void
     {
 
@@ -3722,8 +3796,6 @@ public function askSaludSexual(){
 
 }
 
-
-
 public function enproceso(): void
     {
 
@@ -3868,6 +3940,35 @@ public function enproceso(): void
     public function askTepuedoApoyarConAlgoMas(): void
     {
         $question = Question::create('¿Te puedo apoyar con algo más?')
+            ->fallback('Edad no valida')
+            ->callbackId('TepuedoApoyarAlgoMasid')
+            ->addButtons([
+                Button::create('Más opciones')->value('Más opciones'),
+                Button::create('Terminar')->value('Terminar'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Más opciones', 'Terminar'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Más opciones'){
+                    $this->askAquiTengoUnasOpcionesParaTi();
+                }elseif($selectedValue=='Terminar'){
+                        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+                }
+
+
+
+            }
+        }, ['TepuedoApoyarAlgoMasid']);
+    }
+    public function askQuieroExplorarMas(): void
+    {
+        $question = Question::create('¿Quieres explorar más las opciones que tengo para ti?')
             ->fallback('Edad no valida')
             ->callbackId('TepuedoApoyarAlgoMasid')
             ->addButtons([
