@@ -75,7 +75,6 @@ class GuetzaConversation extends Conversation
     protected string $ServiciosInterrupcionEmbarazo;
 
 
-
 //Orientación psicológica
     protected string $TePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico;
     //Empoderamiento
@@ -194,7 +193,7 @@ class GuetzaConversation extends Conversation
     public function run()
     {
        $this->askName();
-        //$this->askIdentificamosServiciosAtencionMujeres();
+        //$this->askIdentificamosServiciosAtencionMujeresFiltro();
        // $this->askSucedioInmediato();
       // $this->askAquiTengoUnasOpcionesParaTi();
         //$this->askaskTepuedoApoyarConAlgoMas();
@@ -435,7 +434,7 @@ class GuetzaConversation extends Conversation
                 $this->QuieresSabernecesitarServicioEmergencia = $selectedValue;
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits(2);
-                   $this->askIdentificamosServiciosAtencionMujeres();
+                   $this->askIdentificamosServiciosAtencionMujeresFiltro();
                 } elseif($selectedValue=='No') {
 
                     $this->askQuieresSaberCasoHeridaLesion();
@@ -469,7 +468,7 @@ class GuetzaConversation extends Conversation
                 if ($selectedValue == 'Si') {
                     $this->say('¿Necesitas contactar con servicios de emergencia, como la policía, los bomberos y los servicios médicos?');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->askIdentificamosServiciosAtencionMujeres();
+                    $this->askIdentificamosServiciosAtencionMujeresFiltro();
                 } elseif($selectedValue=='No') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     if($this->edad<=17){
@@ -488,7 +487,7 @@ class GuetzaConversation extends Conversation
 
 
 
-    public function askIdentificamosServiciosAtencionMujeres(): void
+    public function askIdentificamosServiciosAtencionMujeresFiltro(): void
     {
 
         $edad= $this->edad?$this->edad:0;
@@ -515,7 +514,7 @@ class GuetzaConversation extends Conversation
 
 
 
-        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+        $this->askQuieroExplorarMas();
 
 
     }
@@ -851,7 +850,7 @@ class GuetzaConversation extends Conversation
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue = 'Si') {
                     $this->bot->typesAndWaits(10);
-                    $this->askIdentificamosServiciosAtencionMujeres();
+                    $this->askIdentificamosServiciosAtencionMujeresFiltro();
                 } else {
                     $this->askEdad();
                 }
@@ -3985,7 +3984,7 @@ public function enproceso(): void
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
                 if($selectedValue=='Más opciones'){
-                    $this->askAquiTengoUnasOpcionesParaTi();
+                    $this->askQuieresSaberSituacionRiesgo();
                 }elseif($selectedValue=='Terminar'){
                         $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
                 }
