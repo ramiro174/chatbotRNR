@@ -37,16 +37,18 @@ class GuetzaConversation extends Conversation
     protected string $AlguienUtilizadoDrogasIncapacitarte;
     protected string $HasTenidoActividadesSexualesSinConsentimiento;
 //
+    //patrimonial
     protected string $HasExperimentadoPresionFirmarContraVoluntad;
     protected string $AlguienDestruidoIntencionalmenteBienesMateriales;
     protected string $TeHanImpedidoTrabajarOEstudiarLimitar;
     protected string $AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento;
 //
+    //economica
     protected string $HasExperimentadoPresionAsumirDeudasCompromisos;
     protected string $AlguienCercanoATiControlaTusIngresos;
     protected string $TeHanNegadoRecursosEconomicos;
     protected string $TeHanImpedidoTrabajarOEstudiarLimitarFinanciera;
-//
+// vicaria
     protected string $TeSientesPresionadaActuarPerderContactoHijos;
     protected string $TuParejaExparejaImpedidoComuniquesHijasHijos;
     protected string $HasNotadoTuParejaUtilizaHijasHijos;
@@ -59,11 +61,14 @@ class GuetzaConversation extends Conversation
     protected string $TeHanPresionadoEnviarFotosIntimasInformacionPersonal;
 
 //
+
+
+    protected string $PlanesDeAccionProteccionSituacionViolencia;
+    //sexual
     protected string $EnEventoViolenciaSexualHuboExposicionRiesgo;
     protected string $SucedioInmediato;
     protected string $TengoMasInformacionSepasHAcerDespuesEvento;
-
-
+    //fisica
     protected string $AquiTemuestroPlanesAccionFisica;
     protected string $SiyaIdentificasteSituacionPeligro;
     protected string $TeMuestroMasAccionesViolenciaFisica;
@@ -624,7 +629,7 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->say("Otros ejemplos: criticarte cómo te vistes o hablas; revisar tu celular o redes sociales; minimizar tus opiniones; ridiculizarte, dejarte de hablar, exigirte le digas a dónde vas o con quien estas; etc.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoce s, está o ha estado en situación de violencia psicología, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
+                    $this->say("Aquí te compartimos algunas preguntas a través de las cuales puedes identificar si tu o alguien más que conoces, está o ha estado en situación de violencia psicología, te invitamos a responderlas, recuerda que esta conversación es privada y nadie más conocerá las respuestas");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askAlguienCercanoCriticaMenospreciaBurla();
                 }
@@ -964,13 +969,13 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $Respuestaspreguntas=[$this->AlguienCercanoCriticaMenospreciaBurla, $this->SientesAlguienTuVidaLimitaTusDesiciones, $this->TeHanExcluidoDeliberadamenteDeActividades, $this->SientesMiedoAnsiedadConstante];
-                $this->say('Existen lugares especializados de protección en los que puedes recibir atención integral de forma gratuita, segura y confidencial. Recuerda que las violencias son un delito y puedes denunciarlo. Te invitamos a conocer planes de acción. ');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
                 if(in_array('Si',$Respuestaspreguntas)){
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
-
                 }else{
                     $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                    $this->askTepuedoApoyarConAlgoMas();
+
                 }
 
 
@@ -1014,7 +1019,7 @@ class GuetzaConversation extends Conversation
     }
     public function askHasAccedidoRealizarActivadesSexuales(): void
     {
-        $question_askHasAccedidoRealizarActivadesSexuales = Question::create('¿Alguien te ha presionado para participar en actividades sexuales en contra de tu voluntad?')
+        $question_askHasAccedidoRealizarActivadesSexuales = Question::create('¿Has accedido a realizar actividades sexuales por miedo a consecuencias negativas o por amenazas contra tus familiares  o a tu persona?')
             ->fallback('Edad no valida')
             ->callbackId('askHasAccedidoRealizarActivadesSexualesid')
             ->addButtons([
@@ -1192,9 +1197,35 @@ class GuetzaConversation extends Conversation
                 $this->AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->enproceso();
+               $respuestas=[$this->HasExperimentadoPresionFirmarContraVoluntad, $this->AlguienDestruidoIntencionalmenteBienesMateriales, $this->TeHanImpedidoTrabajarOEstudiarLimitar, $this->AlgunaPersonaCercanaUtilizadoBienesSinConsentimiento];
+               if(in_array('Si', $respuestas)){
+                   $this->asklineasAtencioLegalOrintacionFiltro();
+                   $this->askTepuedoApoyarConAlgoMas();
+               }
+               else{
+                   $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                   $this->askTepuedoApoyarConAlgoMas();
+               }
+
+
+
+
             }
         }, ['askAlgunaPersonaCercanaUtilizadoBienesSinConsentimientoid']);
+    }
+    public function asklineasAtencioLegalOrintacionFiltro(){
+        $estado=$this->estado_republica;
+        $Programas=  self::ListarOrganizaciones(
+            Instituciones_Organizaciones::estadoRepublica($estado)
+                ->Identidad("Mujer")
+                ->Legal()
+                ->get()
+        );
+        $this->say("<b>Líneas de Atención Legal</b></br></br>".   $Programas);
+        $this->bot->typesAndWaits($this->tiempoRespuesta);
+        $this->askTePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico();
+
+
     }
 
     //Económica
@@ -1282,11 +1313,21 @@ class GuetzaConversation extends Conversation
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->TeHanImpedidoTrabajarOEstudiarLimitarFinanciera = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->enproceso();
+                $respuestas=[$this->HasExperimentadoPresionAsumirDeudasCompromisos, $this->AlguienCercanoATiControlaTusIngresos, $this->TeHanNegadoRecursosEconomicos, $this->TeHanImpedidoTrabajarOEstudiarLimitarFinanciera];
+                if(in_array('Si', $respuestas)){
+                    $this->asklineasAtencioLegalOrintacionFiltro();
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
+                    $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+
             }
         }, ['askTeHanImpedidoTrabajarOEstudiarLimitarFinancieraid']);
     }
@@ -1380,7 +1421,19 @@ class GuetzaConversation extends Conversation
                 $this->TeSientesExcluidaDecisionesImportantesHijasHijos = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->enproceso();
+                $respuestas=[$this->TeSientesPresionadaActuarPerderContactoHijos, $this->TuParejaExparejaImpedidoComuniquesHijasHijos, $this->HasNotadoTuParejaUtilizaHijasHijos, $this->TeSientesExcluidaDecisionesImportantesHijasHijos];
+                if(in_array('Si', $respuestas)){
+                    $this->asklineasAtencioLegalOrintacionFiltro();
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
+                    $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+
+
             }
         }, ['TeSientesExcluidaDecisionesImportantesHijasHijosid']);
     }
@@ -1540,22 +1593,26 @@ class GuetzaConversation extends Conversation
     //Planes de acción y protección ante situaciones de violencia
     public function askPlanesDeAccionProteccionSituacionViolencia(): void
     {
-        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Planes de acción y protección ante situaciones de violencia')
+        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Los planes de acción son una manera de disminuir el riesgo que existe dentro de una relación violenta')
             ->fallback('Edad no valida')
             ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
             ->addButtons([
                 Button::create('Sexual')->value('Sexual'),
                 Button::create('Física')->value('Física'),
                 Button::create('Psicológica')->value('Psicológica'),
-                Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta? '),
+                Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'),
                 Button::create('Anterior')->value('Anterior'),
-
-
             ]);
 
         $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
+
+            $this->PlanesDeAccionProteccionSituacionViolencia = $selectedValue;
+            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+
+            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } elseif($selectedValue=='Sexual') {
@@ -1564,10 +1621,11 @@ class GuetzaConversation extends Conversation
                 $this->askAquiTemuestroPlanesAccionFisica();
             } elseif($selectedValue=='Psicológica'){
                 $this->say('Tus contactos pueden llamarte, acudir a tu casa o al lugar donde te encuentres para cerciorarse de que estés bien, así como frenar la situación de violencia y en el momento oportuno, poder salir del lugar con cualquier excusa, evitando que la situación de peligro se agrave');
+                $this->askTepuedoApoyarConAlgoMas();
 
-            } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'){
+            } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'){
                 $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, romper con la relación, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan');
-
+                $this->askTepuedoApoyarConAlgoMas();
             } elseif($selectedValue=='Anterior'){
                 $this->askAquiTengoUnasOpcionesParaTi();
             }
@@ -1602,7 +1660,7 @@ class GuetzaConversation extends Conversation
                 if($selectedValue=='Si'){
                         $this->askSucedioInmediato();
                 }else{
-
+                    $this->askDerechosSexualesReproductivos();
                 }
 
             }
@@ -1704,7 +1762,7 @@ class GuetzaConversation extends Conversation
                     <li>2. Puedes solicitar acompañamiento cuando lo desees. Existen instituciones públicas y de sociedad civil que te  pueden otorgar atención de manera inmediata y gratuita.</li>
                     <li>3. Guarda evidencias de lo sucedido, sin que ello te ponga en riesgo. (puedes guardar ropa, fotos u otros objetos).</li>
                 </ul>");
-    $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+    $this->askTepuedoApoyarConAlgoMas();
 
     }
     //Fisica
