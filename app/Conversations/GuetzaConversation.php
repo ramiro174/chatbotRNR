@@ -106,11 +106,6 @@ class GuetzaConversation extends Conversation
     protected string $NoPuedoExpresarmeFormaLibre;
 
 
-
-
-
-
-
 // Me comuniqué con anterioridad y necesito atención.
     protected string $AnteriormenteTeBrindeInformacionRequerias;
     protected string $CompartemeSugerenciasPropuestas;
@@ -2828,8 +2823,6 @@ class GuetzaConversation extends Conversation
                 }else{
                     $this->askMuyBienTeAnimoExploresPreguntas();
                 }
-
-
             }
         }, ['NoPuedoExpresarmeFormaLibreid']);
     }
@@ -3574,7 +3567,7 @@ class GuetzaConversation extends Conversation
 //Derechos sexuales y reproductivos
 public function askDerechosSexualesReproductivos(){
 
-    $question = Question::create('Te presento alguno Derechos sexuales reproductivos')
+    $question = Question::create('Para conocer más sobre tus derechos sexuales y reproductivos, selecciona una opción de tu interés:')
         ->fallback('Edad no valida')
         ->callbackId('DerechosSexualesReproductivosid')
         ->addButtons([
@@ -3606,7 +3599,7 @@ public function askDerechosSexualesReproductivos(){
 }
 public function askPlacerSexual(){
 
-    $question = Question::create('algunos opciones de Placer sexual')
+    $question = Question::create('Para conocer mas sobre el placer sexual, selecciona alguna de tu interés:')
         ->fallback('Edad no valida')
         ->callbackId('PlacerSexualid')
         ->addButtons([
@@ -3624,17 +3617,108 @@ public function askPlacerSexual(){
             $this->PlacerSexual = $selectedValue;
             $this->say('<div class="response-right">'.  $answer->getText().'</div>');
             $this->bot->typesAndWaits($this->tiempoRespuesta);
-            if($selectedValue=='Placer sexual'){
-                $this->askPlacerSexual();
-            }elseif($selectedValue=='Consentir'){
-                $this->askConsentir();
-            }elseif($selectedValue=='Salud Sexual'){
-                    $this->askSaludSexual();
+
+            if($selectedValue=='¿Qué es?'){
+                $this->say('“la satisfacción y disfrute físico y psicológico derivado de experiencias eróticas compartidas o solitarias, en la que se involucran o entran en juego pensamientos, fantasías, sueños, emociones y sentimientos” (WAS, 2019).');
+                $this->askTepuedoApoyarConAlgoMas();
+            }elseif($selectedValue=='Derecho al placer sexual'){
+                $this->say('Sabias que el placer sexual forma parte de los derechos sexuales considerados como derechos humanos.');
+                $this->say('<b>Derecho a:</b></br><ul>
+                            <li>. Decidir de forma libre, autónoma e informada sobre nuestro cuerpo y nuestra sexualidad.</li>
+                            <li>. Ejercer y disfrutar plenamente nuestra sexualidad.</li>
+                            <li>. Manifestar públicamente nuestros afectos.</li>
+                            <li>. Decidir libremente con quien o quienes relacionarnos afectiva, erótica y socialmente.</li>
+                            <li>. Que se respete nuestra privacidad e intimidad y a que se resguarde confidencialmente nuestra información personal.</li>
+                            </ul>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say('<b>Derecho a:</b></br>
+                              <ul>
+                                <li>. La vida, a la integridad física, psicológica y sexual.</li>
+                                <li>. Decidir de manera libre e informada sobre nuestra vida reproductiva.</li>
+                                <li>. La igualdad.</li>
+                                <li>. Vivir libres de discriminación.</li>
+                                <li>. La información actualizada, veraz, completa, científica y laica sobre sexualidad.</li>
+                                <li>. La educación integral en sexualidad.</li>
+                                <li>. Los servicios de salud sexual y reproductiva.</li>
+                                <li>. La identidad sexual.</li>
+                                <li>. La participación en las políticas públicas sobre sexualidad y reproducción.</li>
+                            </ul>
+                        ');
+                $this->askTepuedoApoyarConAlgoMas();
+            }elseif($selectedValue=='El goce'){
+                $this->say('Todas las personas tenemos derecho al libre goce del propio cuerpo incluyendo el placer sexual. Históricamente los estereotipos y roles de género han limitado la forma en que las mujeres  experimentan y disfrutan su sexualidad. ');
+                $this->askTepuedoApoyarConAlgoMas();
             }
 
 
         }
     }, ['PlacerSexualid']);
+
+}
+public function askConsentir(){
+        $this->say('Consiste en establecer tus límites personales y respetar los de las personas con las que te relacionas. Cada persona tiene límites distintos y todo el mundo merece que sean respetados.Consentir se acompaña de los siguientes puntos:');
+        $this->say('
+                El consentimiento tiene las siguientes características:</br></br>
+                <b>Se da libremente.</b> Consentir es una opción que tomas sin presión, sin manipulación o sin la influencia de las drogas o el alcohol.</br>
+                <b>Es deseado.</b> Cuando se trata de sexo, debes hacer las cosas que DESEAS hacer, no lo que otras personas esperan que hagas.</br>
+                <b>Es específico.</b> Decir que sí a algo (como ir a besarse al dormitorio) no significa que aceptes hacer otras cosas (como tener relaciones sexuales).</br>
+                <b>Se brinda estando informada.</b> Solo puedes consentir algo si tienes toda la información al respecto. Por ejemplo, si alguien dice que usará un condón y luego no lo hace, no hubo consentimiento total.</br>
+                <b>Es reversible.</b> Todos pueden cambiar de parecer sobre lo que desean hacer, en cualquier momento. Incluso si ya lo hicieron antes y ambos están desnudos en la cama.</br></br>
+                Tú tienes la última palabra sobre lo que pasa con tu cuerpo. No importa si ya lo hicieron o incluso si dijiste que sí antes y luego cambiaste de parecer. Tienes derecho a decir “basta” en cualquier momento, y tu pareja debe respetarlo.</br>
+        ');
+
+    }
+
+public function askSaludSexual(){
+    $question = Question::create('Para conocer mas sobre la salud sexual, selecciona alguna de tu interés:')
+        ->fallback('Edad no valida')
+        ->callbackId('SaludSexualid')
+        ->addButtons([
+            Button::create('¿Qué es?')->value('¿Qué es?'),
+            Button::create('Problemas relacionados con la Salud sexual')->value('Consentir'),
+            Button::create('A tomar en cuenta para posibilitar la salud sexual')->value('A tomar en cuenta para posibilitar la salud sexual'),
+        ]);
+
+    $this->ask($question, function (Answer $answer) {
+        $selectedValue = $answer->getValue();
+        if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la Salud sexual', 'A tomar en cuenta para posibilitar la salud sexual'])) {
+            $this->say("Haz click en un opcion valida");
+            $this->repeat();
+        } else {
+            $this->SaludSexual = $selectedValue;
+            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+            $this->bot->typesAndWaits($this->tiempoRespuesta);
+            if($selectedValue=='¿Qué es?'){
+                $this->say('«...un estado de bienestar físico, mental y social en relación con la sexualidad, la cual no es la ausencia de enfermedad, disfunción o incapacidad. La salud sexual requiere un enfoque positivo y respetuoso de la sexualidad y de las relaciones sexuales, así como la posibilidad de tener experiencias sexuales placenteras y seguras, libres de toda coacción, discriminación y violencia. Para que la salud sexual se logre y se mantenga, los derechos sexuales de todas las personas deben ser respetados, protegidos y ejercidos a plenitud.»(OMS, 2006a)');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
+            }elseif($selectedValue=='Problemas relacionados con la Salud sexual'){
+                $this->say('
+                   1. infecciones con el virus de la inmunodeficiencia humana (VIH), infecciones de transmisión sexual y del aparato reproductor, así como sus consecuencias adversas (por ejemplo, cáncer e infertilidad);</br> 
+                    Te comparto los nombres de algunos estudios que permiten identificar y prevenir:</br>
+                            <ul>
+                            <li>. Pruebas inmunológicas para detectar VIH, VPH o Hepatitis B y C.</li>
+                            <li>. Colposcopia</li>
+                            <li>. Papanicolau </li>
+                            <li>. Mastografía </li>
+                            </ul> 
+                   2. embarazos no deseados y abortos;</br>
+                   3. disfunción sexual; La detección y el manejo de las disfunciones sexuales son componentes esenciales de la atención a la salud sexual. La orientación psicosexual proporciona a los pacientes apoyo e información u orientación específica relacionada con sus problemas sexuales, lo cual puede ayudar a que recuperen una actividad sexual satisfactoria.</br>
+                   4. violencia sexual; </br>
+                   5. prácticas nocivas (entre ellas la mutilación genital femenina).</br>
+
+                ');
+
+            }elseif($selectedValue=='A tomar en cuenta para posibilitar la salud sexual'){
+                $this->say('Acceso a información integral de buena calidad sobre sexo y sexualidad; conocimiento de los riesgos que pueden correr y su vulnerabilidad ante las consecuencias adversas de la actividad sexual sin protección; posibilidad de acceder a la atención de salud sexual; residencia en un entorno que afirme y promueva la salud sexual.');
+                $this->askTepuedoApoyarConAlgoMas();
+            }
+
+
+        }
+    }, ['SaludSexualid']);
+
+
 
 }
 
