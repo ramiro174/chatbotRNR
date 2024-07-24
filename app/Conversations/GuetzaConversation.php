@@ -3676,6 +3676,7 @@ class GuetzaConversation extends Conversation
                     $this->say('La violencia familiar es el acto abusivo de poder u omisión intencional, dirigido a dominar, someter, controlar o agredir de manera física, verbal, psicológica, patrimonial, económica y sexual a las mujeres, dentro o fuera del domicilio familiar, cuya persona agresora tenga o haya tenido relación de parentesco por consanguinidad o afinidad, de matrimonio, concubinato o mantenga o  hayan mantenido una relación de hecho.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTepuedoApoyarConAlgoMas();
+
                 }elseif($selectedValue=='Laboral o docente'){
                     $this->say('Se ejerce por las personas que tienen un vínculo laboral, docente o análogo con la víctima, independientemente de la relación jerárquica, consistente en un acto o una omisión en abuso de poder que daña la autoestima, salud, integridad, libertad y seguridad de la víctima, e impide su desarrollo y atenta contra la igualdad.
                                 Puede consistir en un solo evento dañino o en una serie de eventos cuya suma produce el daño. También incluye el acoso o el hostigamiento sexual.
