@@ -536,7 +536,7 @@ class GuetzaConversation extends Conversation
             Button::create('Orientación psicológica')->value('Orientación psicológica'),
             Button::create('Me comuniqué con anterioridad y necesito atención')->value('Me comuniqué con anterioridad y necesito atención'),
             Button::create('Información adicional')->value('Información adicional'),
-            Button::create('Derechos sexuales y reproductivos')->value('Derechos sexuales y reproductivos'),
+            Button::create('Acceder a mis derechos sexuales y reproductivos')->value('Acceder a mis derechos sexuales y reproductivos'),
             Button::create('Anterior')->value('Anterior'),
         ]);
 
@@ -544,7 +544,7 @@ class GuetzaConversation extends Conversation
             $selectedValue = $answer->getValue();
             $selectedText = $answer->getText();
 
-            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Derechos sexuales y reproductivos','Anterior'])) {
+            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Acceder a mis derechos sexuales y reproductivos','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -570,7 +570,7 @@ class GuetzaConversation extends Conversation
                 elseif($selectedValue == 'Información adicional') {
                     $this->askAlgunasOpcionesInformacionAdicional();
                 }
-                elseif($selectedValue == 'Derechos sexuales y reproductivos') {
+                elseif($selectedValue == 'Acceder a mis derechos sexuales y reproductivos') {
 
                     $this->askDerechosSexualesReproductivos();
                 }
@@ -1756,7 +1756,6 @@ class GuetzaConversation extends Conversation
     }
     public function askTieneDerechoPuedesolicitarGuardarEvidencia(): void
     {
-
         $this->say("<ul>
                     <li>1.Tienes derecho a recibir atención integral gratuita y especializada, así como a recibir orientación sobre procesos jurídicos y atención a tu salud.</li>
                     <li>2. Puedes solicitar acompañamiento cuando lo desees. Existen instituciones públicas y de sociedad civil que te  pueden otorgar atención de manera inmediata y gratuita.</li>
@@ -2066,7 +2065,6 @@ class GuetzaConversation extends Conversation
 
             }
             elseif($selectedValue=='Servicios de interrupción del embarazo'){
-
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->say('El aborto en México se despenalizó el 6 de septiembre de 2023 por vía judicial en el Código Penal Federal. Todas las mujeres tienen derecho a acceder a servicios de interrupción del embarazo.
                              Cualquier institución de salud federal incluido IMSS, ISSSTE y PEMEX, deberán darte el servicio de aborto en todo el país si lo solicitas.
@@ -2398,7 +2396,7 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTecompartimosAPPInformacion();
                 }
-                elseif($selectedValue=='Acerca de las medicinas para abortar'){
+                elseif($selectedValue=='Aborto con pastillas'){
                     $this->say('13 a 25 semanas. Cuando un aborto se realiza con medicamentos,  se llama aborto médico o aborto con pastillas. Un aborto con pastillas dura más tiempo y expulsa una mayor cantidad de tejido que los abortos que se realizan antes de estas semanas. El misoprostol es un medicamento común que puede interrumpir el embarazo de forma segura y eficaz, similar a un aborto espontáneo natural.  Puede usarse  solo,  y es aún más efectivo cuando se usa junto con la mifepristona,  una medicina que solo se usa para abortos');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTecompartimosAPPInformacion();
@@ -3202,7 +3200,7 @@ class GuetzaConversation extends Conversation
     }
     public function askAlgunaOpcionesOrientacionJuridica(): void
     {
-        $question = Question::create('a continuación algunos  opciones de Orientación Jurídica')
+        $question = Question::create('A continuación algunos  opciones de Orientación Jurídica')
             ->fallback('Edad no valida')
             ->callbackId('askAlgunaOpcionesOrientacionJuridicaid')
             ->addButtons([
@@ -3223,7 +3221,9 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
                 if($selectedValue=='Solicitar una Orden de protección'){
-                    $this->enproceso();
+
+                    $this->askQuieresSaberSolicitarOrdenProteccion();
+
                 } elseif($selectedValue=='Poner una denuncia por violencia'){
                     $this->askAlgunasOpcionesPonerDenunciaPorViolencia();
 
@@ -3233,6 +3233,56 @@ class GuetzaConversation extends Conversation
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
+    public function askQuieresSaberSolicitarOrdenProteccion(): void
+    {
+        $question = Question::create('¿Quieres saber cómo solicitar una orden de protección?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberSolicitarOrdenProteccionid')
+            ->addButtons([
+                Button::create('Presencial')->value('Presencial'),
+                Button::create('En linea')->value('En linea'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Solicitar una Orden de protección', 'Poner una denuncia por violencia', 'Números telefónicos para orientación'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+
+                $this->QuieresSaberSolicitarOrdenProteccion = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Presencial'){
+                    $this->say('
+                    1.- Puedes acudir al Ministerio Público, Centros de Justicia para las Mujeres y al Poder Judicial para pedir una orden de protección. Las autoridades no deber exigirte pruebas de los hechos de violencia o riesgo, debe bastar con tu palabra, por lo que negarte el acceso a protección por falta de pruebas o documentos es una violación a tus derechos humanos. </br>
+                    2. La orden de Protección también puede ser solicitada por terceras personas, sin embargo, la mujer víctima de violencias debe acudir después a ratificar la información. </br>
+                    3. En ninguna circunstancia deben condicionarte la protección, ni exigirte hagas una denuncia.</br>
+                    4. Puedes solicitar: restricción de comunicación; restricción de acercamiento; botón de pánico o número telefónico de autoridad responsable; rondín policíaco; sacar a la persona agresora de domicilio en común y acompañamiento a la víctima para sacar pertenencias del domicilio en común con apoyo de elementos de seguridad pública.</br>
+                    ');
+                    $this->askTepuedoApoyarConAlgoMas();
+
+                }
+                elseif($selectedValue=='En linea') {
+
+                    $this->say('
+                    1. Descarga el siguiente  formato<a style="color:purple" href="https://92eab0f5-8dd4-485d-a54f-b06fa499694d.filesusr.com/ugd/ba8440_d36c5f87e400477da29bcba2e2252f0c.pdf"> Aquí </a>   imprímelo y llena la información solicitada.</br>
+                    2. Acude a un Ministerio Público, Juzgado en turno o Centro de Justicia para las Mujeres.</br>
+                    3. Las autoridades te harán una entrevista en donde deberás informar los hechos de violencia, datos de la persona agresora y si existen antecedentes de violencia. </br>
+                    4. Te realizarán una evaluación de riesgo para determinar qué tipo de medida de protección es necesaria implementar (Lo anterior no debe ser excluyente para otorgarte una medida de protección). </br>
+                    5. La autoridad emitirá un documento en el que quede constatado el otorgamiento de la orden de protección.</br>
+                    6. Las medidas de protección se notificarán personalmente a la persona agresora para garantizar su cumplimiento. Ninguna autoridad debe obligarte a informar de forma directo al agresor, dicha acción debe realizarla la autoridad competente. </br>
+                    ');
+                    $this->askTepuedoApoyarConAlgoMas();
+
+                }
+
+            }
+        }, ['QuieresSaberSolicitarOrdenProteccionid']);
+    }
+
+
+
 
     public function askLineasAtencionLegalFiltro():void{
         $estado=$this->estado_republica;
@@ -3247,7 +3297,6 @@ class GuetzaConversation extends Conversation
         $this->askTepuedoApoyarConAlgoMas();
 
     }
-
     public function askAlgunasOpcionesPonerDenunciaPorViolencia(): void
     {
         $question = Question::create('a continuación algunos  opciones de poner denuncia por violencia')
@@ -3282,6 +3331,8 @@ class GuetzaConversation extends Conversation
                             <li>2. Oficio: no es necesaria la presencia de la víctima (violación, feminicidio).</li>
                             <li>3. Tentativa: no se llega a la consumación, pero se pone en peligro el bien jurídico.</li>
                             </ul>');
+                    $this->askTepuedoApoyarConAlgoMas();
+
 
                 } elseif($selectedValue=='¿Dónde denunciar?'){
                     $this->say('<ul>
@@ -3289,6 +3340,7 @@ class GuetzaConversation extends Conversation
                                     <li>2. FGJ</li>
                                     <li>3. Línea: denuncia.org </li>
                                 </ul>');
+                    $this->askTepuedoApoyarConAlgoMas();
 
 
                 } elseif($selectedValue=='Requisitos para hacer una denuncia'){
@@ -3324,7 +3376,7 @@ class GuetzaConversation extends Conversation
                     </li>
                     </ul>
                     ');
-
+                    $this->askTepuedoApoyarConAlgoMas();
 
                 }
 
@@ -3573,23 +3625,18 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if($selectedValue=='Si'){
-                    $this->say('<ul>
-                                <li>
-                                <b>FASE 1</b></br>
+                    $this->say('<b>FASE 1</b></br>
                                 Empieza con burlas sobre lo que hablas y haces, hay gritos y amenazas bajo la excusa de que haces las cosas mal.
                                 Esta fase es llamada Acumulación de tensión.
-                                </li>
-                                <li>
+                               </br>
                                 <b>FASE 2</b></br>
                                 Sin importar si has hechos cosas para evitar el enojo de la otra persona llega el momento de la agresión.
                                 Fase conocida como Explosión violenta.
-                                </li>
-                                <li>
+                                </br>
                                 <b>FASE 3</b></br>
                                 Después de la violencia la persona agresora pide perdón, promete que no va a volver a actuar así, piensas que la relación ha cambiado y vuelves a confiar, pero vuelve a la Fase 1 y así repetidamente.
                                 La fase se conoce como la Luna de Miel.
-                                </li>
-                                </ul>');
+                                ');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
