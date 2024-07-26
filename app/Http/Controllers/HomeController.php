@@ -8,11 +8,11 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-        if ($request->query("fullscreen")) {
-            return view('index', [
-                'welcome' => 'Hola Soy Guetza, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
-                ]);
+        if ($request->query("chat")) {
+            return view('welcome');
         }
-        return view('welcome');
+        return view('index', [
+            'welcome' => 'Hola Soy Guetza, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
+        ]);
     }
 }
