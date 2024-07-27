@@ -3411,7 +3411,7 @@ class GuetzaConversation extends Conversation
                 }
                 elseif($selectedValue=='Y tú ¿Vives violencia?'){
                     $this->say('Con esta prueba puedes analizar las relaciones que tengas, puede ser con tu pareja; algún familiar; compañero/a de trabajo, amistad, etc.  Recuerda que es importante que respondas con honestidad para obtener un resultado confiable, solo tú conocerás lo que resulta.');
-                    $this->askCuandoDirigeTeLlamaApodoDesagrdeTest();
+                    $this->askCuandoDirigeTeLlamaApodoDesagradeTest();
                 }
                 elseif($selectedValue=='Amor propio'){
                     $this->say('Se adentra en la posibilidad que tenemos las mujeres de construir nuevas narrativas, lenguajes y símbolos sobre nuestros cuerpos y crear nuevas formas de ser y estar en el mundo. Lejos de las exigencias capitalistas de los modelos hegemónicos de belleza.');
