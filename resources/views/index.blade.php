@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Chat Bot Red Nacional de Refugios</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -127,6 +127,11 @@
 
             .youtube {
                 background-color:#00a403;
+            }
+
+            .textarea{
+                width:100%!important
+
             }
 
         </style>

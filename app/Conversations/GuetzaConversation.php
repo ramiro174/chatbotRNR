@@ -2610,7 +2610,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['HasIdentificadoAcompananFrecuentementeid']);
     }
-
     public function  askMuyBienTeAnimoExploresPreguntas(){
         $this->say('¡Muy bien! Te animo a que explores otras preguntas relacionadas con aspectos a tener en cuenta al considerar la orientación psicológica, y a seguir informándote sobre temas que contribuyan a tu bienestar.. ');
         $this->askTepuedoApoyarConAlgoMas();
@@ -3062,7 +3061,6 @@ class GuetzaConversation extends Conversation
         $this->askTepuedoApoyarConAlgoMas();
 
     }
-
     public function AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites():void{
         $this->say('Al acercarte a Centros de Atención puedes recibir orientación para realizar trámites, para obtener documentos, crear CV o plan de vida.');
         $this->bot->typesAndWaits($this->tiempoRespuesta);
@@ -3162,7 +3160,6 @@ class GuetzaConversation extends Conversation
 
 
     }
-
     public function askSeFiltraBaseProgramasTramitesConsultasFiltro($entorno): void
     {
         if($entorno=='Programa'){
@@ -3280,10 +3277,6 @@ class GuetzaConversation extends Conversation
             }
         }, ['QuieresSaberSolicitarOrdenProteccionid']);
     }
-
-
-
-
     public function askLineasAtencionLegalFiltro():void{
         $estado=$this->estado_republica;
         $Programas=  self::ListarOrganizaciones(
@@ -3398,31 +3391,27 @@ class GuetzaConversation extends Conversation
                 Button::create('¿En qué momento necesito hacer una denuncia?')->value('¿En qué momento necesito hacer una denuncia?'),
                 Button::create('Y tú ¿Vives violencia?')->value('Y tú ¿Vives violencia?'),
                 Button::create('Amor propio')->value('Amor propio')]);
-
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Ciclo de la violencia', 'Modalidad', '¿En qué momento necesito hacer una denuncia?', 'Y tú ¿Vives violencia?', 'Amor propio'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->AlgunasOpcionesInformacionAdicional = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-
                 if($selectedValue=='Ciclo de la violencia'){
                     $this->say('Conocer las fases de la violencia te permitirá identificar patrones de comportamiento  y tomar medidas preventivas.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askQuieresSaberQueConsiste();
                 }elseif($selectedValue=='Modalidad'){
                     $this->askLaViolenciaPresentaDiferentesAmbitos();
-
                 }elseif($selectedValue=='¿En qué momento necesito hacer una denuncia?'){
                     $this->askTanProntoComoSeaSeguroHacerlo();
-
                 }
                 elseif($selectedValue=='Y tú ¿Vives violencia?'){
-                    $this->say('aqui voy!!! y tu vives');
+                    $this->say('Con esta prueba puedes analizar las relaciones que tengas, puede ser con tu pareja; algún familiar; compañero/a de trabajo, amistad, etc.  Recuerda que es importante que respondas con honestidad para obtener un resultado confiable, solo tú conocerás lo que resulta.');
+                    $this->askCuandoDirigeTeLlamaApodoDesagrdeTest();
                 }
                 elseif($selectedValue=='Amor propio'){
                     $this->say('Se adentra en la posibilidad que tenemos las mujeres de construir nuevas narrativas, lenguajes y símbolos sobre nuestros cuerpos y crear nuevas formas de ser y estar en el mundo. Lejos de las exigencias capitalistas de los modelos hegemónicos de belleza.');
@@ -3431,12 +3420,9 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askPuedesIrMedicoSolaAunqueSeaEnfermaGrave();
                 }
-
-
             }
         }, ['askAlgunasOpcionesInformacionAdicionalid']);
     }
-
     public function askPuedesIrMedicoSolaAunqueSeaEnfermaGrave(): void
     {
         $question = Question::create('¿Puedes ir al medico tu sola aunque sea una enfermedad grave?')
@@ -3604,7 +3590,6 @@ class GuetzaConversation extends Conversation
         $this->askTepuedoApoyarConAlgoMas();
 
     }
-
     public function askQuieresSaberQueConsiste(): void
     {
         $question = Question::create('¿Quieres saber en qué consisten?')
@@ -3739,207 +3724,877 @@ class GuetzaConversation extends Conversation
         }, ['QuieresSaberQueConsisteid']);
     }
 
+    public function askCuandoDirigeTeLlamaApodoDesagradeTest():void{
+        $question = Question::create('¿Cuándo se dirige a ti te llama por un apodo que te desagrade o con groserías?')
+            ->fallback('Edad no valida')
+            ->callbackId('CuandoDirigeTeLlamaApodoDesagrdeTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->CuandoDirigeTeLlamaApodoDesagrdeTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeDiceQueEstasConAlguienMasTest();
+            }
+        }, ['CuandoDirigeTeLlamaApodoDesagrdeTestid']);
+    }
+    public function askTeDiceQueEstasConAlguienMasTest():void{
+        $question = Question::create('¿Te dice que estás con alguien más, o que tus amigos quieren estar contigo?')
+            ->fallback('Edad no valida')
+            ->callbackId('TeDiceQueEstasConAlguienMasTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeDiceQueEstasConAlguienMasTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaInterrumpidoEnSituacionesLaboralesTest();
+            }
+        }, ['TeDiceQueEstasConAlguienMasTestid']);
+    }
+    public function askTeHaInterrumpidoEnSituacionesLaboralesTest():void{
+        $question = Question::create('¿Te ha interrumpido en situaciones laborales o personales para pedirte explicaciones por algo que tú realizaste')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaInterrumpidoEnSituacionesLaboralesTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaInterrumpidoEnSituacionesLaboralesTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeDicenTieneOtrasParejasTest();
+            }
+        }, ['TeHaInterrumpidoEnSituacionesLaboralesTestid']);
+    }
+    public function askTeDicenTieneOtrasParejasTest():void{
+        $question = Question::create('¿Te dicen que tiene otras parejas y te compara con sus exparejas?')
+            ->fallback('Edad no valida')
+            ->callbackId('TeDicenTieneOtrasParejasTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeDicenTieneOtrasParejasTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTodoTiempoQuiereSaberDondeEstasTest();
+            }
+        }, ['TeDicenTieneOtrasParejasTestid']);
+    }
+    public function askTodoTiempoQuiereSaberDondeEstasTest():void{
+        $question = Question::create('¿Todo el tiempo quiere saber dónde estás y con quién estás?')
+            ->fallback('Edad no valida')
+            ->callbackId('TodoTiempoQuiereSaberDondeEstasTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TodoTiempoQuiereSaberDondeEstasTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeCriticaBurlaCuerpoErroresTest();
+            }
+        }, ['TodoTiempoQuiereSaberDondeEstasTestid']);
+    }
+    public function askTeCriticaBurlaCuerpoErroresTest():void{
+        $question = Question::create('¿Te critica, se burla de tu cuerpo y/o de tus errores en público o en privado? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TeCriticaBurlaCUerpoErroresTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeCriticaBurlaCUerpoErroresTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaPedidoCambiesFormaVestirTest();
+            }
+        }, ['TeCriticaBurlaCUerpoErroresTestid']);
+    }
+    public function askTeHaPedidoCambiesFormaVestirTest():void{
+        $question = Question::create('¿Te ha pedido que cambies tu forma de vestir, maquillarte o peinarte?')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaPedidoCambiesFormaVestirTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaPedidoCambiesFormaVestirTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askCuandoEstasConEsaPersonaTensionTest();
+            }
+        }, ['TeHaPedidoCambiesFormaVestirTestid']);
+    }
+    public function askCuandoEstasConEsaPersonaTensionTest():void{
+        $question = Question::create('Cuando estás con esa persona ¿Sientes tensión y piensas que se molestará en cualquier momento?')
+            ->fallback('Edad no valida')
+            ->callbackId('CuandoEstasConEsaPersonaTensionTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->CuandoEstasConEsaPersonaTensionTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHaRevisadoCelularLlamadasMensajesTest();
+            }
+        }, ['CuandoEstasConEsaPersonaTensionTestid']);
+    }
+    public function askHaRevisadoCelularLlamadasMensajesTest():void{
+        $question = Question::create('¿Ha revisado tu celular, llamadas, mensajes e incluso te ha exigido que le proporciones las contraseñas de tus cuentas como redes sociales o correo electrónico? ')
+            ->fallback('Edad no valida')
+            ->callbackId('HaRevisadoCelularLlamadasMensajesTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HaRevisadoCelularLlamadasMensajesTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askParaDecidirLoHaranCuandoSalenTest();
+            }
+        }, ['HaRevisadoCelularLlamadasMensajesTestid']);
+    }
+    public function askParaDecidirLoHaranCuandoSalenTest():void{
+        $question = Question::create('Para decidir lo que harán cuando salen ¿Ignora tu opinión?')
+            ->fallback('Edad no valida')
+            ->callbackId('ParaDecidirLoHaranCuandoSalenTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->ParaDecidirLoHaranCuandoSalenTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHaInterferidoRelacionesConversacionesInternetTest();
+            }
+        }, ['ParaDecidirLoHaranCuandoSalenTestid']);
+    }
+    public function askHaInterferidoRelacionesConversacionesInternetTest():void{
+        $question = Question::create('¿Ha interferido en tus relaciones o conversaciones en internet con otras personas?')
+            ->fallback('Edad no valida')
+            ->callbackId('HaInterferidoRelacionesConversacionesInternetTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HaInterferidoRelacionesConversacionesInternetTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askCuandoHablanTesientesMalHablaSexoTest();
+            }
+        }, ['HaInterferidoRelacionesConversacionesInternetTestid']);
+    }
+    public function askCuandoHablanTesientesMalHablaSexoTest():void{
+        $question = Question::create('Cuando hablan ¿Te sientes mal porque solo hablan de sexo y te pregunta si tuviste relaciones sexuales con otras personas?')
+            ->fallback('Edad no valida')
+            ->callbackId('CuandoHablanTesientesMalHablaSexoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->CuandoHablanTesientesMalHablaSexoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHaHechoUsoDineroTusAhorrosTest();
+            }
+        }, ['CuandoHablanTesientesMalHablaSexoTestid']);
+    }
+    public function askHaHechoUsoDineroTusAhorrosTest():void{
+        $question = Question::create('¿Ha hecho uso de tu dinero o de tus ahorros sin tu autorización? ')
+            ->fallback('Edad no valida')
+            ->callbackId('HaHechoUsoDineroTusAhorrosTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HaHechoUsoDineroTusAhorrosTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSientesConstantementeEstaControlandoTest();
+            }
+        }, ['HaHechoUsoDineroTusAhorrosTestid']);
+    }
+    public function askSientesConstantementeEstaControlandoTest():void{
+        $question = Question::create('¿Sientes que constantemente te está controlando y lo justifica en “nombre del amor”?')
+            ->fallback('Edad no valida')
+            ->callbackId('SientesConstantementeEstaControlandoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SientesConstantementeEstaControlandoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaLimitadoControladoGastosCubrirTest();
+            }
+        }, ['SientesConstantementeEstaControlandoTestid']);
+    }
+    public function askTeHaLimitadoControladoGastosCubrirTest():void{
+        $question = Question::create('¿Te ha limitado y controlado los gastos para cubrir tus necesidades básicas o de la familia?')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaLimitadoControladoGastosCubrirTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaLimitadoControladoGastosCubrirTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHasEscondidoDestruidoTusDocumentosTest();
+            }
+        }, ['TeHaLimitadoControladoGastosCubrirTestid']);
+    }
+    public function askHasEscondidoDestruidoTusDocumentosTest():void{
+        $question = Question::create('¿Has escondido o destruido tus documentos, correspondencia o algunas otras pertenencias? ')
+            ->fallback('Edad no valida')
+            ->callbackId('HasEscondidoDestruidoTusDocumentosTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HasEscondidoDestruidoTusDocumentosTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSiHasCedidoDeseosSexualesTest();
+            }
+        }, ['HasEscondidoDestruidoTusDocumentosTestid']);
+    }
+    public function askSiHasCedidoDeseosSexualesTest():void{
+        $question = Question::create('Si has cedido a sus deseos sexuales ¿Sientes que ha sido por temor o presión? ')
+            ->fallback('Edad no valida')
+            ->callbackId('SiHasCedidoDeseosSexualesTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SiHasCedidoDeseosSexualesTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest();
+            }
+        }, ['SiHasCedidoDeseosSexualesTestid']);
+    }
+    public function askSiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest():void{
+        $question = Question::create('Si tienen relaciones sexuales ¿Te impide o condiciona el uso de métodos anticonceptivos? ')
+            ->fallback('Edad no valida')
+            ->callbackId('SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaObligadoVerPornografiaTest();
+            }
+        }, ['SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTestid']);
+    }
+    public function askTeHaObligadoVerPornografiaTest():void{
+        $question = Question::create('¿Te ha obligado a ver pornografía o tener prácticas sexuales que te desagraden? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaObligadoVerPornografiaTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaObligadoVerPornografiaTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askHaDifundidoInformacionImagenesEnviadoTest();
+            }
+        }, ['TeHaObligadoVerPornografiaTestid']);
+    }
+    public function askHaDifundidoInformacionImagenesEnviadoTest():void{
+        $question = Question::create('¿Ha difundido información e imágenes, que tú le has enviado desde la confianza, a otras personas sin tu consentimiento?')
+            ->fallback('Edad no valida')
+            ->callbackId('HaDifundidoInformacionImagenesEnviadoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->HaDifundidoInformacionImagenesEnviadoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaPrecionadoObligadoConsumirDrogaTest();
+            }
+        }, ['HaDifundidoInformacionImagenesEnviadoTestid']);
+    }
+    public function askTeHaPrecionadoObligadoConsumirDrogaTest():void{
+        $question = Question::create('¿Te ha presionado u obligado a consumir algún tipo de sustancia o droga? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaPrecionadoObligadoConsumirDrogaTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaPrecionadoObligadoConsumirDrogaTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSiTomaAlcoholConsumeAlgunTipoDrogaTest();
+            }
+        }, ['TeHaPrecionadoObligadoConsumirDrogaTestid']);
+    }
+    public function askSiTomaAlcoholConsumeAlgunTipoDrogaTest():void{
+        $question = Question::create('Si toma alcohol o consume algún tipo de droga ¿Se comporta violento/a contigo o con otras')
+            ->fallback('Edad no valida')
+            ->callbackId('SiTomaAlcoholConsumeAlgunTipoDrogaTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SiTomaAlcoholConsumeAlgunTipoDrogaTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTienesRendirleCuentasTodoTest();
+            }
+        }, ['SiTomaAlcoholConsumeAlgunTipoDrogaTestid']);
+    }
+    public function askTienesRendirleCuentasTodoTest():void{
+        $question = Question::create('¿Tienes que rendirle cuentas de todo lo que gastas y/o haces? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TienesRendirleCuentasTodoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TienesRendirleCuentasTodoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askACausaProblemasTienesPerdidaApetitoTest();
+            }
+        }, ['TienesRendirleCuentasTodoTestid']);
+    }
+    public function askACausaProblemasTienesPerdidaApetitoTest():void{
+        $question = Question::create('A causa de los problemas ¿Tienes:  pérdida del apetito, sueño, malos resultados o abandono de tus actividades, alejamiento de tus amistades y/o familiares?')
+            ->fallback('Edad no valida')
+            ->callbackId('ACausaProblemasTienesPerdidaApetitoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->ACausaProblemasTienesPerdidaApetitoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askCuandoSeEnojaDiscutenTest();
+            }
+        }, ['ACausaProblemasTienesPerdidaApetitoTestid']);
+    }
+    public function askCuandoSeEnojaDiscutenTest():void{
+        $question = Question::create('Cuando se enojan o discuten ¿Has sentido que tu vida está en peligro? ')
+            ->fallback('Edad no valida')
+            ->callbackId('CuandoSeEnojaDiscutenTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->CuandoSeEnojaDiscutenTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaGolpeadoAlgunaParteCuerpoTest();
+            }
+        }, ['CuandoSeEnojaDiscutenTestid']);
+    }
+    public function askTeHaGolpeadoAlgunaParteCuerpoTest():void{
+        $question = Question::create('¿Te ha golpeado con alguna parte de su cuerpo o con algún objeto? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaGolpeadoAlgunaParteCuerpoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaGolpeadoAlgunaParteCuerpoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaObligadoPresionadoEnviarImagenesIntimasTest();
+            }
+        }, ['TeHaGolpeadoAlgunaParteCuerpoTestid']);
+    }
+    public function askTeHaObligadoPresionadoEnviarImagenesIntimasTest():void{
+        $question = Question::create('¿Te ha obligado o presionado enviar imágenes íntimas? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaObligadoPresionadoEnviarImagenesIntimasTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaObligadoPresionadoEnviarImagenesIntimasTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTehaCausadoLesionesAmeritenRecibirAtencionMedicaTest();
+            }
+        }, ['TeHaObligadoPresionadoEnviarImagenesIntimasTestid']);
+    }
+    public function askTehaCausadoLesionesAmeritenRecibirAtencionMedicaTest():void{
+        $question = Question::create('¿Te ha causado lesiones que ameriten recibir atención médica, psicológica, jurídica o auxilio policial? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TehaCausadoLesionesAmeritenRecibirAtencionMedicaTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TehaCausadoLesionesAmeritenRecibirAtencionMedicaTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaAmenazadoConMatarteCuandoQuieresTerminarTest();
+            }
+        }, ['TehaCausadoLesionesAmeritenRecibirAtencionMedicaTestid']);
+    }
+    public function askTeHaAmenazadoConMatarteCuandoQuieresTerminarTest():void{
+        $question = Question::create('¿Te ha amenazado con matarte cuando le dices que quieres terminar con él? ')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaAmenazadoConMatarteCuandoQuieresTerminarTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaAmenazadoConMatarteCuandoQuieresTerminarTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTeHaExigidoDemuestresDondeEstaTuGeoTest();
+            }
+        }, ['TeHaAmenazadoConMatarteCuandoQuieresTerminarTestid']);
+    }
+    public function askTeHaExigidoDemuestresDondeEstaTuGeoTest():void{
+        $question = Question::create('¿Te ha exigido que demuestres dónde estás con tu geolocalización?.')
+            ->fallback('Edad no valida')
+            ->callbackId('TeHaExigidoDemuestresDondeEstaTuGeoTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->TeHaExigidoDemuestresDondeEstaTuGeoTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askDespuesDisculpasMuestraCarinoAtencionTest();
+            }
+        }, ['TeHaExigidoDemuestresDondeEstaTuGeoTestid']);
+    }
+    public function askDespuesDisculpasMuestraCarinoAtencionTest():void{
+        $question = Question::create('Después de una disculpa ¿Muestra cariño y atención; te regala cosas y te promete que nunca volverá a suceder, que todo cambiará? ')
+            ->fallback('Edad no valida')
+            ->callbackId('DespuesDisculpasMuestraCArinoAtencionTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->DespuesDisculpasMuestraCArinoAtencionTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askSeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest();
+            }
+        }, ['DespuesDisculpasMuestraCArinoAtencionTestid']);
+    }
+    public function askSeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest():void{
+        $question = Question::create('¿Se ha enfadado por no tener siempre una respuesta inmediata cuando te mando un mensaje o inbox? ')
+            ->fallback('Edad no valida')
+            ->callbackId('SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTestid')
+            ->addButtons([
+                Button::create('Frecuentemente')->value('Frecuentemente'),
+                Button::create('Algunas veces')->value('Algunas veces'),
+                Button::create('Nunca')->value('Nunca')]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say("Aqui voyyyyyy");
+            }
+        }, ['SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTestid']);
+    }
 
 
 
 
 //Derechos sexuales y reproductivos
-public function askDerechosSexualesReproductivos(){
+    public function askDerechosSexualesReproductivos(){
 
-    $question = Question::create('Para conocer más sobre tus derechos sexuales y reproductivos, selecciona una opción de tu interés:')
-        ->fallback('Edad no valida')
-        ->callbackId('DerechosSexualesReproductivosid')
-        ->addButtons([
-            Button::create('Placer sexual')->value('Placer sexual'),
-            Button::create('Consentir')->value('Consentir'),
-            Button::create('Salud Sexual')->value('Salud Sexual'),
-        ]);
-    $this->ask($question, function (Answer $answer) {
-        $selectedValue = $answer->getValue();
-        if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual'])) {
-            $this->say("Haz click en un opcion valida");
-            $this->repeat();
-        } else {
-            $this->DerechosSexualesReproductivos = $selectedValue;
-            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-            $this->bot->typesAndWaits($this->tiempoRespuesta);
-            if($selectedValue=='Placer sexual'){
-                $this->askPlacerSexual();
-            }elseif($selectedValue=='Consentir'){
-                $this->askConsentir();
-            }elseif($selectedValue=='Salud Sexual'){
-                    $this->askSaludSexual();
-            }
-
-
-        }
-    }, ['DerechosSexualesReproductivosid']);
-
-}
-public function askPlacerSexual(){
-
-    $question = Question::create('Para conocer mas sobre el placer sexual, selecciona alguna de tu interés:')
-        ->fallback('Edad no valida')
-        ->callbackId('PlacerSexualid')
-        ->addButtons([
-            Button::create('¿Qué es?')->value('¿Qué es?'),
-            Button::create('Derecho al placer sexual')->value('Derecho al placer sexual'),
-            Button::create('El goce')->value('El goce'),
-        ]);
-
-    $this->ask($question, function (Answer $answer) {
-        $selectedValue = $answer->getValue();
-        if (!in_array($selectedValue, ['¿Qué es?', 'Derecho al placer sexual', 'El goce'])) {
-            $this->say("Haz click en un opcion valida");
-            $this->repeat();
-        } else {
-            $this->PlacerSexual = $selectedValue;
-            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-            $this->bot->typesAndWaits($this->tiempoRespuesta);
-
-            if($selectedValue=='¿Qué es?'){
-                $this->say('“la satisfacción y disfrute físico y psicológico derivado de experiencias eróticas compartidas o solitarias, en la que se involucran o entran en juego pensamientos, fantasías, sueños, emociones y sentimientos” (WAS, 2019).');
-                $this->askTepuedoApoyarConAlgoMas();
-            }elseif($selectedValue=='Derecho al placer sexual'){
-                $this->say('Sabias que el placer sexual forma parte de los derechos sexuales considerados como derechos humanos.');
-                $this->say('<b>Derecho a:</b></br><ul>
-                            <li>. Decidir de forma libre, autónoma e informada sobre nuestro cuerpo y nuestra sexualidad.</li>
-                            <li>. Ejercer y disfrutar plenamente nuestra sexualidad.</li>
-                            <li>. Manifestar públicamente nuestros afectos.</li>
-                            <li>. Decidir libremente con quien o quienes relacionarnos afectiva, erótica y socialmente.</li>
-                            <li>. Que se respete nuestra privacidad e intimidad y a que se resguarde confidencialmente nuestra información personal.</li>
-                            </ul>');
+        $question = Question::create('Para conocer más sobre tus derechos sexuales y reproductivos, selecciona una opción de tu interés:')
+            ->fallback('Edad no valida')
+            ->callbackId('DerechosSexualesReproductivosid')
+            ->addButtons([
+                Button::create('Placer sexual')->value('Placer sexual'),
+                Button::create('Consentir')->value('Consentir'),
+                Button::create('Salud Sexual')->value('Salud Sexual'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->DerechosSexualesReproductivos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->say('<b>Derecho a:</b></br>
-                              <ul>
-                                <li>. La vida, a la integridad física, psicológica y sexual.</li>
-                                <li>. Decidir de manera libre e informada sobre nuestra vida reproductiva.</li>
-                                <li>. La igualdad.</li>
-                                <li>. Vivir libres de discriminación.</li>
-                                <li>. La información actualizada, veraz, completa, científica y laica sobre sexualidad.</li>
-                                <li>. La educación integral en sexualidad.</li>
-                                <li>. Los servicios de salud sexual y reproductiva.</li>
-                                <li>. La identidad sexual.</li>
-                                <li>. La participación en las políticas públicas sobre sexualidad y reproducción.</li>
-                            </ul>
-                        ');
-                $this->askTepuedoApoyarConAlgoMas();
-            }elseif($selectedValue=='El goce'){
-                $this->say('Todas las personas tenemos derecho al libre goce del propio cuerpo incluyendo el placer sexual. Históricamente los estereotipos y roles de género han limitado la forma en que las mujeres  experimentan y disfrutan su sexualidad. ');
-                $this->askTepuedoApoyarConAlgoMas();
+                if($selectedValue=='Placer sexual'){
+                    $this->askPlacerSexual();
+                }elseif($selectedValue=='Consentir'){
+                    $this->askConsentir();
+                }elseif($selectedValue=='Salud Sexual'){
+                        $this->askSaludSexual();
+                }
+
+
             }
-
-
-        }
-    }, ['PlacerSexualid']);
-
-}
-public function askConsentir(){
-        $this->say('Consiste en establecer tus límites personales y respetar los de las personas con las que te relacionas. Cada persona tiene límites distintos y todo el mundo merece que sean respetados.Consentir se acompaña de los siguientes puntos:');
-        $this->say('
-                El consentimiento tiene las siguientes características:</br></br>
-                <b>Se da libremente.</b> Consentir es una opción que tomas sin presión, sin manipulación o sin la influencia de las drogas o el alcohol.</br>
-                <b>Es deseado.</b> Cuando se trata de sexo, debes hacer las cosas que DESEAS hacer, no lo que otras personas esperan que hagas.</br>
-                <b>Es específico.</b> Decir que sí a algo (como ir a besarse al dormitorio) no significa que aceptes hacer otras cosas (como tener relaciones sexuales).</br>
-                <b>Se brinda estando informada.</b> Solo puedes consentir algo si tienes toda la información al respecto. Por ejemplo, si alguien dice que usará un condón y luego no lo hace, no hubo consentimiento total.</br>
-                <b>Es reversible.</b> Todos pueden cambiar de parecer sobre lo que desean hacer, en cualquier momento. Incluso si ya lo hicieron antes y ambos están desnudos en la cama.</br></br>
-                Tú tienes la última palabra sobre lo que pasa con tu cuerpo. No importa si ya lo hicieron o incluso si dijiste que sí antes y luego cambiaste de parecer. Tienes derecho a decir “basta” en cualquier momento, y tu pareja debe respetarlo.</br>
-        ');
+        }, ['DerechosSexualesReproductivosid']);
 
     }
+    public function askPlacerSexual(){
 
-public function askSaludSexual(){
-    $question = Question::create('Para conocer mas sobre la salud sexual, selecciona alguna de tu interés:')
-        ->fallback('Edad no valida')
-        ->callbackId('SaludSexualid')
-        ->addButtons([
-            Button::create('¿Qué es?')->value('¿Qué es?'),
-            Button::create('Problemas relacionados con la Salud sexual')->value('Consentir'),
-            Button::create('A tomar en cuenta para posibilitar la salud sexual')->value('A tomar en cuenta para posibilitar la salud sexual'),
-        ]);
+        $question = Question::create('Para conocer mas sobre el placer sexual, selecciona alguna de tu interés:')
+            ->fallback('Edad no valida')
+            ->callbackId('PlacerSexualid')
+            ->addButtons([
+                Button::create('¿Qué es?')->value('¿Qué es?'),
+                Button::create('Derecho al placer sexual')->value('Derecho al placer sexual'),
+                Button::create('El goce')->value('El goce'),
+            ]);
 
-    $this->ask($question, function (Answer $answer) {
-        $selectedValue = $answer->getValue();
-        if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la Salud sexual', 'A tomar en cuenta para posibilitar la salud sexual'])) {
-            $this->say("Haz click en un opcion valida");
-            $this->repeat();
-        } else {
-            $this->SaludSexual = $selectedValue;
-            $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-            $this->bot->typesAndWaits($this->tiempoRespuesta);
-            if($selectedValue=='¿Qué es?'){
-                $this->say('«...un estado de bienestar físico, mental y social en relación con la sexualidad, la cual no es la ausencia de enfermedad, disfunción o incapacidad. La salud sexual requiere un enfoque positivo y respetuoso de la sexualidad y de las relaciones sexuales, así como la posibilidad de tener experiencias sexuales placenteras y seguras, libres de toda coacción, discriminación y violencia. Para que la salud sexual se logre y se mantenga, los derechos sexuales de todas las personas deben ser respetados, protegidos y ejercidos a plenitud.»(OMS, 2006a)');
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['¿Qué es?', 'Derecho al placer sexual', 'El goce'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->PlacerSexual = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTepuedoApoyarConAlgoMas();
-            }elseif($selectedValue=='Problemas relacionados con la Salud sexual'){
-                $this->say('
-                   1. infecciones con el virus de la inmunodeficiencia humana (VIH), infecciones de transmisión sexual y del aparato reproductor, así como sus consecuencias adversas (por ejemplo, cáncer e infertilidad);</br> 
-                    Te comparto los nombres de algunos estudios que permiten identificar y prevenir:</br>
-                            <ul>
-                            <li>. Pruebas inmunológicas para detectar VIH, VPH o Hepatitis B y C.</li>
-                            <li>. Colposcopia</li>
-                            <li>. Papanicolau </li>
-                            <li>. Mastografía </li>
-                            </ul> 
-                   2. embarazos no deseados y abortos;</br>
-                   3. disfunción sexual; La detección y el manejo de las disfunciones sexuales son componentes esenciales de la atención a la salud sexual. La orientación psicosexual proporciona a los pacientes apoyo e información u orientación específica relacionada con sus problemas sexuales, lo cual puede ayudar a que recuperen una actividad sexual satisfactoria.</br>
-                   4. violencia sexual; </br>
-                   5. prácticas nocivas (entre ellas la mutilación genital femenina).</br>
 
-                ');
+                if($selectedValue=='¿Qué es?'){
+                    $this->say('“la satisfacción y disfrute físico y psicológico derivado de experiencias eróticas compartidas o solitarias, en la que se involucran o entran en juego pensamientos, fantasías, sueños, emociones y sentimientos” (WAS, 2019).');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }elseif($selectedValue=='Derecho al placer sexual'){
+                    $this->say('Sabias que el placer sexual forma parte de los derechos sexuales considerados como derechos humanos.');
+                    $this->say('<b>Derecho a:</b></br><ul>
+                                <li>. Decidir de forma libre, autónoma e informada sobre nuestro cuerpo y nuestra sexualidad.</li>
+                                <li>. Ejercer y disfrutar plenamente nuestra sexualidad.</li>
+                                <li>. Manifestar públicamente nuestros afectos.</li>
+                                <li>. Decidir libremente con quien o quienes relacionarnos afectiva, erótica y socialmente.</li>
+                                <li>. Que se respete nuestra privacidad e intimidad y a que se resguarde confidencialmente nuestra información personal.</li>
+                                </ul>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say('<b>Derecho a:</b></br>
+                                  <ul>
+                                    <li>. La vida, a la integridad física, psicológica y sexual.</li>
+                                    <li>. Decidir de manera libre e informada sobre nuestra vida reproductiva.</li>
+                                    <li>. La igualdad.</li>
+                                    <li>. Vivir libres de discriminación.</li>
+                                    <li>. La información actualizada, veraz, completa, científica y laica sobre sexualidad.</li>
+                                    <li>. La educación integral en sexualidad.</li>
+                                    <li>. Los servicios de salud sexual y reproductiva.</li>
+                                    <li>. La identidad sexual.</li>
+                                    <li>. La participación en las políticas públicas sobre sexualidad y reproducción.</li>
+                                </ul>
+                            ');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }elseif($selectedValue=='El goce'){
+                    $this->say('Todas las personas tenemos derecho al libre goce del propio cuerpo incluyendo el placer sexual. Históricamente los estereotipos y roles de género han limitado la forma en que las mujeres  experimentan y disfrutan su sexualidad. ');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
 
-            }elseif($selectedValue=='A tomar en cuenta para posibilitar la salud sexual'){
-                $this->say('Acceso a información integral de buena calidad sobre sexo y sexualidad; conocimiento de los riesgos que pueden correr y su vulnerabilidad ante las consecuencias adversas de la actividad sexual sin protección; posibilidad de acceder a la atención de salud sexual; residencia en un entorno que afirme y promueva la salud sexual.');
-                $this->askTepuedoApoyarConAlgoMas();
+
             }
+        }, ['PlacerSexualid']);
 
+    }
+    public function askConsentir(){
+            $this->say('Consiste en establecer tus límites personales y respetar los de las personas con las que te relacionas. Cada persona tiene límites distintos y todo el mundo merece que sean respetados.Consentir se acompaña de los siguientes puntos:');
+            $this->say('
+                    El consentimiento tiene las siguientes características:</br></br>
+                    <b>Se da libremente.</b> Consentir es una opción que tomas sin presión, sin manipulación o sin la influencia de las drogas o el alcohol.</br>
+                    <b>Es deseado.</b> Cuando se trata de sexo, debes hacer las cosas que DESEAS hacer, no lo que otras personas esperan que hagas.</br>
+                    <b>Es específico.</b> Decir que sí a algo (como ir a besarse al dormitorio) no significa que aceptes hacer otras cosas (como tener relaciones sexuales).</br>
+                    <b>Se brinda estando informada.</b> Solo puedes consentir algo si tienes toda la información al respecto. Por ejemplo, si alguien dice que usará un condón y luego no lo hace, no hubo consentimiento total.</br>
+                    <b>Es reversible.</b> Todos pueden cambiar de parecer sobre lo que desean hacer, en cualquier momento. Incluso si ya lo hicieron antes y ambos están desnudos en la cama.</br></br>
+                    Tú tienes la última palabra sobre lo que pasa con tu cuerpo. No importa si ya lo hicieron o incluso si dijiste que sí antes y luego cambiaste de parecer. Tienes derecho a decir “basta” en cualquier momento, y tu pareja debe respetarlo.</br>
+            ');
 
         }
-    }, ['SaludSexualid']);
+    public function askSaludSexual(){
+        $question = Question::create('Para conocer mas sobre la salud sexual, selecciona alguna de tu interés:')
+            ->fallback('Edad no valida')
+            ->callbackId('SaludSexualid')
+            ->addButtons([
+                Button::create('¿Qué es?')->value('¿Qué es?'),
+                Button::create('Problemas relacionados con la Salud sexual')->value('Consentir'),
+                Button::create('A tomar en cuenta para posibilitar la salud sexual')->value('A tomar en cuenta para posibilitar la salud sexual'),
+            ]);
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la Salud sexual', 'A tomar en cuenta para posibilitar la salud sexual'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->SaludSexual = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='¿Qué es?'){
+                    $this->say('«...un estado de bienestar físico, mental y social en relación con la sexualidad, la cual no es la ausencia de enfermedad, disfunción o incapacidad. La salud sexual requiere un enfoque positivo y respetuoso de la sexualidad y de las relaciones sexuales, así como la posibilidad de tener experiencias sexuales placenteras y seguras, libres de toda coacción, discriminación y violencia. Para que la salud sexual se logre y se mantenga, los derechos sexuales de todas las personas deben ser respetados, protegidos y ejercidos a plenitud.»(OMS, 2006a)');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTepuedoApoyarConAlgoMas();
+                }elseif($selectedValue=='Problemas relacionados con la Salud sexual'){
+                    $this->say('
+                       1. infecciones con el virus de la inmunodeficiencia humana (VIH), infecciones de transmisión sexual y del aparato reproductor, así como sus consecuencias adversas (por ejemplo, cáncer e infertilidad);</br> 
+                        Te comparto los nombres de algunos estudios que permiten identificar y prevenir:</br>
+                                <ul>
+                                <li>. Pruebas inmunológicas para detectar VIH, VPH o Hepatitis B y C.</li>
+                                <li>. Colposcopia</li>
+                                <li>. Papanicolau </li>
+                                <li>. Mastografía </li>
+                                </ul> 
+                       2. embarazos no deseados y abortos;</br>
+                       3. disfunción sexual; La detección y el manejo de las disfunciones sexuales son componentes esenciales de la atención a la salud sexual. La orientación psicosexual proporciona a los pacientes apoyo e información u orientación específica relacionada con sus problemas sexuales, lo cual puede ayudar a que recuperen una actividad sexual satisfactoria.</br>
+                       4. violencia sexual; </br>
+                       5. prácticas nocivas (entre ellas la mutilación genital femenina).</br>
+    
+                    ');
+
+                }elseif($selectedValue=='A tomar en cuenta para posibilitar la salud sexual'){
+                    $this->say('Acceso a información integral de buena calidad sobre sexo y sexualidad; conocimiento de los riesgos que pueden correr y su vulnerabilidad ante las consecuencias adversas de la actividad sexual sin protección; posibilidad de acceder a la atención de salud sexual; residencia en un entorno que afirme y promueva la salud sexual.');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['SaludSexualid']);
 
 
 
-}
-
-public function enproceso(): void
-    {
-
-        $this->say("aqui voy!!!! :)");
     }
+    public function enproceso(): void
+        {
+
+            $this->say("aqui voy!!!! :)");
+        }
 
 
 
 
     //Terminar
     public function askAntesQueTeVayasMeGustariaConversacionResultoUtil(): void
-    {
-        $question = Question::create('Antes de que te vayas me gustaría saber: ¿nuestra conversación te resulto útil?')
-            ->fallback('Edad no valida')
-            ->callbackId('AntesQueTeVayasMeGustariaConversacionResultoUtilid')
-            ->addButtons([
-                Button::create('Si')->value('Si'),
-                Button::create('No')->value('No'),
-            ]);
-        $this->ask($question, function (Answer $answer) {
-            $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
-                $this->say("Haz click en un opcion valida");
-                $this->repeat();
-            } else {
-                $this->AntesQueTeVayasMeGustariaConversacionResultoUtil = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue=='Si'){
-                        $this->askRecomendariasGuetzaPersonasConoces();
-                }else{
-                    $this->CompartemeTusSugerenciasPropuestas();
+        {
+            $question = Question::create('Antes de que te vayas me gustaría saber: ¿nuestra conversación te resulto útil?')
+                ->fallback('Edad no valida')
+                ->callbackId('AntesQueTeVayasMeGustariaConversacionResultoUtilid')
+                ->addButtons([
+                    Button::create('Si')->value('Si'),
+                    Button::create('No')->value('No'),
+                ]);
+            $this->ask($question, function (Answer $answer) {
+                $selectedValue = $answer->getValue();
+                if (!in_array($selectedValue, ['Si', 'No'])) {
+                    $this->say("Haz click en un opcion valida");
+                    $this->repeat();
+                } else {
+                    $this->AntesQueTeVayasMeGustariaConversacionResultoUtil = $selectedValue;
+                    $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    if($selectedValue=='Si'){
+                            $this->askRecomendariasGuetzaPersonasConoces();
+                    }else{
+                        $this->CompartemeTusSugerenciasPropuestas();
+                    }
+
+
+
                 }
-
-
-
-            }
-        }, ['AntesQueTeVayasMeGustariaConversacionResultoUtilid']);
-    }
+            }, ['AntesQueTeVayasMeGustariaConversacionResultoUtilid']);
+        }
     public function askRecomendariasGuetzaPersonasConoces(): void
     {
         $question = Question::create('¿Recomendarías Guetza a las personas que conoces? ')
@@ -3989,9 +4644,6 @@ public function enproceso(): void
             }
         }, ['ConsiderasInformacionBrindadaPuedesIntegrarDiaADiaid']);
     }
-
-
-
     public function askCompartemeTusSugerenciasPropuestas()
     {
 
@@ -4013,8 +4665,6 @@ public function enproceso(): void
 
         }, ['askCompartemeTusSugerenciasPropuestasid']);
     }
-
-
     public function askMensajeDespedida(): void
     {
         $this->say("Muchas gracias por compartirnos tus opiniones, recuerda que aquí estaré cuando lo necesites.");
@@ -4027,21 +4677,20 @@ public function enproceso(): void
                 </br>
                 Te invito a seguir a la Red Nacional de Refugios en todas nuestras redes sociales.
                 </br>
-                
+
                 <div class="social-bar">
                     <a href="https://rednacionalderefugios.org.mx/" class="icon facebook" target="_blank"><span class="fa fa-facebook-f"></span></a>
                     <a href="https://twitter.com/RNRoficial" class="icon twitter" target="_blank"><span class="fa fa-twitter"></span></a>
                     <a href="https://www.youtube.com/channel/UCIqcnApw7a7UpmTToVViGZQ/videos" class="icon youtube" target="_blank"><span class="fa fa-youtube"></span></a>
                     <a href="https://www.instagram.com/redrefugiosmx/" class="icon instagram" target="_blank"><span class="fa fa-instagram"></span></a>
                 </div>
-                
+
         ');
 
 
 
 
     }
-
     public function askTepuedoApoyarConAlgoMas(): void
     {
         $question = Question::create('¿Te puedo apoyar con algo más?')
@@ -4072,33 +4721,33 @@ public function enproceso(): void
         }, ['TepuedoApoyarAlgoMasid']);
     }
     public function askQuieroExplorarMas(): void
-    {
-        $question = Question::create('¿Quieres explorar más las opciones que tengo para ti?')
-            ->fallback('Edad no valida')
-            ->callbackId('TepuedoApoyarAlgoMasid')
-            ->addButtons([
-                Button::create('Más opciones')->value('Más opciones'),
-                Button::create('Terminar')->value('Terminar'),
-            ]);
-        $this->ask($question, function (Answer $answer) {
-            $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Más opciones', 'Terminar'])) {
-                $this->say("Haz click en un opcion valida");
-                $this->repeat();
-            } else {
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
+        {
+            $question = Question::create('¿Quieres explorar más las opciones que tengo para ti?')
+                ->fallback('Edad no valida')
+                ->callbackId('TepuedoApoyarAlgoMasid')
+                ->addButtons([
+                    Button::create('Más opciones')->value('Más opciones'),
+                    Button::create('Terminar')->value('Terminar'),
+                ]);
+            $this->ask($question, function (Answer $answer) {
+                $selectedValue = $answer->getValue();
+                if (!in_array($selectedValue, ['Más opciones', 'Terminar'])) {
+                    $this->say("Haz click en un opcion valida");
+                    $this->repeat();
+                } else {
+                    $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
 
-                if($selectedValue=='Más opciones'){
-                    $this->askQuieresSaberSituacionRiesgo();
-                }elseif($selectedValue=='Terminar'){
-                        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+                    if($selectedValue=='Más opciones'){
+                        $this->askQuieresSaberSituacionRiesgo();
+                    }elseif($selectedValue=='Terminar'){
+                            $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+                    }
+
+
+
                 }
-
-
-
-            }
-        }, ['TepuedoApoyarAlgoMasid']);
-    }
+            }, ['TepuedoApoyarAlgoMasid']);
+        }
 
 }
