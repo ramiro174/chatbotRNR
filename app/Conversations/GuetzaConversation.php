@@ -199,6 +199,7 @@ class GuetzaConversation extends Conversation
     public function run()
     {
        $this->askName();
+       //$this->askCuandoDirigeTeLlamaApodoDesagradeTest();
 
        // $this->askIdentificamosServiciosAtencionMujeresFiltro();
        // $this->askSucedioInmediato();
@@ -514,11 +515,11 @@ class GuetzaConversation extends Conversation
 
         if($this->edad<=17){
             $this->say("Es importante que identifiques a una persona adulta que pueda apoyarte cuando la situación de violencia se presente, así como tener un plan de seguridad, aquí puedes encontrar algunas acciones que sin importantes tomes en cuenta");
-            $this->say('<img src="/imageneschatbot/postal1.jpeg" style="width:100%"/>');
+            $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
 
         }else{
-            $this->say("MUJERES:En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
-            $this->say('<img src="/imageneschatbot/postal1.jpeg" style="width:100%"/>');
+            $this->say("En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
+            $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
         }
 
 
@@ -3728,6 +3729,8 @@ class GuetzaConversation extends Conversation
         }, ['QuieresSaberQueConsisteid']);
     }
 
+
+    //test
     public function askCuandoDirigeTeLlamaApodoDesagradeTest():void{
         $question = Question::create('¿Cuándo se dirige a ti te llama por un apodo que te desagrade o con groserías?')
             ->fallback('Edad no valida')
@@ -4400,7 +4403,7 @@ class GuetzaConversation extends Conversation
             }
         }, ['SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTestid']);
     }
-
+//test
 
 
 
@@ -4758,7 +4761,7 @@ class GuetzaConversation extends Conversation
 
     public function stopsConversation(IncomingMessage $message):bool
     {
-        if (  in_array($message->getText(),['Iniciar','iniciar','comenzar','Comenzar','INICIAR','INiciar'])) {
+        if (  in_array($message->getText(),['hola','Iniciar','iniciar','comenzar','Comenzar','INICIAR','INiciar'])) {
             return true;
         }
 
