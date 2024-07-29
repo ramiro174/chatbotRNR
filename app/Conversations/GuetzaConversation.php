@@ -6,6 +6,7 @@ use App\Models\Instituciones_Organizaciones;
 use App\Models\Programas_Sociales_Tramites;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Incoming\IncomingMessage;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,8 +16,8 @@ class GuetzaConversation extends Conversation
 {
     protected string $nombre;
     protected string $email;
-    protected string $edad;
-    protected string $estado_republica;
+    protected int $edad=0;
+    protected string $estado_republica='';
     protected string $SiEstasAcompanadoMujerEllaTuEncuentranRiesgo;
 
     protected string $genero;
@@ -197,8 +198,9 @@ class GuetzaConversation extends Conversation
 
     public function run()
     {
-       $this->askName();
-        //$this->askIdentificamosServiciosAtencionMujeresFiltro();
+       //$this->askName();
+
+        $this->askIdentificamosServiciosAtencionMujeresFiltro();
        // $this->askSucedioInmediato();
       // $this->askAquiTengoUnasOpcionesParaTi();
         //$this->askaskTepuedoApoyarConAlgoMas();
@@ -511,10 +513,12 @@ class GuetzaConversation extends Conversation
         $this->bot->typesAndWaits($this->tiempoRespuesta);
 
         if($this->edad<=17){
-            $this->say("Es importante que identifiques a una persona adulta que pueda apoyarte cuando la situación de violencia se presente, así como tener un plan de seguridad, aquí puedes encontrar algunas acciones que sin importantes tomes en cuenta POSTAL WENDY");
+            $this->say("Es importante que identifiques a una persona adulta que pueda apoyarte cuando la situación de violencia se presente, así como tener un plan de seguridad, aquí puedes encontrar algunas acciones que sin importantes tomes en cuenta");
+            $this->say('<img src="/imageneschatbot/postal1.jpeg" style="width:100%"/>');
 
         }else{
             $this->say("MUJERES:En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
+            $this->say('<img src="/imageneschatbot/postal1.jpeg" style="width:100%"/>');
         }
 
 
@@ -4587,7 +4591,8 @@ class GuetzaConversation extends Conversation
                     if($selectedValue=='Si'){
                             $this->askRecomendariasGuetzaPersonasConoces();
                     }else{
-                        $this->CompartemeTusSugerenciasPropuestas();
+                        $this->askCompartemeTusSugerenciasPropuestas();
+
                     }
 
 
@@ -4644,7 +4649,7 @@ class GuetzaConversation extends Conversation
             }
         }, ['ConsiderasInformacionBrindadaPuedesIntegrarDiaADiaid']);
     }
-    public function askCompartemeTusSugerenciasPropuestas()
+    public function askCompartemeTusSugerenciasPropuestas():void
     {
 
         $question = Question::create('Compárteme tus sugerencias o propuestas')
@@ -4749,5 +4754,15 @@ class GuetzaConversation extends Conversation
                 }
             }, ['TepuedoApoyarAlgoMasid']);
         }
+
+
+    public function stopsConversation(IncomingMessage $message):bool
+    {
+        if (  in_array($message->getText(),['Iniciar','iniciar','comenzar','Comenzar','INICIAR','INiciar'])) {
+            return true;
+        }
+
+        return false;
+    }
 
 }
