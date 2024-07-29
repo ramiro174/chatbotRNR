@@ -30,7 +30,6 @@ class Instituciones_Organizaciones extends Model
     {
         $query->where('Otras_identidades', 1);
     }
-
     public function scopeIdentidad (Builder $query, string $identidad): void
     {
         if($identidad=="Mujer"){

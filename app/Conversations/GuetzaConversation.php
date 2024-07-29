@@ -444,11 +444,12 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits(2);
                    $this->askIdentificamosServiciosAtencionMujeresFiltro();
                 } elseif($selectedValue=='No') {
-
+                    $this->bot->typesAndWaits(2);
                     $this->askQuieresSaberCasoHeridaLesion();
 
                 }
                 else{
+                    $this->bot->typesAndWaits(2);
                     $this->askQuieresSaberSituacionRiesgo();
                 }
             }
@@ -501,14 +502,19 @@ class GuetzaConversation extends Conversation
         $edad= $this->edad?$this->edad:0;
         $estado= $this->estado_republica?$this->estado_republica:"";
 
+        if($this->genero=='Mujer'){
+
             $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::edadMenorMujer($edad)
+                ->ClasificacionEmergencia()
                 ->estadoRepublica($estado)
-                ->orWhere(function ($q) use ($edad) {
-                    return $q->edadMenorHombre($edad);
-                })
-
                 ->get());
+        }else{
 
+            $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::edadMenorHombre($edad)
+                ->ClasificacionEmergencia()
+                ->estadoRepublica($estado)
+                ->get());
+        }
         $this->say("Identificamos los siguientes servicios de atención a las mujeres en tu entidad.");
         $this->say($instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
