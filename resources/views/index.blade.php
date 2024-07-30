@@ -80,7 +80,9 @@
                 padding-right: 3px;
                 vertical-align: middle;
                 font-weight: 900;
-                height:80px
+                height:80px;
+
+
             }
             #messageArea{
                 height:calc(100vh - 120px);
