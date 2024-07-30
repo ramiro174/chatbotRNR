@@ -75,7 +75,7 @@
                 height:80px
             }
             .chatbot:before {
-                content:url('https://chatbot.rednacionalderefugios.org.mx/robot4.png');
+                content:url('https://chatbot.rednacionalderefugios.org.mx/robot4.svg');
                 display: inline-block;
                 padding-right: 3px;
                 vertical-align: middle;
