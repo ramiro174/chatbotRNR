@@ -567,7 +567,7 @@ class GuetzaConversation extends Conversation
             $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
 
         }else{
-            $this->say("En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta POSTAL  Si tienes hijas e hijos, es importante que también consideres estos aspectos POSTAL");
+            $this->say("En muchas ocasiones, es necesario salir de  casa ante la violencia  que se vive en ella, si fuera el caso, aquí puedes encontrar algunas  acciones que es importante tomar en cuenta");
             $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
         }
 
@@ -4693,6 +4693,7 @@ class GuetzaConversation extends Conversation
                     <b>Es reversible.</b> Todos pueden cambiar de parecer sobre lo que desean hacer, en cualquier momento. Incluso si ya lo hicieron antes y ambos están desnudos en la cama.</br></br>
                     Tú tienes la última palabra sobre lo que pasa con tu cuerpo. No importa si ya lo hicieron o incluso si dijiste que sí antes y luego cambiaste de parecer. Tienes derecho a decir “basta” en cualquier momento, y tu pareja debe respetarlo.</br>
             ');
+            $this->askTepuedoApoyarConAlgoMas();
 
         }
     public function askSaludSexual(){
@@ -4734,6 +4735,7 @@ class GuetzaConversation extends Conversation
                        5. prácticas nocivas (entre ellas la mutilación genital femenina).</br>
     
                     ');
+                    $this->askTepuedoApoyarConAlgoMas();
 
                 }elseif($selectedValue=='A tomar en cuenta para posibilitar la salud sexual'){
                     $this->say('Acceso a información integral de buena calidad sobre sexo y sexualidad; conocimiento de los riesgos que pueden correr y su vulnerabilidad ante las consecuencias adversas de la actividad sexual sin protección; posibilidad de acceder a la atención de salud sexual; residencia en un entorno que afirme y promueva la salud sexual.');
