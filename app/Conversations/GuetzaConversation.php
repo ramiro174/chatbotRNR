@@ -2125,13 +2125,16 @@ class GuetzaConversation extends Conversation
             }
             elseif($selectedValue=='Tipos de aborto'){
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTiposdeAborto();
             }
             elseif($selectedValue=='¿Quieres saber más?'){
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say('Tus derechos sexuales y reproductivos están vinculados con la seguridad, la libertad, la integridad física, las decisiones sobre sexualidad, la maternidad y el rechazo a toda forma de violencia, discriminación y opresión.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say('Los he convertido en frases para que los puedas sentir tuyos, los tengo en grupos de tres en tres.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
 
-                $this->askEsmiderechoDecidirFormaLibre();
+                $this->askQuieresSaberMasAborto5();
             }
 
         }, ['DebesSaberTienesDerechoSobreDerechoSexualesid']);
@@ -2251,6 +2254,37 @@ class GuetzaConversation extends Conversation
                 if($selectedValue=='Si'){
 
                    $this->askEsmiderechoRecibirInformacion();
+                }
+                else{
+
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['QuieresSaberMasAbortoid']);
+    }
+    public function askQuieresSaberMasAborto5(): void
+    {
+        $question = Question::create('Quieres saber más?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberMasAbortoid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No')
+            ]);
+        $this->ask($question, function (Answer $answer)  {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si','No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberMasAborto = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+
+                    $this->askEsmiderechoDecidirFormaLibre();
                 }
                 else{
 
