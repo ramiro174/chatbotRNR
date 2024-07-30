@@ -19,7 +19,9 @@
             inputtext.addEventListener("keyup", function(event) {
                 if (event.code === 'Enter') {
                      let div = document.getElementById("messageArea");
-                    div.scrollTop = div.scrollHeight+200;
+                    div.scrollTop = div.scrollHeight+220;
+
+                    document.activeElement.blur();
 
                 }
             });
