@@ -2090,9 +2090,9 @@ class GuetzaConversation extends Conversation
             }
             elseif($selectedValue == 'Plenipausia') {
                 $this->say('Se refiere a la plenitud que la mujer alcanza en la menopausia cuando rompe con los mitos de esta etapa. </br>
-                            . Identifica que las mujeres somos cíclicas.</br>
-                            . Culturalmente se asocia a la pérdida o a lo negativo, pero desde la medicina de la tierra presupone una conexión con la CREATIVIDAD y la SABIDURIA  de la cuerpa. </br>
-                            . Es la oportunidad de dedicarse completamente a una misma');
+                            &#8226; Identifica que las mujeres somos cíclicas.</br>
+                            &#8226; Culturalmente se asocia a la pérdida o a lo negativo, pero desde la medicina de la tierra presupone una conexión con la CREATIVIDAD y la SABIDURIA  de la cuerpa. </br>
+                            &#8226; Es la oportunidad de dedicarse completamente a una misma');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTecompartimosAPPInformacion();
             }
