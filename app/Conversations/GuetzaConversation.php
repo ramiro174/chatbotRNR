@@ -4945,7 +4945,7 @@ class GuetzaConversation extends Conversation
 
     public function stopsConversation(IncomingMessage $message):bool
     {
-        if (  in_array($message->getText(),['hola','Iniciar','iniciar','comenzar','Comenzar','INICIAR','INiciar'])) {
+        if (  in_array($message->getText(),['hola','ola','Hola','HOLA','Ola','hOla','HOla'])) {
             return true;
         }
 
