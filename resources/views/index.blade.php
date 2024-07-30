@@ -75,7 +75,7 @@
                 height:80px
             }
             .chatbot:before {
-                content:url('https://chatbot.mapadeaccesoalajusticiarnr.com.mx/robot.png');
+                content:url('https://chatbot.rednacionalderefugios.org.mx/robot2.png');
                 display: inline-block;
                 padding-right: 3px;
                 vertical-align: middle;
