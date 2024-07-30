@@ -2102,20 +2102,13 @@ class GuetzaConversation extends Conversation
                 $this->askTecompartimosAPPInformacion();
             }
             elseif($selectedValue == 'Métodos Anticonceptivos') {
-                $this->say('<ul>
-                            <li>Para prevenir un embarazo, empieza a usar un método anticonceptivo, como alguno de los siguientes:
-                            </li>
-                            <li>Un condón interno femenino o uno externo masculino.
-                            </li>
-                            <li>Un método hormonal, como las pastillas, inyecciones o implantes anticonceptivos. De haber tenido un aborto el mismo día que te hagas el aborto. Evitarás un embarazo si empiezas a usar un método hormonal durante los primeros 7 días después del aborto. Pero si esperas más de 7 días para empezar a usarlo, debes usar un condón durante la primera semana, ya que los métodos hormonales toman tiempo para empezar a funcionar y protegerte. 
-                            </li>
-                            <li>	
-                            Te pueden colocar un DIU, en caso de aborto tan pronto como confirmen que el aborto fue exitoso y que no hay infección. Usa condones hasta que te coloquen el DIU.
-                            </li>
-                            <li>
-                            Existen métodos permanentes para que las personas que tienen la certeza de que nunca más quieren tener otro embarazo. La operación llamada “ligadura de trompas” en la que se cortan los tubos que llevan los óvulos al útero, lo que previene el embarazo. También hay una operación llamada “vasectomía” en la que se cortan los tubos que llevan el esperma desde los testículos al pene.  Esto impide que el esperma salga del pene durante la eyaculación, lo que previene el embarazo. 
-                            </li>
-                            </ul>');
+                $this->say('
+                            &#8226; Para prevenir un embarazo, empieza a usar un método anticonceptivo, como alguno de los siguientes: </br>
+                            &#8226; Un condón interno femenino o uno externo masculino. </br>
+                            &#8226; Un método hormonal, como las pastillas, inyecciones o implantes anticonceptivos. De haber tenido un aborto el mismo día que te hagas el aborto. Evitarás un embarazo si empiezas a usar un método hormonal durante los primeros 7 días después del aborto. Pero si esperas más de 7 días para empezar a usarlo, debes usar un condón durante la primera semana, ya que los métodos hormonales toman tiempo para empezar a funcionar y protegerte. </br> 
+                            &#8226; Te pueden colocar un DIU, en caso de aborto tan pronto como confirmen que el aborto fue exitoso y que no hay infección. Usa condones hasta que te coloquen el DIU. </br>
+                            &#8226; Existen métodos permanentes para que las personas que tienen la certeza de que nunca más quieren tener otro embarazo. La operación llamada “ligadura de trompas” en la que se cortan los tubos que llevan los óvulos al útero, lo que previene el embarazo. También hay una operación llamada “vasectomía” en la que se cortan los tubos que llevan el esperma desde los testículos al pene.  Esto impide que el esperma salga del pene durante la eyaculación, lo que previene el embarazo. </br> 
+                            ');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTecompartimosAPPInformacion();
 
@@ -2454,7 +2447,7 @@ class GuetzaConversation extends Conversation
                     $this->askTecompartimosAPPInformacion();
                 }
                 elseif($selectedValue=='Aborto con pastillas'){
-                    $this->say('13 a 25 semanas. Cuando un aborto se realiza con medicamentos,  se llama aborto médico o aborto con pastillas. Un aborto con pastillas dura más tiempo y expulsa una mayor cantidad de tejido que los abortos que se realizan antes de estas semanas. El misoprostol es un medicamento común que puede interrumpir el embarazo de forma segura y eficaz, similar a un aborto espontáneo natural.  Puede usarse  solo,  y es aún más efectivo cuando se usa junto con la mifepristona,  una medicina que solo se usa para abortos');
+                    $this->say('13 a 25 semanas. Cuando un aborto se realiza con medicamentos,  se llama aborto médico o aborto con pastillas. Un aborto con pastillas dura más tiempo y expulsa una mayor cantidad de tejido que los abortos que se realizan antes de estas semanas. El misoprostol es un medicamento común que puede interrumpir el embarazo de forma segura y eficaz, similar a un aborto espontáneo natural.  Puede usarse  solo,  y es aún más efectivo cuando se usa junto con la mifepristona,  una medicina que solo se usa para abortos.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTecompartimosAPPInformacion();
                 }
