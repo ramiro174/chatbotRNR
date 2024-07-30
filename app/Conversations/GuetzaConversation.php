@@ -1750,7 +1750,8 @@ class GuetzaConversation extends Conversation
                     $this->askTengoMasInformacionSepasHAcerDespuesEvento();
 
                 }else{
-               //hoja 15
+
+                    $this->askPlanesDeAccionProteccionSituacionViolencia();
                 }
 
 
