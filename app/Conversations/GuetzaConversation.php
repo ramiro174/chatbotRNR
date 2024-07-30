@@ -1674,11 +1674,11 @@ class GuetzaConversation extends Conversation
             } elseif($selectedValue=='Física'){
                 $this->askAquiTemuestroPlanesAccionFisica();
             } elseif($selectedValue=='Psicológica'){
-                $this->say('Tus contactos pueden llamarte, acudir a tu casa o al lugar donde te encuentres para cerciorarse de que estés bien, así como frenar la situación de violencia y en el momento oportuno, poder salir del lugar con cualquier excusa, evitando que la situación de peligro se agrave');
+                $this->say('Tus contactos pueden llamarte, acudir a tu casa o al lugar donde te encuentres para cerciorarse de que estés bien, así como frenar la situación de violencia y en el momento oportuno, poder salir del lugar con cualquier excusa, evitando que la situación de peligro se agrave.');
                 $this->askTepuedoApoyarConAlgoMas();
 
             } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'){
-                $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, romper con la relación, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan');
+                $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, romper con la relación, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan.');
                 $this->askTepuedoApoyarConAlgoMas();
             } elseif($selectedValue=='Anterior'){
                 $this->askAquiTengoUnasOpcionesParaTi();
@@ -2013,13 +2013,15 @@ class GuetzaConversation extends Conversation
                 $this->say('Maleta/mochila de emergencia: con ropa, documentos importase y cosas tuyas, y si tienes hijas/os también de ellos, si es posible ten un celular alterno con crédito. Déjalos con alguien de confianza, como una vecina, un familiar, una amistad. No olvides llevar medicamentos si están en algún tratamiento.  
                             Habla sobre tu plan de seguridad con tus hijas/os: Deben tener una señal que solamente ustedes conozcan que signifique que deben salir de la casa rápidamente, llamar a la policía o pedir apoyo con alguna vecina/o');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->say('Postal Wendy');
+                $this->say('Postal Wendy hijos');
+
                 $this->askTepuedoApoyarConAlgoMas();
 
 
             }elseif($selectedValue == 'Identifica personas conocidas, amigas o familiares que puedan apoyarte'){
                 $this->say('<b>Redes de apoyo:</b> elige personas conocidas, amigas o familiares que puedan apoyarte, y contáctalas para que estén pendientes de la situación y puedan apoyarte, puedes acordar previamente con ellas claves con emojis para que sepan que significa y llamar a la policía de ser necesario. Memoriza o haz una lista con los números de teléfono de tus amistades, familiares, personas del trabajo o de alguna organización o servicio local en donde te puedan ayudar.  Puedes ir a casa de alguna amistad o familiar, preferible a un lugar donde la persona agresora no se atreva a ir a buscarte o a la casa de alguien que él no conozca. Si no cuenta son una red de apoyo puedes comunicarte con nosotras.');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
 
 
             }elseif($selectedValue == 'Identificamos los siguientes servicios de atención a las mujeres en tu entidad'){
@@ -2087,9 +2089,9 @@ class GuetzaConversation extends Conversation
                 $this->askTecompartimosAPPInformacion();
             }
             elseif($selectedValue == 'Plenipausia') {
-                $this->say('Se refiere a la plenitud que la mujer alcanza en la menopausia cuando rompe con los mitos de esta etapa.
-                            . Identifica que las mujeres somos cíclicas.
-                            . Culturalmente se asocia a la pérdida o a lo negativo, pero desde la medicina de la tierra presupone una conexión con la CREATIVIDAD y la SABIDURIA  de la cuerpa. 
+                $this->say('Se refiere a la plenitud que la mujer alcanza en la menopausia cuando rompe con los mitos de esta etapa. </br>
+                            . Identifica que las mujeres somos cíclicas.</br>
+                            . Culturalmente se asocia a la pérdida o a lo negativo, pero desde la medicina de la tierra presupone una conexión con la CREATIVIDAD y la SABIDURIA  de la cuerpa. </br>
                             . Es la oportunidad de dedicarse completamente a una misma');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTecompartimosAPPInformacion();
