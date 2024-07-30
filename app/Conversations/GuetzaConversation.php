@@ -251,7 +251,7 @@ class GuetzaConversation extends Conversation
     }
     public function askName(): void
     {
-        $this->ask('¿Me gustaría conocer tu nombre o cómo deseas que te llame?', function (Answer $answer) {
+        $this->ask('Me gustaría conocer tu nombre o ¿cómo deseas que te llame?', function (Answer $answer) {
             // Save result
             $this->nombre = $answer->getText();
             $this->bot->typesAndWaits($this->tiempoRespuesta);
