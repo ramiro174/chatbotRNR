@@ -125,6 +125,47 @@ class GuetzaConversation extends Conversation
     protected string $LaViolenciaPresentaDiferentesAmbitos;
     protected string $TanProntoComoSeaSeguroHacerlo;
     protected string $AlgunasOpcionesInformacionAdicional;
+
+
+    //Test
+    protected int $ResultadoTest=0;
+    protected string $CuandoDirigeTeLlamaApodoDesagrdeTest;
+    protected string $TeDiceQueEstasConAlguienMasTest;
+    protected string $TeHaInterrumpidoEnSituacionesLaboralesTest;
+    protected string $TeDicenTieneOtrasParejasTest;
+    protected string $TodoTiempoQuiereSaberDondeEstasTest;
+    protected string $TeCriticaBurlaCUerpoErroresTest;
+    protected string $TeHaPedidoCambiesFormaVestirTest;
+    protected string $CuandoEstasConEsaPersonaTensionTest;
+    protected string $HaRevisadoCelularLlamadasMensajesTest;
+    protected string $ParaDecidirLoHaranCuandoSalenTest;
+    protected string $HaInterferidoRelacionesConversacionesInternetTest;
+    protected string $CuandoHablanTesientesMalHablaSexoTest;
+    protected string $HaHechoUsoDineroTusAhorrosTest;
+    protected string $SientesConstantementeEstaControlandoTest;
+    protected string $TeHaLimitadoControladoGastosCubrirTest;
+    protected string $HasEscondidoDestruidoTusDocumentosTest;
+    protected string $SiHasCedidoDeseosSexualesTest;
+    protected string $SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest;
+    protected string $TeHaObligadoVerPornografiaTest;
+    protected string $HaDifundidoInformacionImagenesEnviadoTest;
+    protected string $TeHaPrecionadoObligadoConsumirDrogaTest;
+    protected string $SiTomaAlcoholConsumeAlgunTipoDrogaTest;
+    protected string $TienesRendirleCuentasTodoTest;
+    protected string $ACausaProblemasTienesPerdidaApetitoTest;
+    protected string $CuandoSeEnojaDiscutenTest;
+    protected string $TeHaGolpeadoAlgunaParteCuerpoTest;
+    protected string $TeHaObligadoPresionadoEnviarImagenesIntimasTest;
+    protected string $TehaCausadoLesionesAmeritenRecibirAtencionMedicaTest;
+    protected string $TeHaAmenazadoConMatarteCuandoQuieresTerminarTest;
+    protected string $TeHaExigidoDemuestresDondeEstaTuGeoTest;
+    protected string $DespuesDisculpasMuestraCArinoAtencionTest;
+    protected string $SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest;
+
+
+
+
+
         //Amor Propio
     protected string $PuedesIrMedicoSolaAunqueSeaEnfermaGrave;
     protected string $CreesNoTienesMuchoSentirteOrgullosa;
@@ -135,6 +176,8 @@ class GuetzaConversation extends Conversation
     //Derechos sexuales y reproductivos
     protected string $DerechosSexualesReproductivos;
     protected string $PlacerSexual;
+
+
 
 
 
@@ -199,7 +242,7 @@ class GuetzaConversation extends Conversation
     public function run()
     {
        $this->askName();
-       //$this->askCuandoDirigeTeLlamaApodoDesagradeTest();
+      // $this->askCuandoDirigeTeLlamaApodoDesagradeTest();
 
        // $this->askIdentificamosServiciosAtencionMujeresFiltro();
        // $this->askSucedioInmediato();
@@ -3754,6 +3797,11 @@ class GuetzaConversation extends Conversation
                 $this->CuandoDirigeTeLlamaApodoDesagrdeTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
+
+
                 $this->askTeDiceQueEstasConAlguienMasTest();
             }
         }, ['CuandoDirigeTeLlamaApodoDesagrdeTestid']);
@@ -3775,6 +3823,9 @@ class GuetzaConversation extends Conversation
                 $this->TeDiceQueEstasConAlguienMasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askTeHaInterrumpidoEnSituacionesLaboralesTest();
             }
         }, ['TeDiceQueEstasConAlguienMasTestid']);
@@ -3796,6 +3847,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaInterrumpidoEnSituacionesLaboralesTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askTeDicenTieneOtrasParejasTest();
             }
         }, ['TeHaInterrumpidoEnSituacionesLaboralesTestid']);
@@ -3817,6 +3871,9 @@ class GuetzaConversation extends Conversation
                 $this->TeDicenTieneOtrasParejasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askTodoTiempoQuiereSaberDondeEstasTest();
             }
         }, ['TeDicenTieneOtrasParejasTestid']);
@@ -3838,6 +3895,9 @@ class GuetzaConversation extends Conversation
                 $this->TodoTiempoQuiereSaberDondeEstasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askTeCriticaBurlaCuerpoErroresTest();
             }
         }, ['TodoTiempoQuiereSaberDondeEstasTestid']);
@@ -3859,6 +3919,9 @@ class GuetzaConversation extends Conversation
                 $this->TeCriticaBurlaCUerpoErroresTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askTeHaPedidoCambiesFormaVestirTest();
             }
         }, ['TeCriticaBurlaCUerpoErroresTestid']);
@@ -3880,6 +3943,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaPedidoCambiesFormaVestirTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askCuandoEstasConEsaPersonaTensionTest();
             }
         }, ['TeHaPedidoCambiesFormaVestirTestid']);
@@ -3901,6 +3967,9 @@ class GuetzaConversation extends Conversation
                 $this->CuandoEstasConEsaPersonaTensionTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askHaRevisadoCelularLlamadasMensajesTest();
             }
         }, ['CuandoEstasConEsaPersonaTensionTestid']);
@@ -3922,6 +3991,9 @@ class GuetzaConversation extends Conversation
                 $this->HaRevisadoCelularLlamadasMensajesTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askParaDecidirLoHaranCuandoSalenTest();
             }
         }, ['HaRevisadoCelularLlamadasMensajesTestid']);
@@ -3943,6 +4015,9 @@ class GuetzaConversation extends Conversation
                 $this->ParaDecidirLoHaranCuandoSalenTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askHaInterferidoRelacionesConversacionesInternetTest();
             }
         }, ['ParaDecidirLoHaranCuandoSalenTestid']);
@@ -3964,6 +4039,9 @@ class GuetzaConversation extends Conversation
                 $this->HaInterferidoRelacionesConversacionesInternetTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askCuandoHablanTesientesMalHablaSexoTest();
             }
         }, ['HaInterferidoRelacionesConversacionesInternetTestid']);
@@ -3985,6 +4063,9 @@ class GuetzaConversation extends Conversation
                 $this->CuandoHablanTesientesMalHablaSexoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askHaHechoUsoDineroTusAhorrosTest();
             }
         }, ['CuandoHablanTesientesMalHablaSexoTestid']);
@@ -4006,6 +4087,9 @@ class GuetzaConversation extends Conversation
                 $this->HaHechoUsoDineroTusAhorrosTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=1;
+                }
                 $this->askSientesConstantementeEstaControlandoTest();
             }
         }, ['HaHechoUsoDineroTusAhorrosTestid']);
@@ -4027,6 +4111,9 @@ class GuetzaConversation extends Conversation
                 $this->SientesConstantementeEstaControlandoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askTeHaLimitadoControladoGastosCubrirTest();
             }
         }, ['SientesConstantementeEstaControlandoTestid']);
@@ -4048,6 +4135,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaLimitadoControladoGastosCubrirTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askHasEscondidoDestruidoTusDocumentosTest();
             }
         }, ['TeHaLimitadoControladoGastosCubrirTestid']);
@@ -4069,6 +4159,9 @@ class GuetzaConversation extends Conversation
                 $this->HasEscondidoDestruidoTusDocumentosTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askSiHasCedidoDeseosSexualesTest();
             }
         }, ['HasEscondidoDestruidoTusDocumentosTestid']);
@@ -4090,6 +4183,9 @@ class GuetzaConversation extends Conversation
                 $this->SiHasCedidoDeseosSexualesTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askSiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest();
             }
         }, ['SiHasCedidoDeseosSexualesTestid']);
@@ -4111,6 +4207,9 @@ class GuetzaConversation extends Conversation
                 $this->SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTeHaObligadoVerPornografiaTest();
             }
         }, ['SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTestid']);
@@ -4132,6 +4231,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaObligadoVerPornografiaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askHaDifundidoInformacionImagenesEnviadoTest();
             }
         }, ['TeHaObligadoVerPornografiaTestid']);
@@ -4153,6 +4255,9 @@ class GuetzaConversation extends Conversation
                 $this->HaDifundidoInformacionImagenesEnviadoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTeHaPrecionadoObligadoConsumirDrogaTest();
             }
         }, ['HaDifundidoInformacionImagenesEnviadoTestid']);
@@ -4174,6 +4279,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaPrecionadoObligadoConsumirDrogaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askSiTomaAlcoholConsumeAlgunTipoDrogaTest();
             }
         }, ['TeHaPrecionadoObligadoConsumirDrogaTestid']);
@@ -4195,6 +4303,9 @@ class GuetzaConversation extends Conversation
                 $this->SiTomaAlcoholConsumeAlgunTipoDrogaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askTienesRendirleCuentasTodoTest();
             }
         }, ['SiTomaAlcoholConsumeAlgunTipoDrogaTestid']);
@@ -4216,6 +4327,9 @@ class GuetzaConversation extends Conversation
                 $this->TienesRendirleCuentasTodoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=2;
+                }
                 $this->askACausaProblemasTienesPerdidaApetitoTest();
             }
         }, ['TienesRendirleCuentasTodoTestid']);
@@ -4237,6 +4351,9 @@ class GuetzaConversation extends Conversation
                 $this->ACausaProblemasTienesPerdidaApetitoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askCuandoSeEnojaDiscutenTest();
             }
         }, ['ACausaProblemasTienesPerdidaApetitoTestid']);
@@ -4258,6 +4375,9 @@ class GuetzaConversation extends Conversation
                 $this->CuandoSeEnojaDiscutenTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTeHaGolpeadoAlgunaParteCuerpoTest();
             }
         }, ['CuandoSeEnojaDiscutenTestid']);
@@ -4279,6 +4399,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaGolpeadoAlgunaParteCuerpoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTeHaObligadoPresionadoEnviarImagenesIntimasTest();
             }
         }, ['TeHaGolpeadoAlgunaParteCuerpoTestid']);
@@ -4300,6 +4423,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaObligadoPresionadoEnviarImagenesIntimasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTehaCausadoLesionesAmeritenRecibirAtencionMedicaTest();
             }
         }, ['TeHaObligadoPresionadoEnviarImagenesIntimasTestid']);
@@ -4321,6 +4447,9 @@ class GuetzaConversation extends Conversation
                 $this->TehaCausadoLesionesAmeritenRecibirAtencionMedicaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTeHaAmenazadoConMatarteCuandoQuieresTerminarTest();
             }
         }, ['TehaCausadoLesionesAmeritenRecibirAtencionMedicaTestid']);
@@ -4342,6 +4471,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaAmenazadoConMatarteCuandoQuieresTerminarTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askTeHaExigidoDemuestresDondeEstaTuGeoTest();
             }
         }, ['TeHaAmenazadoConMatarteCuandoQuieresTerminarTestid']);
@@ -4363,6 +4495,9 @@ class GuetzaConversation extends Conversation
                 $this->TeHaExigidoDemuestresDondeEstaTuGeoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askDespuesDisculpasMuestraCarinoAtencionTest();
             }
         }, ['TeHaExigidoDemuestresDondeEstaTuGeoTestid']);
@@ -4384,6 +4519,9 @@ class GuetzaConversation extends Conversation
                 $this->DespuesDisculpasMuestraCArinoAtencionTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
                 $this->askSeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest();
             }
         }, ['DespuesDisculpasMuestraCArinoAtencionTestid']);
@@ -4405,9 +4543,49 @@ class GuetzaConversation extends Conversation
                 $this->SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->say("Aqui voyyyyyy");
+                if($selectedValue!='Nunca'){
+                    $this->ResultadoTest+=3;
+                }
+                $this->askResultadoTest();
             }
         }, ['SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTestid']);
+    }
+
+    public function askResultadoTest(){
+        $r=$this->ResultadoTest;
+
+        if($r==0){
+            $this->say('¡Tu relación está libre de violencia! Mantente siempre atenta y acompaña a otras mujeres y niñas a concientizarse acerca de las violencias machistas.  Recuerda en la más mínima señal, toma decisiones, pon límites y busca acompañamiento. En la Red Nacional de Refugios te acompañamos, recuerda que un Refugio también es una charla, una orientación, ese lugar físico o emocional en donde te sientes con bienestar.');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal3.jpeg" style="width:100%"/>');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal6.jpeg" style="width:100%"/>');
+        }
+        if($r==1 && $r<=7){
+            $this->say('Al parecer hay situaciones en tu relación que te generan incomodidad, es esencial que no ignores estos sentimientos. Podrías estar en una relación de control o en una en la que no te sientes plenamente cómoda ni libre de ser tu misma. Es importante que hables sobre tus sentimientos con tu red de apoyo o que busques nuestro acompañamiento psicológico feminista, recuerda que es gratuito. Este acompañamiento te ayudará a determinar si tu relación te proporciona bienestar y te permitirá conocer diversas opciones. Recuerda, si algo te incomoda, merece tu atención.');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal2.jpeg" style="width:100%"/>');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal3.jpeg" style="width:100%"/>');
+        }
+        if($r==8 && $r<=18){
+            $this->say('La violencia nunca es aceptable, en ninguna circunstancia. Es vital que recuerdes que los malos tratos pueden escalar: desde forzarte a hacer algo que no deseas, empujones disfrazados de "juego" o insultos, hasta agresiones que te lleven al hospital o a una situación muy difícil de escapar. El amor no debe doler ni dañar. Sabemos que no es fácil, pero estamos aquí para acompañarte  a construir una relación basada en el respeto, la igualdad y libre de violencias. Puedes asistir a talleres, conversatorios y diversas actividades para aprender a manejar límites, conocer tus derechos y tomar decisiones sobre tu vida sin presiones, priorizándote a ti misma. Recuerda, tienes derecho a ser libre y a ser tratada con respeto siempre. Puedes contactarnos al 55 56 74 96 95 en CDMX y Zona metropolitana o si estás en el interior de la Republica al  800 822 4460, estamos las 24 horas del día todo el año. También nos puedes mandar mensaje privado a nuestras redes sociales ');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal2.jpeg" style="width:100%"/>');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal5.jpeg" style="width:100%"/>');
+        }
+        if( $r>18){
+            $this->say('Es importante que sepas que todo indica que estás en una situación de riesgo y que tu vida podría estar en peligro. Queremos que estés a salvo y queremos acompañarte. Busca apoyo inmediatamente, ya sea de una red de apoyo cercana, servicios de emergencia o líneas de ayuda. No estás sola en esto y hay personas y recursos disponibles para protegerte y asistirte. Si no tuvieras un lugar seguro a dónde ir llama al 55 56 74 96 95 o 800 822 4460 Si estás en riesgo y no puedes salir de tu casa llama al 911, si el evento de violencia ya pasó y no estás lastimada, puedes encontrar ayuda en una institución especializada');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
+            $this->bot->typesAndWaits(5);
+            $this->say('<img src="/imageneschatbot/postal5.jpeg" style="width:100%"/>');
+        }
+
+   $this->askTepuedoApoyarConAlgoMas();
     }
 //test
 
@@ -4775,3 +4953,10 @@ class GuetzaConversation extends Conversation
     }
 
 }
+
+
+
+
+
+
+
