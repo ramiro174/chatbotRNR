@@ -2517,14 +2517,47 @@ class GuetzaConversation extends Conversation
                 elseif($selectedValue=='Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos'){
                     $this->say('Tus derechos sexuales y reproductivos están vinculados con la seguridad, la libertad, la integridad física, las decisiones sobre sexualidad, la maternidad y el rechazo a toda forma de violencia, discriminación y opresión. ');
                     $this->say('Los he convertido en frases para que los puedas sentir tuyos, los tengo en grupos de tres en tres.');
-
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->askEsmiderechoDecidirFormaLibre();
+
+                    $this->askQuieresSaberMasDerechos();
+
                 }
 
 
             }
         }, ['ServiciosInterrupcionEmbarazoid']);
+    }
+
+    public function askQuieresSaberMasDerechos(): void
+    {
+        $question = Question::create('Quieres saber más?')
+            ->fallback('Edad no valida')
+            ->callbackId('QuieresSaberMasDerechosid')
+            ->addButtons([
+                Button::create('Si')->value('Si'),
+                Button::create('No')->value('No')
+            ]);
+        $this->ask($question, function (Answer $answer)  {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Si','No'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->QuieresSaberMasDerechos = $selectedValue;
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                if($selectedValue=='Si'){
+
+                    $this->askEsmiderechoDecidirFormaLibre();
+                }
+                else{
+
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+            }
+        }, ['QuieresSaberMasDerechosid']);
     }
 
     public function askTecompartimosAPPInformacion(){
