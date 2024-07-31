@@ -126,6 +126,9 @@ class GuetzaConversation extends Conversation
     protected string $TanProntoComoSeaSeguroHacerlo;
     protected string $AlgunasOpcionesInformacionAdicional;
 
+    protected string $AlgunaOpcionesOrientacionJuridica;
+    protected string $QuieresSaberSolicitarOrdenProteccion;
+
 
     //Test
     protected int $ResultadoTest=0;
@@ -2518,7 +2521,6 @@ class GuetzaConversation extends Conversation
                     $this->say('Tus derechos sexuales y reproductivos están vinculados con la seguridad, la libertad, la integridad física, las decisiones sobre sexualidad, la maternidad y el rechazo a toda forma de violencia, discriminación y opresión. ');
                     $this->say('Los he convertido en frases para que los puedas sentir tuyos, los tengo en grupos de tres en tres.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-
                     $this->askQuieresSaberMasDerechos();
 
                 }
@@ -3216,7 +3218,7 @@ class GuetzaConversation extends Conversation
     }
     public function askprogramas(): void
     {
-        $question = Question::create('Cual Programa')
+        $question = Question::create('Selecciona el programa de tu interés')
             ->fallback('Edad no valida')
             ->callbackId('askprogramasid')
             ->addButtons([
@@ -3249,7 +3251,7 @@ class GuetzaConversation extends Conversation
     }
     public function askTramitesConsultas(): void
     {
-        $question = Question::create('Cual Tramite')
+        $question = Question::create('Selecciona el tramite de tu interés')
             ->fallback('Edad no valida')
             ->callbackId('askTramitesConsultasid')
             ->addButtons([
@@ -3358,7 +3360,7 @@ class GuetzaConversation extends Conversation
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Solicitar una Orden de protección', 'Poner una denuncia por violencia', 'Números telefónicos para orientación'])) {
+            if (!in_array($selectedValue,['Presencial','En linea'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
