@@ -3436,7 +3436,7 @@ class GuetzaConversation extends Conversation
 
                 if($selectedValue=='¿Qué es una denuncia?'){
                     $this->say('informar al ministerio público o a la policía de hechos que constituyen un posible delito.');
-
+                    $this->askTepuedoApoyarConAlgoMas();
                 } elseif($selectedValue=='Tipos de denuncia'){
                     $this->say('<ul>
                                 <li>1. Querella: reportados por la mujer afectada (Violencias). </li>
