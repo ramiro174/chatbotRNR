@@ -3797,7 +3797,7 @@ class GuetzaConversation extends Conversation
                     $this->askTepuedoApoyarConAlgoMas();
                 }
             elseif($selectedValue=='Feminicida') {
-                    $this->say('La violencia feminicida es la forma extrema de violencia de género contra las mujeres, producto de la violación de sus derechos humanos, en los ámbitos público y privado, conformada por el conjunto de conductas misóginas que pueden conllevar impunidad social y del Estado y puede culminar en homicidio y otras formas de muerte violenta de mujeres');
+                    $this->say('La violencia feminicida es la forma extrema de violencia de género contra las mujeres, producto de la violación de sus derechos humanos, en los ámbitos público y privado, conformada por el conjunto de conductas misóginas que pueden conllevar impunidad social y del Estado y puede culminar en homicidio y otras formas de muerte violenta de mujeres.');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTepuedoApoyarConAlgoMas();
                 }
