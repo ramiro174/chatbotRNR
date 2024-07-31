@@ -3382,7 +3382,7 @@ class GuetzaConversation extends Conversation
                 elseif($selectedValue=='En linea') {
 
                     $this->say('
-                    1. Descarga el siguiente  formato<a style="color:purple" href="https://92eab0f5-8dd4-485d-a54f-b06fa499694d.filesusr.com/ugd/ba8440_d36c5f87e400477da29bcba2e2252f0c.pdf"> Aquí </a>   imprímelo y llena la información solicitada.</br>
+                    1. Descarga el siguiente  formato  <a style="color:purple; font-weight: bold;font-style: italic; "  href="https://92eab0f5-8dd4-485d-a54f-b06fa499694d.filesusr.com/ugd/ba8440_d36c5f87e400477da29bcba2e2252f0c.pdf"> Aquí </a>   imprímelo y llena la información solicitada.</br>
                     2. Acude a un Ministerio Público, Juzgado en turno o Centro de Justicia para las Mujeres.</br>
                     3. Las autoridades te harán una entrevista en donde deberás informar los hechos de violencia, datos de la persona agresora y si existen antecedentes de violencia. </br>
                     4. Te realizarán una evaluación de riesgo para determinar qué tipo de medida de protección es necesaria implementar (Lo anterior no debe ser excluyente para otorgarte una medida de protección). </br>
