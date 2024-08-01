@@ -22,7 +22,7 @@
                      let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+220;
 
-                    element.blur();
+                    inputtext.blur();
 
                 }
             });
