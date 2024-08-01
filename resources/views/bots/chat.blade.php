@@ -16,13 +16,12 @@
 
             inputtext.placeholder = "Escribe aqui tu mensaje";
 
-            inputtext.addEventListener("keydown", function(event) {
-              //alert("codigo:"+ event.code );
-                //  event.preventDefault();
-                if (event.code === 'Enter') {
+            inputtext.addEventListener("keydown", (keyboardEvent) => {
+                const key = keyboardEvent.code || keyboardEvent.keyCode;
+                if (key === 'Enter' || key === 13) {
                      let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+220;
-                    alert("ss");
+
                     inputquit.focus();
 
                 }
