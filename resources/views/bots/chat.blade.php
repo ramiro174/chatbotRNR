@@ -12,7 +12,7 @@
             disconectObserver();
 
             const inputtext = document.getElementById("userText");
-
+            const inputquit = document.getElementById("hideKeyboard");
 
             inputtext.placeholder = "Escribe aqui tu mensaje";
 
@@ -23,7 +23,7 @@
                      let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+220;
 
-                    this.blur();
+                    inputquit.focus();
 
                 }
             });

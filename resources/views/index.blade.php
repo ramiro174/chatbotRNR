@@ -139,6 +139,8 @@
         </style>
     </head>
     <body class="antialiased">
+    <input id="hideKeyboard" style="position: absolute; left: 0px; top: -20px; z-index: -1;" type="text" name="hideKeyboard" readonly="readonly" />
         @include('bots.chat')
+
     </body>
 </html>
