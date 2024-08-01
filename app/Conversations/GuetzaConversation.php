@@ -259,7 +259,10 @@ class GuetzaConversation extends Conversation
             $this->nombre = $answer->getText();
             $this->bot->typesAndWaits($this->tiempoRespuesta);
             //$this->say(');
+            if($this->nombre){
             $this->askGenero();
+            }
+            $this->askName();
         });
     }
 
