@@ -1,3 +1,5 @@
+
+@vite(['resources/js/botman/fullscreen.js', 'resources/css/chat.css'])
 <script>
     // Example ussage of the fullscreen widget
     const welcomeMessage = "{{ $welcome }}";
@@ -19,7 +21,7 @@
             inputtext.addEventListener("keydown", (keyboardEvent) => {
                 const key = keyboardEvent.code || keyboardEvent.keyCode;
                 if (key === 'Enter' || key === 13) {
-                     let div = document.getElementById("messageArea");
+                    let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+220;
 
                     inputtext.blur();
@@ -46,4 +48,3 @@
 
 
 </script>
-@vite(['resources/js/botman/fullscreen.js', 'resources/css/chat.css'])
