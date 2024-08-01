@@ -26,7 +26,7 @@ class GlobalBotController extends BotController
             else {
                 $botman->reply("Escribe hola para comenzar");
             }
-        })->stopsConversation();
+        });
 
 
 
