@@ -16,7 +16,8 @@
 
             inputtext.placeholder = "Escribe aqui tu mensaje";
 
-            inputtext.addEventListener("keyup", function(event) {
+            inputtext.addEventListener("keydown", function(event) {
+                event.preventDefault();
                 if (event.code === 'Enter') {
                      let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+220;
