@@ -22,7 +22,7 @@
                 if (event.code === 'Enter') {
                      let div = document.getElementById("messageArea");
                     div.scrollTop = div.scrollHeight+220;
-
+                    alert("ss");
                     inputquit.focus();
 
                 }
