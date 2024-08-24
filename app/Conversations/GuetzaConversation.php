@@ -518,6 +518,10 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits(2);
                     $this->askQuieresSabernecesitarServicioEmergencia();
                 }
+                elseif($selectedValue=='Anterior') {
+                    $this->bot->typesAndWaits(2);
+                    $this->askQuieresSaberSituacionRiesgo();
+                }
 
             }
         }, ['QuieresSabernecesitarServicioEmergenciaid']);
