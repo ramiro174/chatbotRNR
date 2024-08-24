@@ -191,31 +191,33 @@ class GuetzaConversation extends Conversation
     public static function ListarOrganizaciones(Collection $listaInsOrg): string
     {
 
-
         $lista = $listaInsOrg->map(function ($ins) {
-            return "<b>".  $ins->Institucion_Organizacion."</b>" .
+            $servicio=$ins->Caracteristica?'': ", Servicio: " . $ins->Caracteristica ;
+            $telefono= $ins->Telefono?'':",  Telefono: " . $ins->Telefono;
+            $correo=$ins->Email?'':"Correo: " . $ins->Email;
+            $PagWeb=$ins->Pagina_web?'':", Pagina Web:  <a  style='color:purple' href=\"$ins->Pagina_web\">" .  $ins->Pagina_web ."</a>";
+            $Facebook=$ins->Facebook?'':", Facebook :  <a  style='color:purple'  href=\"$ins->Facebook\">" . $ins->Facebook ."</a>"  ;
+            $Instagram=$ins->Instagram?'':", Instagram  <a  style='color:purple'  href=\"$ins->Instagram\">" . $ins->Instagram ."</a>" ;
+            $twiter=$ins->Twitter?'': ",  Twitter: <a  style='color:purple'  href=\"$ins->Twitter\">" . $ins->Twitter."</a>";
+          return "<b>".  $ins->Institucion_Organizacion."</b>" .
                 ", " .
                 $ins->Estado .
                 ", " .
                 $ins->Municipio ."</br>" .
+
                 "Dias de Atencion: " .
                 $ins->Dias_de_atencion .
                 ", Horario: " .
                 $ins->Horario .
-                ", Servicio: " .
-                $ins->Caracteristica .
-                ",  Telefono: " .
-                $ins->Telefono ."</br>".
-                "Correo: " .
-                $ins->Email .
-                ", Pagina Web:  <a  style='color:purple' href=\"$ins->Pagina_web\">" .
-                $ins->Pagina_web ."</a>" .
-                ", Facebook :  <a  style='color:purple'  href=\"$ins->Facebook\">" .
-                $ins->Facebook ."</a>" .
-                ", Instagram  <a  style='color:purple'  href=\"$ins->Instagram\">" .
-                $ins->Instagram ."</a>" .
-                ",  Twitter: <a  style='color:purple'  href=\"$ins->Twitter\">" .
-                $ins->Twitter."</a>" ;
+                $servicio.
+                $telefono.
+                "</br>".
+                $correo.
+                $PagWeb.
+                $Facebook.
+                $Instagram.
+                $twiter
+                ;
         });
     return  Arr::join($lista->toArray(),' </br></br>');
 
@@ -426,17 +428,16 @@ class GuetzaConversation extends Conversation
     {
         $question = Question::create('¿Quieres saber que hacer ante una situación de violencia?')
             ->fallback('no seleccionate una opción valida')
-            ->callbackId('askQuieresSaberSituacionRiesgoid')
+            ->callbackId('askQuieresSaberSituacionRiesgo__id')
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
                 Button::create('Anterior')->value('Anterior'),
-
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue, ['Si', 'No','Anterior'])) {
-                $this->say("Haz click en un opcion valida");
+                $this->say("Haz click en un opción valida");
                 $this->repeat();
             } else {
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
@@ -458,7 +459,7 @@ class GuetzaConversation extends Conversation
                     $this->askOrientacionNecesitas();
                 }
             }
-        }, ['askQuieresSaberSituacionRiesgoid']);
+        }, ['askQuieresSaberSituacionRiesgo__id']);
     }
 
     public function askSeleccionaUnaOpcionSaberSituacionViolencia(): void
@@ -1720,7 +1721,7 @@ class GuetzaConversation extends Conversation
                 Button::create('Sexual')->value('Sexual'),
                 Button::create('Física')->value('Física'),
                 Button::create('Psicológica')->value('Psicológica'),
-                Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'),
+                Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'),
                 Button::create('Anterior')->value('Anterior'),
             ]);
 
@@ -1732,7 +1733,7 @@ class GuetzaConversation extends Conversation
             $this->bot->typesAndWaits($this->tiempoRespuesta);
 
 
-            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'])) {
+            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } elseif($selectedValue=='Sexual') {
@@ -1743,7 +1744,7 @@ class GuetzaConversation extends Conversation
                 $this->say('Tus contactos pueden llamarte, acudir a tu casa o al lugar donde te encuentres para cerciorarse de que estés bien, así como frenar la situación de violencia y en el momento oportuno, poder salir del lugar con cualquier excusa, evitando que la situación de peligro se agrave.');
                 $this->askTepuedoApoyarConAlgoMas();
 
-            } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'){
+            } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'){
                 $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Dejar una relación es una estrategia de seguridad común e importante, y permite que estemos más seguras. Sin embargo, irse no es una opción para todas, entendemos el miedo y lo que implica, por ello te recuerdo que en la Red Nacional de Refugios estamos para acompañarte.');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->say('Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan.  Contáctanos: 55.56.74.96.95 y 800.822.44.60 también por redes sociales  puedes contactarnos, es muy fácil solo busca “Red Nacional de Refugios” e identifica la casita con el mapa de México. ¡Nosotras te acompañamos!');
@@ -4732,6 +4733,8 @@ class GuetzaConversation extends Conversation
                 Button::create('Placer sexual')->value('Placer sexual'),
                 Button::create('Consentir')->value('Consentir'),
                 Button::create('Salud Sexual')->value('Salud Sexual'),
+                Button::create('Anterior')->value('Anterior'),
+
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
@@ -4748,8 +4751,9 @@ class GuetzaConversation extends Conversation
                     $this->askConsentir();
                 }elseif($selectedValue=='Salud Sexual'){
                         $this->askSaludSexual();
+                }elseif($selectedValue=='Anterior'){
+                        $this->askAquiTengoUnasOpcionesParaTi();
                 }
-
 
             }
         }, ['DerechosSexualesReproductivosid']);
