@@ -379,7 +379,9 @@ class GuetzaConversation extends Conversation
     public function askLineasApoyoOtrasIdentidadesFiltro(): void
     {
         $estado= $this->estado_republica?:"";
-        $this->say('Como organización, es fundamental que nos especialicemos, en este caso trabajamos con mujeres, niñas y niños en situación de violencia.Te proporcionare números cercanos a tu localidad donde puedas recibir atención especializada.');
+        $this->say('Muchas gracias por contactarnos, te compartimos que como organización, es fundamental que nos especialicemos, nosotras trabajamos con mujeres, niñas y niños en situación de violencia.
+        </br>
+        Te proporcionare números cercanos a tu localidad donde puedas recibir atención especializada.');
 
         $genero=  $this->genero;
         $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::estadoRepublica($estado)
@@ -621,7 +623,7 @@ class GuetzaConversation extends Conversation
         $this->bot->typesAndWaits($this->tiempoRespuesta);
 
         if($this->edad<=17){
-            $this->say("Es importante que identifiques a una persona adulta que pueda apoyarte cuando la situación de violencia se presente, así como tener un plan de seguridad, aquí puedes encontrar algunas acciones que sin importantes tomes en cuenta");
+            $this->say("Gracias por acercarte a nosotras, se que tienes muchas capacidades pero en ocasiones las situaciones pueden ser más complicadas de lo que imaginamos, por ello es importante que identifiques a una persona adulta que pueda apoyarte cuando la situación de violencia se presente, así como tener un plan de seguridad, aquí puedes encontrar algunas acciones que son importantes tomes en cuenta");
             $this->say('<img src="/imageneschatbot/postal4.jpeg" style="width:100%"/>');
 
         }else{
@@ -806,8 +808,14 @@ class GuetzaConversation extends Conversation
                    $this->askTeGustariaResponderAlgunasPreguntasViolenciaDigital();
                 }
                 elseif($selectedValue == '¿Solo mi pareja puede ejercer violencia?') {
-                    $this->say("se cometen más de 10 feminicidios al día y de acuerdo a la ENCUESTA NACIONAL SOBRE LA DINÁMICA DE LAS RELACIONES EN LOS HOGARES (ENDIREH), 7 de cada 10 mujeres mayores de 15 años han experimentado alguna situación de violencia de género en su vida.");
+                    $this->say("No, lamentablemente lo puede hacer también algún familiar, amistad, profesor, sacerdote, policía, desconocido, etc.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Pero es importante que sepas que la única persona responsable de esa violencia es quien la ejerce, que tu tienes derecho a vivir libre de cualquier tipo de violencia, y si estás en una relación violenta sea cual sea, tienes el derecho a recibir acompañamiento especializado y gratuito, no debe ser algo que tengas que enfrentar sola, tienes el poder de decidir cómo deseas relacionarte y en la Red Nacional de Refugios podemos acompañarte, puedes pedir una orientación presencial, por teléfono o virtual y juntas buscar opciones.");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->say("Aquí nuestros números: 55.56.74.96.95 o si estas en el interior de la republica llama al 800.822.44.60 ¡También nos puedes contactar por redes sociales, es muy fácil, solo busca Red Nacional de Refugios e identifica la casita con el mapa de México y escríbenos!");
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
 
                 }
@@ -1705,7 +1713,7 @@ class GuetzaConversation extends Conversation
     //Planes de acción y protección ante situaciones de violencia
     public function askPlanesDeAccionProteccionSituacionViolencia(): void
     {
-        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Los planes de acción son una manera de disminuir el riesgo que existe dentro de una relación violenta')
+        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Los planes de acción son una manera de disminuir el riesgo que existe dentro de una relación violenta. Estos deben reestructurarse las veces que sean necesarios de acuerdo a las nuevas circunstancias de la relación, de tal forma que se incorporen nuevas acciones estratégicas')
             ->fallback('Edad no valida')
             ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
             ->addButtons([
@@ -1736,8 +1744,11 @@ class GuetzaConversation extends Conversation
                 $this->askTepuedoApoyarConAlgoMas();
 
             } elseif($selectedValue=='Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta'){
-                $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, romper con la relación, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan.');
+                $this->say('Comentarlo con alguna persona de tu absoluta confianza, acudir a alguna Institución especializada para recibir atención, implementar un plan de seguridad para disminuir cualquier situación de riesgo. Dejar una relación es una estrategia de seguridad común e importante, y permite que estemos más seguras. Sin embargo, irse no es una opción para todas, entendemos el miedo y lo que implica, por ello te recuerdo que en la Red Nacional de Refugios estamos para acompañarte.');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->say('Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan.  Contáctanos: 55.56.74.96.95 y 800.822.44.60 también por redes sociales  puedes contactarnos, es muy fácil solo busca “Red Nacional de Refugios” e identifica la casita con el mapa de México. ¡Nosotras te acompañamos!');
                 $this->askTepuedoApoyarConAlgoMas();
+
             } elseif($selectedValue=='Anterior'){
                 $this->askAquiTengoUnasOpcionesParaTi();
             }
