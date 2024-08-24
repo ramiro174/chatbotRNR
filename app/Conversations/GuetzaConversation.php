@@ -445,7 +445,7 @@ class GuetzaConversation extends Conversation
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
-                    $this->askQuieresSabernecesitarServicioEmergencia();
+                    $this->askSeleccionaUnaOpcionSaberSituacionViolencia();
 
                 } elseif($selectedValue=='No') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
