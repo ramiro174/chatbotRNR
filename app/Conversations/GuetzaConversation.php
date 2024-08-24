@@ -192,13 +192,14 @@ class GuetzaConversation extends Conversation
     {
 
         $lista = $listaInsOrg->map(function ($ins) {
-            $servicio=$ins->Caracteristica?'': ", Servicio: " . $ins->Caracteristica ;
-            $telefono= $ins->Telefono?'':",  Telefono: " . $ins->Telefono;
-            $correo=$ins->Email?'':"Correo: " . $ins->Email;
-            $PagWeb=$ins->Pagina_web?'':", Pagina Web:  <a  style='color:purple' href=\"$ins->Pagina_web\">" .  $ins->Pagina_web ."</a>";
-            $Facebook=$ins->Facebook?'':", Facebook :  <a  style='color:purple'  href=\"$ins->Facebook\">" . $ins->Facebook ."</a>"  ;
-            $Instagram=$ins->Instagram?'':", Instagram  <a  style='color:purple'  href=\"$ins->Instagram\">" . $ins->Instagram ."</a>" ;
-            $twiter=$ins->Twitter?'': ",  Twitter: <a  style='color:purple'  href=\"$ins->Twitter\">" . $ins->Twitter."</a>";
+            $servicio= trim($ins->Caracteristica)==''?'': ", Servicio: " . $ins->Caracteristica ;
+            $telefono= trim($ins->Telefono)==''?'':",  Telefono: " . $ins->Telefono;
+            $correo= trim($ins->Email)==''?'':"Correo: " . $ins->Email;
+            $PagWeb= trim($ins->Pagina_web)==''?'':", Pagina Web:  <a  style='color:purple' href=\"$ins->Pagina_web\">" .  $ins->Pagina_web ."</a>";
+            $Facebook= trim($ins->Facebook)==''?'':", Facebook :  <a  style='color:purple'  href=\"$ins->Facebook\">" . $ins->Facebook ."</a>"  ;
+            $Instagram= trim($ins->Instagram)==''?'':", Instagram  <a  style='color:purple'  href=\"$ins->Instagram\">" . $ins->Instagram ."</a>" ;
+            $twiter= trim($ins->Twitter)==''?'': ",  Twitter: <a  style='color:purple'  href=\"$ins->Twitter\">" . $ins->Twitter."</a>";
+
           return "<b>".  $ins->Institucion_Organizacion."</b>" .
                 ", " .
                 $ins->Estado .
