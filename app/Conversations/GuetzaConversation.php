@@ -180,10 +180,6 @@ class GuetzaConversation extends Conversation
     protected string $DerechosSexualesReproductivos;
     protected string $PlacerSexual;
 
-
-
-
-
     //terminar
     protected string $AntesQueTeVayasMeGustariaConversacionResultoUtil;
     protected string $CompartemeTusSugerenciasPropuestas;
@@ -238,10 +234,6 @@ class GuetzaConversation extends Conversation
 
     }
 
-
-
-
-
     public function run()
     {
        $this->askName();
@@ -254,15 +246,11 @@ class GuetzaConversation extends Conversation
     }
     public function askName(): void
     {
-        $this->ask('Me gustaría conocer tu nombre o ¿cómo deseas que te llame?', function (Answer $answer) {
+        $this->ask('Me gustaría conocer tu nombre o cómo deseas que te llame', function (Answer $answer) {
             // Save result
             $this->nombre = $answer->getText();
             $this->bot->typesAndWaits($this->tiempoRespuesta);
-            //$this->say(');
-
             $this->askGenero();
-
-
         });
     }
 
@@ -434,7 +422,7 @@ class GuetzaConversation extends Conversation
     }
     public function askQuieresSaberSituacionRiesgo(): void
     {
-        $question = Question::create('¿Quieres saber que hacer en una situación de riesgo?')
+        $question = Question::create('¿Quieres saber que hacer ante una situación de violencia?')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askQuieresSaberSituacionRiesgoid')
             ->addButtons([
@@ -470,9 +458,73 @@ class GuetzaConversation extends Conversation
             }
         }, ['askQuieresSaberSituacionRiesgoid']);
     }
+
+    public function askSeleccionaUnaOpcionSaberSituacionViolencia(): void
+    {
+        $question = Question::create('Selecciona una opción para saber que hacer ante situaciones de violencia')
+            ->fallback('no seleccionate una opción valida')
+            ->callbackId('QuieresSabernecesitarServicioEmergenciaid')
+            ->addButtons([
+                Button::create('En caso de agresión')->value('En caso de agresión'),
+                Button::create('Si vivo o convivo con una persona agresiva')->value('Si vivo o convivo con una persona agresiva'),
+                Button::create('Cómo preparar un plan de seguridad')->value('Cómo preparar un plan de seguridad'),
+                Button::create('Que debo considerar si vivo en una zona rural')->value('Que debo considerar si vivo en una zona rural'),
+                Button::create('¿Quieres conocer las instancias cercanas a ti donde puedes pedir ayuda?')->value('¿Quieres conocer las instancias cercanas a ti donde puedes pedir ayuda?'),
+                Button::create('Anterior')->value('Anterior'),
+
+            ]);
+
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['En caso de agresión', 'Si vivo o convivo con una persona agresiva', 'Cómo preparar un plan de seguridad', 'Que debo considerar si vivo en una zona rural', '¿Quieres conocer las instancias cercanas a ti donde puedes pedir ayuda?', 'Anterior'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->say('<div class="response-right">'.   $selectedValue.'</div>');
+                $this->QuieresSabernecesitarServicioEmergencia = $selectedValue;
+                if ($selectedValue == 'En caso de agresión') {
+                    $this->bot->typesAndWaits(2);
+                    $this->say('Si tienes lesiones, acude rápidamente a un Servicio de Urgencias. Procura ir acompañada de una persona de tu confianza. Si sientes peligro o amenaza, llama al 911.');
+                        $this->askQuieroExplorarMas();
+                } elseif($selectedValue=='Si vivo o convivo con una persona agresiva') {
+                    $this->bot->typesAndWaits(3);
+                    $this->say('Si estás en un lugar público y necesitas ayuda, una estrategia efectiva es gritar "¡fuego!". La gente suele reaccionar más rápido a este tipo de alarma. Además, es recomendable tener un teléfono guardado con pila en un lugar conocido solo por ti para emergencias. Es importante que te aprendas los números a los que llamar si necesitas ayuda, asegúrate de saber dónde está el teléfono público más cercano, por si tienes que salir rápido de casa sin tu celular.');
+                    $this->bot->typesAndWaits(3);
+                    $this->say('Informa a tus amistades o vecinas/os de confianza sobre lo que está pasando en tu casa, trabajo o escuela. Es buena idea tener un plan con ellos para que sepan cómo ayudarte en caso de emergencia, como llamar a la policía o cómo llegar a la puerta de tu casa, aula, o tu lugar de trabajo. Puedes crear una señal con alguien de confianza en el lugar donde ocurre la situación de violencia, como encender y apagar luces o colgar algo en la puerta o ventana para indicar que necesitas ayuda. Prepara una mochila con tus medicamentos, dos mudas de ropa, dinero en efectivo si es posible, con pila extra para tu celular y objetos de primera necesidad.');
+                    $this->bot->typesAndWaits(3);
+                    $this->say('Envía copias escaneadas de tus documentos importantes a tu correo, y si tienes hija/os, también de sus documentos como actas de nacimiento, identificaciones, pasaportes, documentos migratorios y seguro social,  etc. Si no tienes correo electrónico, te recomiendo abrir uno y mantener la contraseña privada. Elimina mensajes en WhatsApp o mensajes de texto si el agresor tiene acceso a tu teléfono o redes sociales. Si puedes, llama de vez en cuando a la línea de la Red Nacional de Refugios para hablar sobre tus opciones y charlar con alguien que entienda tu situación, incluso si no estás lista para irte.');
+                    $this->askQuieroExplorarMas();
+                } elseif($selectedValue=='Cómo preparar un plan de seguridad') {
+                    $this->bot->typesAndWaits(2);
+                    $this->askPlanesDeAccionProteccionSituacionViolencia();
+                }
+                elseif($selectedValue=='Que debo considerar si vivo en una zona rural') {
+                    $this->bot->typesAndWaits(2);
+                    $this->say('Vivir en una zona rural puede incrementar el riesgo, sin embargo hay algunas estrategias efectivas como:
+                                Buscar en la comunidad alguna persona o líder comunitaria/o con quien puedas acudir, le compartas la situación que vives y sea la primera persona a la que busques si te sientes en riesgo, puede darte refugio o trasportarte a algún lugar seguro.');
+                    $this->bot->typesAndWaits(2);
+                    $this->say('Si tienes que salir de casa, considera también salir de la comunidad aun cuando tengas una orden de protección, identifica ubicaciones seguras incluso aunque sean alejadas pero accesibles, es decir, tener rutas alternativas para salir.');
+                    $this->bot->typesAndWaits(2);
+                    $this->say('Identifica los lugares cercanos donde te pueden apoyar, así como números de emergencia, y cuales son los lugares o zonas donde hay recepción para que puedas realizar una llamada, si bien el acceso a internet puede ser complicado, el tener teléfono móvil con saldo es crucial para hacer una llamada de emergencia.');
+                    $this->bot->typesAndWaits(2);
+                    $this->say('Prepara una mochila con ropa, documentos, dinero si te es posible, medicinas y otros objetos de primera necesidad, ubícala en el lugar donde sea más rápido y cómodo acceder a ella en caso de emergencia. Contactar a cooperativas o grupos de mujeres en el área para unirse a ellos y así obtener apoyo emocional y recursos compartidos. En la medida de lo posible, coordina con vecinas y aliadas cercanas la creación de señales discretas para indicar que necesitas ayuda. Tener una bicicleta como medio de transporte puede también ser de gran ayuda.');
+                    $this->askQuieroExplorarMas();
+                }
+                elseif($selectedValue=='¿Quieres conocer las instancias cercanas a ti donde puedes pedir ayuda?') {
+                    $this->bot->typesAndWaits(2);
+                    $this->askQuieresSabernecesitarServicioEmergencia();
+                }
+
+            }
+        }, ['QuieresSabernecesitarServicioEmergenciaid']);
+    }
+
+
+
+
     public function askQuieresSabernecesitarServicioEmergencia(): void
     {
-        $question = Question::create('¿Quieres saber que hacer en caso de necesitar algún servicio de emergencia?')
+        $question = Question::create('Selecciona una opción')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('QuieresSabernecesitarServicioEmergenciaid')
             ->addButtons([

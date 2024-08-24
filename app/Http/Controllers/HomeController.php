@@ -12,7 +12,7 @@ class HomeController extends Controller
             return view('welcome');
         }
         return view('index', [
-            'welcome' => 'Hola Soy Yolo, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
+            'welcome' => 'Hola Soy Orejitas, tu acompañante virtual, gracias por escribir, puedes escribir \"hola\" para comenzar',
         ]);
     }
 }
