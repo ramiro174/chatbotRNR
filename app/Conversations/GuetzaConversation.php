@@ -195,10 +195,10 @@ class GuetzaConversation extends Conversation
             $servicio= trim($ins->Caracteristica)==''?'': "<b style= 'color:purple;font-size:12px'> Servicio: </b>" . $ins->Caracteristica ;
             $telefono= trim($ins->Telefono)==''?'':"<b style= 'color:purple;font-size:12px'> Telefono: </b>" . $ins->Telefono;
             $correo= trim($ins->Email)==''?'':"<b style= 'color:purple;font-size:12px'> Correo: </b> " . $ins->Email;
-            $PagWeb= trim($ins->Pagina_web)==''?'':"<b style= 'color:purple;font-size:12px'> Pagina Web:</b>  <a  style='color:purple' href=\"$ins->Pagina_web\">" .  $ins->Pagina_web ."</a>";
-            $Facebook= trim($ins->Facebook)==''?'':"<b style= 'color:purple;font-size:12px'> Facebook:</b>  <a  style='color:purple'  href=\"$ins->Facebook\">" . $ins->Facebook ."</a>"  ;
-            $Instagram= trim($ins->Instagram)==''?'':"<b style= 'color:purple;font-size:12px'> Instagram</b>  <a  style='color:purple'  href=\"$ins->Instagram\">" . $ins->Instagram ."</a>" ;
-            $twiter= trim($ins->Twitter)==''?'': "<b style= 'color:purple;font-size:12px'> Twitter:</b> <a  style='color:purple'  href=\"$ins->Twitter\">" . $ins->Twitter."</a>";
+            $PagWeb= trim($ins->Pagina_web)==''?'':"<b style= 'color:purple;font-size:12px'> Pagina Web:</b>  <a   href=\"$ins->Pagina_web\">" .  $ins->Pagina_web ."</a>";
+            $Facebook= trim($ins->Facebook)==''?'':"<b style= 'color:purple;font-size:12px'> Facebook:</b>  <a    href=\"$ins->Facebook\">" . $ins->Facebook ."</a>"  ;
+            $Instagram= trim($ins->Instagram)==''?'':"<b style= 'color:purple;font-size:12px'> Instagram</b>  <a    href=\"$ins->Instagram\">" . $ins->Instagram ."</a>" ;
+            $twiter= trim($ins->Twitter)==''?'': "<b style= 'color:purple;font-size:12px'> Twitter:</b> <a    href=\"$ins->Twitter\">" . $ins->Twitter."</a>";
 
           return "<b style='font-size:14px'>".  $ins->Institucion_Organizacion."</b>" .
                 ", " .
