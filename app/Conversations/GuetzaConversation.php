@@ -200,7 +200,7 @@ class GuetzaConversation extends Conversation
             $Instagram= trim($ins->Instagram)==''?'':"<b> Instagram</b>  <a  style='color:purple'  href=\"$ins->Instagram\">" . $ins->Instagram ."</a>" ;
             $twiter= trim($ins->Twitter)==''?'': "<b> Twitter:</b> <a  style='color:purple'  href=\"$ins->Twitter\">" . $ins->Twitter."</a>";
 
-          return "<b>".  $ins->Institucion_Organizacion."</b>" .
+          return "<b style='font-size:14px'>".  $ins->Institucion_Organizacion."</b>" .
                 ", " .
                 $ins->Estado .
                 ", " .
