@@ -136,6 +136,26 @@
 
             }
 
+            .buttonSend{
+                position: fixed;
+                bottom: 0px;
+                /* left: 0; */
+                right: 0;
+                width: 10%;
+                height: 55px;
+                z-index: 99;
+                background-color: #fff;
+                border: none;
+                outline: none;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #e7e7e7;
+                font-weight: 300;
+                font-size: 1rem;
+                line-height: 1.5;
+                background: #009688;
+            }
+
         </style>
     </head>
     <body class="antialiased">
