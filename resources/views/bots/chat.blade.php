@@ -34,8 +34,6 @@
 
     // Set configuration object:
     const config = { childList: true
-
-
     };
 
     // Start the observer
