@@ -132,7 +132,7 @@
             }
 
             .textarea{
-                width:90%!important
+                width:82%!important
 
             }
 
@@ -141,7 +141,7 @@
                 bottom: 0px;
                 /* left: 0; */
                 right: 0;
-                width: 10%;
+                width: 18%;
                 height: 55px;
                 z-index: 99;
                 background-color: #fff;
