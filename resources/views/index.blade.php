@@ -132,7 +132,7 @@
             }
 
             .textarea{
-                width:100%!important
+                width:90%!important
 
             }
 
