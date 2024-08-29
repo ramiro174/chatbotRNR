@@ -445,6 +445,9 @@ class GuetzaConversation extends Conversation
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    if($this->edad<=17){
+                        $this->say( $this->nombre.' me interesa mucho tu seguridad y bienestar. Por eso, sugiero puedas buscar compañía de una persona adulta de confianza. Hay ocasiones en las que es importante tener a alguien mayor que pueda apoyarte si lo necesitas.');
+                    }
                     $this->askSeleccionaUnaOpcionSaberSituacionViolencia();
 
                 } elseif($selectedValue=='No') {
@@ -2647,7 +2650,7 @@ class GuetzaConversation extends Conversation
     }
 
     public function askTecompartimosAPPInformacion(){
-        $this->say('Te compartimos una APP con toda esta información <b> <a style="color:purple" href="https://hesperian.org/apps-moviles/"> hesperian</a><b>');
+        $this->say('Te compartimos una APP con toda esta información <b> <a style="color:purple" target="_blank" href="https://hesperian.org/apps-moviles/"> hesperian</a><b>');
         $this->askTepuedoApoyarConAlgoMas();
     }
 
