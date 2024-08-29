@@ -4946,7 +4946,7 @@ class GuetzaConversation extends Conversation
         }
     public function askRecomendariasGuetzaPersonasConoces(): void
     {
-        $question = Question::create('¿Recomendarías Guetza a las personas que conoces? ')
+        $question = Question::create('¿Recomendarías Orejitas a las personas que conoces? ')
             ->fallback('Edad no valida')
             ->callbackId('RecomendariasGuetzaPersonasConocesid')
             ->addButtons([
