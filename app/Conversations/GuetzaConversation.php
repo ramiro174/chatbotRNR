@@ -1774,10 +1774,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir')->value('Salir'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1788,7 +1789,11 @@ class GuetzaConversation extends Conversation
 
                 if($selectedValue=='Si'){
                         $this->askSucedioInmediato();
-                }else{
+                }
+                elseif($selectedValue=='Salir'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
                     $this->askDerechosSexualesReproductivos();
                 }
 
@@ -1803,18 +1808,18 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir')->value('Salir'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            } else {
-
+            }
+            else {
                 $this->SucedioInmediato = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-
                 if($selectedValue=='Si'){
                     $this->say("Debes saber que tienes derecho a la Profilaxis Post Exposición (PPE) "."<br> <ul>"."
                                 <li> La PPE es la administración de medicamentos antirretrovirales para disminuir los riesgos de infección por VIH y otras ITS.</li> 
@@ -1823,8 +1828,11 @@ class GuetzaConversation extends Conversation
                                 En caso de que decidas recibir la PPE, esta puede ser proporcionada por instituciones de salud, tales como los CAPASITS (Centros Ambulatorios para la Prevención y Atención en SIDA e Infecciones de Transmisión Sexual) y en los Servicios de Atención Integral Hospitalaria. (Hay en todas las Entidades de la República).
                                 </li></ul>");
                     $this->askTengoMasInformacionSepasHAcerDespuesEvento();
-
-                }else{
+                }
+                elseif($selectedValue=='Salir'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
 
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
                 }
@@ -1842,10 +1850,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create("Aqui tengo algunos numeros de servicios de atencion en tu entidad")->value('Aqui tengo algunos numeros de servicios de atencion en tu entidad'),
                 Button::create("Anticoncepción de emergencia")->value('Anticoncepción de emergencia'),
+                Button::create("Salir")->value('Salir'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Aqui tengo algunos numeros de servicios de atencion en tu entidad', 'Anticoncepción de emergencia'])) {
+            if (!in_array($selectedValue, ['Aqui tengo algunos numeros de servicios de atencion en tu entidad', 'Anticoncepción de emergencia','Salir'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1860,6 +1869,9 @@ class GuetzaConversation extends Conversation
                     $this->say("Es la administración de hormonas (contenidas en las píldoras anticonceptivas a mayores dosis) en las primeras 72 hrs. del evento de riesgo. Las cuales pueden evitar el embarazo a través de detener la liberación de los óvulos o la fecundación. Este método NO debe usarse como planificación familiar y es muy importante saber que NO previene infecciones de transmisión sexual ni VIH.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTieneDerechoPuedesolicitarGuardarEvidencia();
+                }
+                elseif($selectedValue=='Salir'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
