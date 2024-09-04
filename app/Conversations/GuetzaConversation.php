@@ -4758,7 +4758,7 @@ class GuetzaConversation extends Conversation
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual'])) {
+            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4910,9 +4910,6 @@ class GuetzaConversation extends Conversation
             $this->say("aqui voy!!!! :)");
         }
 
-
-
-
     //Terminar
     public function askAntesQueTeVayasMeGustariaConversacionResultoUtil(): void
         {
@@ -4962,8 +4959,6 @@ class GuetzaConversation extends Conversation
                 $this->RecomendariasGuetzaPersonasConoces = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-
-
                     $this->askConsiderasInformacionBrindadaPuedesIntegrarDiaADia();
 
             }
