@@ -330,14 +330,14 @@ class GuetzaConversation extends Conversation
                 Button::create('Necesito apoyo')->value('Necesito apoyo'),
                 Button::create('Información adicional')->value('Información adicional'),
                 Button::create('Anterior')->value('Anterior'),
-                Button::create('Terminar')->value('Terminar'),
+                Button::create('Concluir Conversación')->value('Concluir Conversación'),
 
             ]);
 
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Emergencia', 'Necesito apoyo', 'Información adicional', 'Anterior', 'Terminar'])) {
+            if (!in_array($selectedValue, ['Emergencia', 'Necesito apoyo', 'Información adicional', 'Anterior', 'Concluir Conversación'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -358,7 +358,7 @@ class GuetzaConversation extends Conversation
                 else if($selectedValue=='Anterior'){
                     $this->askQuieresSaberSituacionRiesgo();
                 }
-                else if($selectedValue=='Terminar'){
+                else if($selectedValue=='Concluir Conversación'){
                  $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
                 }
 
@@ -5042,11 +5042,11 @@ class GuetzaConversation extends Conversation
             ->callbackId('TepuedoApoyarAlgoMasid')
             ->addButtons([
                 Button::create('Más opciones')->value('Más opciones'),
-                Button::create('Terminar')->value('Terminar'),
+                Button::create('Concluir Conversación')->value('Concluir Conversación'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Más opciones', 'Terminar'])) {
+            if (!in_array($selectedValue, ['Más opciones', 'Concluir Conversación'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -5055,7 +5055,7 @@ class GuetzaConversation extends Conversation
 
                 if($selectedValue=='Más opciones'){
                     $this->askAquiTengoUnasOpcionesParaTi();
-                }elseif($selectedValue=='Terminar'){
+                }elseif($selectedValue=='Concluir Conversación'){
                         $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
                 }
 
@@ -5071,11 +5071,11 @@ class GuetzaConversation extends Conversation
                 ->callbackId('TepuedoApoyarAlgoMasid')
                 ->addButtons([
                     Button::create('Más opciones')->value('Más opciones'),
-                    Button::create('Terminar')->value('Terminar'),
+                    Button::create('Concluir Conversación')->value('Concluir Conversación'),
                 ]);
             $this->ask($question, function (Answer $answer) {
                 $selectedValue = $answer->getValue();
-                if (!in_array($selectedValue, ['Más opciones', 'Terminar'])) {
+                if (!in_array($selectedValue, ['Más opciones', 'Concluir Conversación'])) {
                     $this->say("Haz click en un opcion valida");
                     $this->repeat();
                 } else {
@@ -5084,7 +5084,7 @@ class GuetzaConversation extends Conversation
 
                     if($selectedValue=='Más opciones'){
                         $this->askQuieresSaberSituacionRiesgo();
-                    }elseif($selectedValue=='Terminar'){
+                    }elseif($selectedValue=='Concluir Conversación'){
                             $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
                     }
 
