@@ -4857,18 +4857,19 @@ class GuetzaConversation extends Conversation
 
         }
     public function askSaludSexual(){
-        $question = Question::create('Para conocer mas sobre la salud sexual, selecciona alguna de tu interés:')
+        $question = Question::create('Para conocer más sobre la salud sexual, selecciona alguna de tu interés:')
             ->fallback('Edad no valida')
             ->callbackId('SaludSexualid')
             ->addButtons([
                 Button::create('¿Qué es?')->value('¿Qué es?'),
                 Button::create('Problemas relacionados con la Salud sexual')->value('Consentir'),
                 Button::create('A tomar en cuenta para posibilitar la salud sexual')->value('A tomar en cuenta para posibilitar la salud sexual'),
-            ]);
+                Button::create('Salir Sección')->value('Salir Sección'),
+                ]);
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la Salud sexual', 'A tomar en cuenta para posibilitar la salud sexual'])) {
+            if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la Salud sexual', 'A tomar en cuenta para posibilitar la salud sexual','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4896,9 +4897,12 @@ class GuetzaConversation extends Conversation
     
                     ');
                     $this->askTepuedoApoyarConAlgoMas();
-
-                }elseif($selectedValue=='A tomar en cuenta para posibilitar la salud sexual'){
+                }
+                elseif($selectedValue=='A tomar en cuenta para posibilitar la salud sexual'){
                     $this->say('Acceso a información integral de buena calidad sobre sexo y sexualidad; conocimiento de los riesgos que pueden correr y su vulnerabilidad ante las consecuencias adversas de la actividad sexual sin protección; posibilidad de acceder a la atención de salud sexual; residencia en un entorno que afirme y promueva la salud sexual.');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
 
