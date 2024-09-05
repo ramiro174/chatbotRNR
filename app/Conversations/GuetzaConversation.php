@@ -2197,8 +2197,7 @@ class GuetzaConversation extends Conversation
                 $this->askTecompartimosAPPInformacion();
             }
             elseif($selectedValue == 'Métodos Anticonceptivos') {
-                $this->say('
-                            &#8226; Para prevenir un embarazo, empieza a usar un método anticonceptivo, como alguno de los siguientes: </br>
+                $this->say('Para prevenir un embarazo, empieza a usar un método anticonceptivo, como alguno de los siguientes: </br>
                             &#8226; Un condón interno femenino o uno externo masculino. </br>
                             &#8226; Un método hormonal, como las pastillas, inyecciones o implantes anticonceptivos. De haber tenido un aborto el mismo día que te hagas el aborto. Evitarás un embarazo si empiezas a usar un método hormonal durante los primeros 7 días después del aborto. Pero si esperas más de 7 días para empezar a usarlo, debes usar un condón durante la primera semana, ya que los métodos hormonales toman tiempo para empezar a funcionar y protegerte. </br> 
                             &#8226; Te pueden colocar un DIU, en caso de aborto tan pronto como confirmen que el aborto fue exitoso y que no hay infección. Usa condones hasta que te coloquen el DIU. </br>
@@ -2240,7 +2239,7 @@ class GuetzaConversation extends Conversation
 
     public function askQuieresSaberMasAborto(): void
     {
-        $question = Question::create('Quieres saber más?')
+        $question = Question::create('¿Quieres saber más?')
             ->fallback('Edad no valida')
             ->callbackId('QuieresSaberMasAbortoid')
             ->addButtons([
@@ -2271,7 +2270,7 @@ class GuetzaConversation extends Conversation
     }
     public function askQuieresSaberMasAborto2(): void
     {
-        $question = Question::create('Quieres saber más?')
+        $question = Question::create('¿Quieres saber más?')
             ->fallback('Edad no valida')
             ->callbackId('QuieresSaberMasAbortoid')
             ->addButtons([
@@ -2302,7 +2301,7 @@ class GuetzaConversation extends Conversation
     }
     public function askQuieresSaberMasAborto3(): void
     {
-        $question = Question::create('Quieres saber más?')
+        $question = Question::create('¿Quieres saber más?')
             ->fallback('Edad no valida')
             ->callbackId('QuieresSaberMasAbortoid')
             ->addButtons([
@@ -2333,7 +2332,7 @@ class GuetzaConversation extends Conversation
     }
     public function askQuieresSaberMasAborto4(): void
     {
-        $question = Question::create('Quieres saber más?')
+        $question = Question::create('¿Quieres saber más?')
             ->fallback('Edad no valida')
             ->callbackId('QuieresSaberMasAbortoid')
             ->addButtons([
@@ -2364,7 +2363,7 @@ class GuetzaConversation extends Conversation
     }
     public function askQuieresSaberMasAborto5(): void
     {
-        $question = Question::create('Quieres saber más?')
+        $question = Question::create('¿Quieres saber más?')
             ->fallback('Edad no valida')
             ->callbackId('QuieresSaberMasAbortoid')
             ->addButtons([
@@ -2517,17 +2516,17 @@ class GuetzaConversation extends Conversation
     }
     public function askMasInformacionAbortoDilatacion(): void
     {
-        $question = Question::create('Mas informacion sobre aborto por dilatacion')
+        $question = Question::create('Mas informacion sobre aborto por dilatación')
             ->fallback('Edad no valida')
             ->callbackId('MasInformacionAbortoDilatacionid')
             ->addButtons([
                 Button::create('¿Cuánto tiempo tarda?')->value('¿Cuánto tiempo tarda?'),
                 Button::create('¿Qué tan seguro es un aborto por dilatación y evacuación?')->value('¿Qué tan seguro es un aborto por dilatación y evacuación?'),
-
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['¿Cuánto tiempo tarda?','¿Qué tan seguro es un aborto por dilatación y evacuación?'])) {
+            if (!in_array($selectedValue, ['Salir Sección','¿Cuánto tiempo tarda?','¿Qué tan seguro es un aborto por dilatación y evacuación?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -2543,6 +2542,9 @@ class GuetzaConversation extends Conversation
                     $this->say('Es seguro a partir de las 14 semanas siempre y cuando lo realice una persona capacitada con experiencia y con instrumentos esterilizados (desinfectados). Con este método,  primero se ablanda y dilata el cuello uterino para que el tubo de aspiración y los instrumentos puedan remover el tejido y la sangre del aborto. Para prevenir infecciones,  es sumamente importante que la persona que realice el aborto use equipo esterilizado. En comparación con los abortos con pastillas o por aspiración los abortos por dilatación y evacuación tienen un mayor riesgo de infección,  sangrado abundante y lesiones en el útero o cuello del útero.  Pero estos problemas no son comunes cuando el personal médico tiene experiencia.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
@@ -2627,7 +2629,7 @@ class GuetzaConversation extends Conversation
 
     public function askQuieresSaberMasDerechos(): void
     {
-        $question = Question::create('Quieres saber más?')
+        $question = Question::create('¿Quieres saber más?')
             ->fallback('Edad no valida')
             ->callbackId('QuieresSaberMasDerechosid')
             ->addButtons([
