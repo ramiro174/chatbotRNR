@@ -2446,17 +2446,18 @@ class GuetzaConversation extends Conversation
 
     public function askTiposdeAborto(): void
     {
-        $question = Question::create('Selecciona algún tema de tu interés sobre servicios de interrupción del embarazo:')
+        $question = Question::create('Selecciona algún tema de tu interés sobre tipos de aborto:')
             ->fallback('Edad no valida')
             ->callbackId('TiposdeAbortoid')
             ->addButtons([
                 Button::create('Aborto por aspiración')->value('Aborto por aspiración'),
                 Button::create('Aborto por dilatación y evacuación (D y E)')->value('Aborto por dilatación y evacuación (D y E)'),
                 Button::create('Señales de alerta y qué debes de hacer')->value('Señales de alerta y qué debes de hacer'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Aborto por aspiración','Aborto por dilatación y evacuación (D y E)','Señales de alerta y qué debes de hacer'])) {
+            if (!in_array($selectedValue, ['Salir Sección','Aborto por aspiración','Aborto por dilatación y evacuación (D y E)','Señales de alerta y qué debes de hacer'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -2508,6 +2509,9 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
 
                     $this->askTecompartimosAPPInformacion();
+                }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
@@ -2563,12 +2567,13 @@ class GuetzaConversation extends Conversation
                 Button::create('Acerca de las medicinas para abortar')->value('Acerca de las medicinas para abortar'),
                 Button::create('Casos en los que no hay que usar pastillas para abortar')->value('Casos en los que no hay que usar pastillas para abortar'),
                 Button::create('Las señales de embarazo desaparecen')->value('Las señales de embarazo desaparecen'),
-                Button::create('Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos')->value('Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos')
+                Button::create('Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos')->value('Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos'),
+                Button::create('Salir Sección')->value('Salir Sección'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Aborto', 'Aborto con pastillas', 'Acerca de las medicinas para abortar', 'Casos en los que no hay que usar pastillas para abortar','Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos','Las señales de embarazo desaparecen'])) {
+            if (!in_array($selectedValue, ['Salir Sección','Aborto', 'Aborto con pastillas', 'Acerca de las medicinas para abortar', 'Casos en los que no hay que usar pastillas para abortar','Conocer tus derechos desde la perspectiva Feminista y de Derechos Humanos','Las señales de embarazo desaparecen'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -2620,6 +2625,9 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askQuieresSaberMasDerechos();
 
+                }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
@@ -2675,10 +2683,11 @@ class GuetzaConversation extends Conversation
                 Button::create('Autocuidado')->value('Autocuidado'),
                 Button::create('En tus relaciones')->value('En tus relaciones'),
                 Button::create('Igualdad de oportunidades y el reconocimiento del valor individual')->value('Igualdad de oportunidades y el reconocimiento del valor individual'),
-            ]);
+                Button::create('Salir Sección')->value('Salir Sección'),
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Empoderamiento','Autocuidado','En tus relaciones','Igualdad de oportunidades y el reconocimiento del valor individual'])) {
+            if (!in_array($selectedValue, ['Salir Sección','Empoderamiento','Autocuidado','En tus relaciones','Igualdad de oportunidades y el reconocimiento del valor individual'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -2699,6 +2708,9 @@ class GuetzaConversation extends Conversation
             elseif($selectedValue=='Igualdad de oportunidades y el reconocimiento del valor individual'){
                 $this->say('En alguno de los siguientes ámbitos: comunitario, laboral, escolar, familiar, de pareja, entre otros. Te encuentras en una o varias de las siguientes situaciones: ');
                 $this->askLasTareasFinanzasResponsabilidadesEstanDistribuidas();
+            }
+            elseif($selectedValue=='Salir Sección'){
+                $this->askTepuedoApoyarConAlgoMas();
             }
         }, ['askDebesSaberTienesDerechoSobreDerechoSexualesid']);
     }
@@ -3181,10 +3193,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Salir Sección','Si', 'No'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3195,7 +3208,11 @@ class GuetzaConversation extends Conversation
 
                 if($selectedValue=='Si'){
                 $this->askHeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizacionesFormanParteRNROtros();
-                }else{
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+                else{
                  $this->askCompartemeTusSugerenciasPropuestas();
 
                 }
@@ -3215,13 +3232,14 @@ class GuetzaConversation extends Conversation
                 Button::create('Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos')->value('Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos'),
                 Button::create('Autogestión económica y economía feminista')->value('Autogestión económica y economía feminista'),
                 Button::create('Orientación jurídica')->value('Orientación jurídica'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
 
 
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Atención psicológica', 'Orientación Social', 'Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos', 'Autogestión económica y economía feminista', 'Orientación jurídica'])) {
+            if (!in_array($selectedValue,['Salir Sección','Atención psicológica', 'Orientación Social', 'Orientación y acompañamiento para el ejercicio y acceso a tus derechos sexuales y reproductivos', 'Autogestión económica y economía feminista', 'Orientación jurídica'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3251,6 +3269,10 @@ class GuetzaConversation extends Conversation
                 }elseif($selectedValue=='Orientación jurídica'){
                     $this->askAlgunaOpcionesOrientacionJuridica();
                 }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
 
 
             }
