@@ -1722,7 +1722,7 @@ class GuetzaConversation extends Conversation
     //Planes de acción y protección ante situaciones de violencia
     public function askPlanesDeAccionProteccionSituacionViolencia(): void
     {
-        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Los planes de acción son una manera de disminuir el riesgo que existe dentro de una relación violenta. Estos deben reestructurarse las veces que sean necesarios de acuerdo a las nuevas circunstancias de la relación, de tal forma que se incorporen nuevas acciones estratégicas')
+        $question_askPlanesDeAccionProteccionSituacionViolencia = Question::create('Los planes de seguridad son una manera de disminuir el riesgo que existe dentro de una relación violenta. Estos deben reestructurarse las veces que sean necesarios de acuerdo a las nuevas circunstancias de la relación, de tal forma que se incorporen nuevas acciones estratégicas')
             ->fallback('Edad no valida')
             ->callbackId('askPlanesDeAccionProteccionSituacionViolenciaid')
             ->addButtons([
@@ -1811,11 +1811,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
-                Button::create('Salir Sección')->value('Salir Sección'),
+                Button::create('Anterior')->value('Anterior'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -1832,13 +1832,13 @@ class GuetzaConversation extends Conversation
                                 </li></ul>");
                     $this->askTengoMasInformacionSepasHAcerDespuesEvento();
                 }
-                elseif($selectedValue=='Salir Sección'){
+                elseif($selectedValue=='No'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
-                else{
-
+                elseif($selectedValue=='Anterior'){
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
                 }
+
 
 
 
@@ -4788,11 +4788,13 @@ class GuetzaConversation extends Conversation
                 Button::create('¿Qué es?')->value('¿Qué es?'),
                 Button::create('Derecho al placer sexual')->value('Derecho al placer sexual'),
                 Button::create('El goce')->value('El goce'),
+                Button::create('Salir Sección')->value('Salir Sección'),
+
             ]);
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['¿Qué es?', 'Derecho al placer sexual', 'El goce'])) {
+            if (!in_array($selectedValue, ['¿Qué es?', 'Derecho al placer sexual', 'El goce','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4829,6 +4831,9 @@ class GuetzaConversation extends Conversation
                     $this->askTepuedoApoyarConAlgoMas();
                 }elseif($selectedValue=='El goce'){
                     $this->say('Todas las personas tenemos derecho al libre goce del propio cuerpo incluyendo el placer sexual. Históricamente los estereotipos y roles de género han limitado la forma en que las mujeres  experimentan y disfrutan su sexualidad. ');
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
 
