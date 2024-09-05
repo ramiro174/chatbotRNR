@@ -3148,7 +3148,7 @@ class GuetzaConversation extends Conversation
                 $this->SeAplicanDifereneEstandaresComportamiento = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askNoPuedoExpresarmeFormaLibre()();
+                $this->askNoPuedoExpresarmeFormaLibre();
             }
         }, ['SeAplicanDifereneEstandaresComportamientoid']);
     }
@@ -3176,6 +3176,7 @@ class GuetzaConversation extends Conversation
                         $this->bot->typesAndWaits($this->tiempoRespuesta);
                         $this->say('La RNR te puede poner en contacto con una terapeuta con formación y experiencia necesarias para brindarte el apoyo emocional que requieres. Ellas están capacitadas para proporcionar orientación especializada y herramientas terapéuticas que pueden ser benéficas para ti. 
                                     Línea de atención 55 56749695 y 55 5243 6432, interior de la Republica 800 822 44 60 24 hrs. ');
+                    $this->askTepuedoApoyarConAlgoMas();
                 }else{
                     $this->askMuyBienTeAnimoExploresPreguntas();
                 }
