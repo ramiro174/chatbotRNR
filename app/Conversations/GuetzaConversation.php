@@ -457,8 +457,6 @@ class GuetzaConversation extends Conversation
                     }
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askAquiTengoUnasOpcionesParaTi();
-
-
                 }else{
                     $this->askOrientacionNecesitas();
                 }
@@ -654,7 +652,7 @@ class GuetzaConversation extends Conversation
             ->callbackId('askAquiTengoUnasOpcionesParaTiid')
             ->addButtons([
             Button::create('Identificar las violencias')->value('Identificar las violencias'),
-            Button::create('Planes de acción y protección ante situaciones de violencia')->value('Planes de acción y protección ante situaciones de violencia'),
+            Button::create('Planes de seguridad ante situaciones de violencia')->value('Planes de seguridad ante situaciones de violencia'),
             Button::create('Información sobre derechos sexuales y reproductivos')->value('Información sobre derechos sexuales y reproductivos'),
             Button::create('Orientación psicológica')->value('Orientación psicológica'),
             Button::create('Me comuniqué con anterioridad y necesito atención')->value('Me comuniqué con anterioridad y necesito atención'),
@@ -667,7 +665,7 @@ class GuetzaConversation extends Conversation
             $selectedValue = $answer->getValue();
             $selectedText = $answer->getText();
 
-            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de acción y protección ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Acceder a mis derechos sexuales y reproductivos','Anterior'])) {
+            if (!in_array($selectedValue, ['Identificar las violencias', 'Planes de seguridad ante situaciones de violencia','Información sobre derechos sexuales y reproductivos','Orientación psicológica','Me comuniqué con anterioridad y necesito atención','Información adicional','Acceder a mis derechos sexuales y reproductivos','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -678,7 +676,7 @@ class GuetzaConversation extends Conversation
                 if ($selectedValue == 'Identificar las violencias') {
                     $this->askQuieroSaberIdentificarViolencias();
                 }
-                elseif($selectedValue == 'Planes de acción y protección ante situaciones de violencia') {
+                elseif($selectedValue == 'Planes de seguridad ante situaciones de violencia') {
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
                 }
                 elseif($selectedValue == 'Información sobre derechos sexuales y reproductivos') {
@@ -1730,7 +1728,7 @@ class GuetzaConversation extends Conversation
                 Button::create('Física')->value('Física'),
                 Button::create('Psicológica')->value('Psicológica'),
                 Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'),
-                Button::create('Anterior')->value('Anterior'),
+                Button::create('Mas opciones')->value('Mas opciones'),
             ]);
 
         $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
@@ -1741,7 +1739,7 @@ class GuetzaConversation extends Conversation
             $this->bot->typesAndWaits($this->tiempoRespuesta);
 
 
-            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
+            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Mas opciones','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } elseif($selectedValue=='Sexual') {
@@ -1758,7 +1756,7 @@ class GuetzaConversation extends Conversation
                 $this->say('Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan.  Contáctanos: 55.56.74.96.95 y 800.822.44.60 también por redes sociales  puedes contactarnos, es muy fácil solo busca “Red Nacional de Refugios” e identifica la casita con el mapa de México. ¡Nosotras te acompañamos!');
                 $this->askTepuedoApoyarConAlgoMas();
 
-            } elseif($selectedValue=='Anterior'){
+            } elseif($selectedValue=='Mas opciones'){
                 $this->askAquiTengoUnasOpcionesParaTi();
             }
 
@@ -1912,7 +1910,7 @@ class GuetzaConversation extends Conversation
     //Fisica
     public function askAquiTemuestroPlanesAccionFisica():void
     {
-        $question = Question::create('Aquí te muestro planes de acción y protección ante situaciones de violencia fisica')
+        $question = Question::create('Te comparto algunos planes de seguridad ante situaciones de violencia física')
             ->fallback('Edad no valida')
             ->callbackId('askAquiTemuestroPlanesAccionFisicaid')
             ->addButtons([
@@ -2049,11 +2047,12 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create("Alerta Amber y Protocolo")->value('Alerta Amber y Protocolo'),
                 Button::create("Has uso de tu denuncia en la CNDH")->value('Has uso de tu denuncia en la CNDH'),
+                Button::create('Salir Sección')->value('Salir Sección'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Alerta Amber y Protocolo','Has uso de tu denuncia en la CNDH'])) {
+            if (!in_array($selectedValue, ['Alerta Amber y Protocolo','Has uso de tu denuncia en la CNDH','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -2070,6 +2069,10 @@ class GuetzaConversation extends Conversation
             if($selectedValue == 'Has uso de tu denuncia en la CNDH') {
                 $this->say('<ul><li> 1. También puedes presentarle en línea https://atencionciuadana.com CNDH 55 5681 8125  /   55 5490 7400 </li> <li> 2. Realiza tu reporte La fiscalía Especializada y Comisiones de Búsqueda deben expedir una ficha de búsqueda que contenga: nombre completo; fotografía; descripción física, última fecha y lugar en dónde fue vista; último contacto que se tuvo con ella (precisando el evento) y vestimenta que llevaba puesta el día de su desaparición.  Si así lo deseas, puedes participar de forma activa en la búsqueda y puedes solicitar a las autoridades; los videos de vigilancia; acceso a investigación de perfiles de redes sociales; geolocalización de cualquier dispositivo; comunicación inmediata con hospitales, terminales de autobuses, aeropuertos y otros espacios; documentos de antecedentes de violencias.  </li></ul>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
+                $this->askTepuedoApoyarConAlgoMas();
+
+            }
+            if($selectedValue == 'Salir Sección') {
                 $this->askTepuedoApoyarConAlgoMas();
 
             }
@@ -2161,10 +2164,12 @@ class GuetzaConversation extends Conversation
                 Button::create("Servicios de interrupción del embarazo")->value('Servicios de interrupción del embarazo'),
                 Button::create("Tipos de aborto")->value('Tipos de aborto'),
                 Button::create("¿Quieres saber más?")->value('¿Quieres saber más?'),
+                Button::create('Salir Sección')->value('Salir Sección'),
+
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Tipos de aborto','¿Quieres saber más?',"Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos","Servicios de interrupción del embarazo"])) {
+            if (!in_array($selectedValue, ['Tipos de aborto','¿Quieres saber más?',"Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos","Servicios de interrupción del embarazo","Salir Sección"])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -2225,6 +2230,9 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
                 $this->askQuieresSaberMasAborto5();
+            }
+            elseif($selectedValue=='Salir Sección'){
+                $this->askTepuedoApoyarConAlgoMas();
             }
 
         }, ['DebesSaberTienesDerechoSobreDerechoSexualesid']);
@@ -4753,12 +4761,12 @@ class GuetzaConversation extends Conversation
                 Button::create('Placer sexual')->value('Placer sexual'),
                 Button::create('Consentir')->value('Consentir'),
                 Button::create('Salud Sexual')->value('Salud Sexual'),
-                Button::create('Anterior')->value('Anterior'),
+                Button::create('Mas opciones')->value('Mas opciones'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual','Anterior'])) {
+            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual','Mas opciones'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4771,7 +4779,7 @@ class GuetzaConversation extends Conversation
                     $this->askConsentir();
                 }elseif($selectedValue=='Salud Sexual'){
                         $this->askSaludSexual();
-                }elseif($selectedValue=='Anterior'){
+                }elseif($selectedValue=='Mas opciones'){
                         $this->askAquiTengoUnasOpcionesParaTi();
                 }
 
@@ -4862,14 +4870,14 @@ class GuetzaConversation extends Conversation
             ->callbackId('SaludSexualid')
             ->addButtons([
                 Button::create('¿Qué es?')->value('¿Qué es?'),
-                Button::create('Problemas relacionados con la Salud sexual')->value('Consentir'),
+                Button::create('Problemas relacionados con la salud sexual')->value('Problemas relacionados con la salud sexual'),
                 Button::create('A tomar en cuenta para posibilitar la salud sexual')->value('A tomar en cuenta para posibilitar la salud sexual'),
                 Button::create('Salir Sección')->value('Salir Sección'),
                 ]);
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la Salud sexual', 'A tomar en cuenta para posibilitar la salud sexual','Salir Sección'])) {
+            if (!in_array($selectedValue, ['¿Qué es?', 'Problemas relacionados con la salud sexual', 'A tomar en cuenta para posibilitar la salud sexual','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4880,7 +4888,7 @@ class GuetzaConversation extends Conversation
                     $this->say('«...un estado de bienestar físico, mental y social en relación con la sexualidad, la cual no es la ausencia de enfermedad, disfunción o incapacidad. La salud sexual requiere un enfoque positivo y respetuoso de la sexualidad y de las relaciones sexuales, así como la posibilidad de tener experiencias sexuales placenteras y seguras, libres de toda coacción, discriminación y violencia. Para que la salud sexual se logre y se mantenga, los derechos sexuales de todas las personas deben ser respetados, protegidos y ejercidos a plenitud.»(OMS, 2006a)');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTepuedoApoyarConAlgoMas();
-                }elseif($selectedValue=='Problemas relacionados con la Salud sexual'){
+                }elseif($selectedValue=='Problemas relacionados con la salud sexual'){
                     $this->say('
                        1. infecciones con el virus de la inmunodeficiencia humana (VIH), infecciones de transmisión sexual y del aparato reproductor, así como sus consecuencias adversas (por ejemplo, cáncer e infertilidad);</br> 
                         Te comparto los nombres de algunos estudios que permiten identificar y prevenir:</br>
