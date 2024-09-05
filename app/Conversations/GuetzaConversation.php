@@ -1777,11 +1777,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
-                Button::create('Salir')->value('Salir'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No','Salir'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1793,7 +1793,7 @@ class GuetzaConversation extends Conversation
                 if($selectedValue=='Si'){
                         $this->askSucedioInmediato();
                 }
-                elseif($selectedValue=='Salir'){
+                elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
                 else{
@@ -1811,11 +1811,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
-                Button::create('Salir')->value('Salir'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No','Salir'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -1832,7 +1832,7 @@ class GuetzaConversation extends Conversation
                                 </li></ul>");
                     $this->askTengoMasInformacionSepasHAcerDespuesEvento();
                 }
-                elseif($selectedValue=='Salir'){
+                elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
                 else{
@@ -1853,11 +1853,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create("Aqui tengo algunos numeros de servicios de atencion en tu entidad")->value('Aqui tengo algunos numeros de servicios de atencion en tu entidad'),
                 Button::create("Anticoncepción de emergencia")->value('Anticoncepción de emergencia'),
-                Button::create("Salir")->value('Salir'),
+                Button::create("Salir Sección")->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Aqui tengo algunos numeros de servicios de atencion en tu entidad', 'Anticoncepción de emergencia','Salir'])) {
+            if (!in_array($selectedValue, ['Aqui tengo algunos numeros de servicios de atencion en tu entidad', 'Anticoncepción de emergencia','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1873,7 +1873,7 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTieneDerechoPuedesolicitarGuardarEvidencia();
                 }
-                elseif($selectedValue=='Salir'){
+                elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
 
