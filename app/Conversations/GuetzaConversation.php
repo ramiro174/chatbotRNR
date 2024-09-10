@@ -848,18 +848,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
             Button::create('Si')->value('Si'),
             Button::create('No')->value('No'),
+            Button::create('Salir Sección')->value('Salir Sección'),
         ]);
 
         $this->ask($question_AlgunaVezHanEmpujadoGolpeadoAgreFisicamente, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente = $selectedValue;
+            if($selectedValue=='Salir Sección'){
+                $this->askTepuedoApoyarConAlgoMas();
+            }else{
+
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askHasSentidoMiedoSobreTuSeguridad();
+            }
             }
 
 
@@ -876,18 +882,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
             Button::create('Si')->value('Si'),
             Button::create('No')->value('No'),
+            Button::create('Salir Sección')->value('Salir Sección'),
         ]);
 
         $this->ask($question_HasSentidoMiedoSobreTuSeguridad, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            } else {
+            }
+            else {
                 $this->HasSentidoMiedoSobreTuSeguridad = $selectedValue;
+                if($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askHasTenidoLesionesFisicas();
+            }
             }
 
 
@@ -904,20 +916,25 @@ class GuetzaConversation extends Conversation
             ->addButtons([
             Button::create('Si')->value('Si'),
             Button::create('No')->value('No'),
+            Button::create('Salir Sección')->value('Salir Sección'),
         ]);
 
         $this->ask($question_askHasTenidoLesionesFisicas, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            } else {
-                $this->HasTenidoLesionesFisicas = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas();
             }
-
+            else {
+                $this->HasTenidoLesionesFisicas = $selectedValue;
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas();
+                }
+            }
 
         }, ['askHasTenidoLesionesFisicasid']);
 
@@ -932,11 +949,12 @@ class GuetzaConversation extends Conversation
             ->addButtons([
             Button::create('Si')->value('Si'),
             Button::create('No')->value('No'),
+            Button::create('Salir Sección')->value('Salir Sección'),
         ]);
 
         $this->ask($question_TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -948,7 +966,10 @@ class GuetzaConversation extends Conversation
                 if(in_array('Si',$Respuestaspreguntas)){
                         $this->askPlanesDeAccionProteccionSituacionViolencia();
 
-                }else{
+                } elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
                     $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askMensajeDespedida();
@@ -971,19 +992,23 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
-                if ($selectedValue = 'Si') {
+                if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits(10);
                     $this->askIdentificamosServiciosAtencionMujeresFiltro();
-                } else {
+                } elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else {
                     $this->askEdad();
                 }
             }
@@ -1001,18 +1026,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_AlguienCercanoCriticaMenospreciaBurla, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            } else {
+            }
 
-                $this->AlguienCercanoCriticaMenospreciaBurla = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+        else {
+            $this->AlguienCercanoCriticaMenospreciaBurla = $selectedValue;
+            if ($selectedValue == 'Salir Sección') {
+                $this->askTepuedoApoyarConAlgoMas();
+            }else {
+                $this->say('<div class="response-right">' . $answer->getText() . '</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askSientesAlguienTuVidaLimitaTusDesiciones();
+            }
             }
 
 
@@ -1029,19 +1060,25 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askSientesAlguienTuVidaLimitaTusDesiciones, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
-            } else {
-
+            }
+            else {
                 $this->SientesAlguienTuVidaLimitaTusDesiciones = $selectedValue;
+                if ($selectedValue == 'Salir Sección') {
+                $this->askTepuedoApoyarConAlgoMas();
+            }else {
+
+
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTeHanExcluidoDeliberadamenteDeActividades();
-            }
+            }}
 
 
         }, ['askSientesAlguienTuVidaLimitaTusDesicionesid']);
@@ -1057,19 +1094,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askTeHanExcluidoDeliberadamenteDeActividades, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->TeHanExcluidoDeliberadamenteDeActividades = $selectedValue;
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askSientesMiedoAnsiedadConstante();
-            }
+            }}
 
 
         }, ['askTeHanExcluidoDeliberadamenteDeActividadesid']);
@@ -1085,10 +1127,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askSientesMiedoAnsiedadConstante, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1099,7 +1142,10 @@ class GuetzaConversation extends Conversation
 
                 if(in_array('Si',$Respuestaspreguntas)){
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
-                }else{
+                }elseif ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
                     $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
                     $this->askTepuedoApoyarConAlgoMas();
 
@@ -1124,18 +1170,25 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askAlguienPresionadoParticiparActividadesSexuales, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->AlguienPresionadoParticiparActividadesSexuales = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askHasAccedidoRealizarActivadesSexuales();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+
+
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasAccedidoRealizarActivadesSexuales();
+                }
             }
 
 
@@ -1152,17 +1205,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askHasAccedidoRealizarActivadesSexuales, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->HasAccedidoRealizarActivadesSexuales = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askAlguienUtilizadoDrogasIncapacitarte();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlguienUtilizadoDrogasIncapacitarte();
+                }
             }
 
 
@@ -1179,18 +1237,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askAlguienUtilizadoDrogasIncapacitarte, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
-                $this->AlguienUtilizadoDrogasIncapacitarte = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askHasTenidoActividadesSexualesSinConsentimiento();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->AlguienUtilizadoDrogasIncapacitarte = $selectedValue;
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasTenidoActividadesSexualesSinConsentimiento();
+                }
             }
 
 
@@ -1207,10 +1269,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question_askHasTenidoActividadesSexualesSinConsentimiento, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1223,7 +1286,11 @@ class GuetzaConversation extends Conversation
                 if(in_array('Si',$Respuestaspreguntas)){
                     $this->askPlanesDeAccionProteccionSituacionViolencia();
 
-                }else{
+                }elseif ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+                else{
                     $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
                 }
 
@@ -1246,18 +1313,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->HasExperimentadoPresionFirmarContraVoluntad = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askAlguienDestruidoIntencionalmenteBienesMateriales();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+                    $this->HasExperimentadoPresionFirmarContraVoluntad = $selectedValue;
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlguienDestruidoIntencionalmenteBienesMateriales();
+                }
             }
         }, ['askHasExperimentadoPresionFirmarContraVoluntadid']);
     }
@@ -1269,18 +1342,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->AlguienDestruidoIntencionalmenteBienesMateriales = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTeHanImpedidoTrabajarOEstudiarLimitar();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTeHanImpedidoTrabajarOEstudiarLimitar();
+                }
             }
         }, ['askAlguienDestruidoIntencionalmenteBienesMaterialesid']);
     }
@@ -1292,17 +1371,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHanImpedidoTrabajarOEstudiarLimitar = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askAlgunaPersonaCercanaUtilizadoBienesSinConsentimiento();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlgunaPersonaCercanaUtilizadoBienesSinConsentimiento();
+                }
             }
         }, ['askTeHanImpedidoTrabajarOEstudiarLimitarid']);
     }
@@ -1314,10 +1398,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1329,6 +1414,10 @@ class GuetzaConversation extends Conversation
                    $this->asklineasAtencioLegalOrintacionFiltro();
                    $this->askTepuedoApoyarConAlgoMas();
                }
+                elseif ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
                else{
                    $this->say('Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.');
                    $this->askTepuedoApoyarConAlgoMas();
@@ -1364,18 +1453,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->HasExperimentadoPresionAsumirDeudasCompromisos = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askAlguienCercanoATiControlaTusIngresos();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+                    $this->HasExperimentadoPresionAsumirDeudasCompromisos = $selectedValue;
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlguienCercanoATiControlaTusIngresos();
+                }
             }
         }, ['askHasExperimentadoPresionAsumirDeudasCompromisosid']);
     }
@@ -1387,19 +1482,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->AlguienCercanoATiControlaTusIngresos = $selectedValue;
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askTeHanNegadoRecursosEconomicos();
-            }
+            }}
         }, ['askHalguienCercanoATiControlaTusIngresosid']);
     }
     public function askTeHanNegadoRecursosEconomicos(): void
@@ -1410,18 +1510,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->TeHanNegadoRecursosEconomicos = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTeHanImpedidoTrabajarOEstudiarLimitarFinanciera();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTeHanImpedidoTrabajarOEstudiarLimitarFinanciera();
+                }
             }
         }, ['askTeHanNegadoRecursosEconomicosid']);
     }
@@ -1433,10 +1537,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1446,6 +1551,9 @@ class GuetzaConversation extends Conversation
                 $respuestas=[$this->HasExperimentadoPresionAsumirDeudasCompromisos, $this->AlguienCercanoATiControlaTusIngresos, $this->TeHanNegadoRecursosEconomicos, $this->TeHanImpedidoTrabajarOEstudiarLimitarFinanciera];
                 if(in_array('Si', $respuestas)){
                     $this->asklineasAtencioLegalOrintacionFiltro();
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                elseif ($selectedValue == 'Salir Sección') {
                     $this->askTepuedoApoyarConAlgoMas();
                 }
                 else{
@@ -1468,18 +1576,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->TeSientesPresionadaActuarPerderContactoHijos = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTuParejaExparejaImpedidoComuniquesHijasHijos();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTuParejaExparejaImpedidoComuniquesHijasHijos();
+                }
             }
         }, ['askTeSientesPresionadaActuarPerderContactoHijosid']);
     }
@@ -1491,18 +1603,24 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->TuParejaExparejaImpedidoComuniquesHijasHijos = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askHasNotadoTuParejaUtilizaHijasHijos();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasNotadoTuParejaUtilizaHijasHijos();
+                }
             }
         }, ['askTeSientesPresionadaActuarPerderContactoHijosid']);
     }
@@ -1514,18 +1632,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->HasNotadoTuParejaUtilizaHijasHijos = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTeSientesExcluidaDecisionesImportantesHijasHijos();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                     $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTeSientesExcluidaDecisionesImportantesHijasHijos();
+                }
             }
         }, ['askHasNotadoTuParejaUtilizaHijasHijosid']);
     }
@@ -1537,10 +1659,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1551,6 +1674,9 @@ class GuetzaConversation extends Conversation
                 $respuestas=[$this->TeSientesPresionadaActuarPerderContactoHijos, $this->TuParejaExparejaImpedidoComuniquesHijasHijos, $this->HasNotadoTuParejaUtilizaHijasHijos, $this->TeSientesExcluidaDecisionesImportantesHijasHijos];
                 if(in_array('Si', $respuestas)){
                     $this->asklineasAtencioLegalOrintacionFiltro();
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                elseif ($selectedValue == 'Salir Sección') {
                     $this->askTepuedoApoyarConAlgoMas();
                 }
                 else{
@@ -1574,10 +1700,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1587,7 +1714,10 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                if($selectedValue=='Si'){
                    $this->askHasRecibidoAmenazasATravezMensajesRedesCorreo();
-               }else{
+               }elseif ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+               else{
                   $this->askatencionesDigitalesFiltro();
                }
 
@@ -1602,18 +1732,23 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->HasRecibidoAmenazasATravezMensajesRedesCorreo = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askAlguienHaDifundidoInformacionFalsaLinea();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askAlguienHaDifundidoInformacionFalsaLinea();
+                }
             }
         }, ['askHasRecibidoAmenazasATravezMensajesRedesCorreoid']);
     }
@@ -1625,18 +1760,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->AlguienHaDifundidoInformacionFalsaLinea = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askHasExperimentadoRoboIdentidadLineaSuplantacion();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askHasExperimentadoRoboIdentidadLineaSuplantacion();
+                }
             }
         }, ['askAlguienHaDifundidoInformacionFalsaLineaid']);
     }
@@ -1648,18 +1787,23 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-
                 $this->HasExperimentadoRoboIdentidadLineaSuplantacion = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askTeHanPresionadoEnviarFotosIntimasInformacionPersonal();
+                if ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askTeHanPresionadoEnviarFotosIntimasInformacionPersonal();
+                }
             }
         }, ['askHasExperimentadoRoboIdentidadLineaSuplantacionid']);
     }
@@ -1671,10 +1815,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -1690,7 +1835,11 @@ class GuetzaConversation extends Conversation
 
                 if(in_array('Si',$respuestaDigital)){
                     $this->askatencionesDigitalesFiltro();
-                }else{
+                }
+                elseif ($selectedValue == 'Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+                else{
                     $this->say("Hasta ahora en ninguna de nuestras preguntas he identificado violencia, recuerda que la violencia abarca una amplia gama de formas. Te invito a explorar preguntas sobre otros tipos de violencia, y a seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas las personas.");
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askTepuedoApoyarConAlgoMas();
