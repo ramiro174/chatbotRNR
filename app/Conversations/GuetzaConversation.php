@@ -3557,10 +3557,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Programas')->value('Programas'),
                 Button::create('Tramites y consultas')->value('Tramites y consultas'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Programas', 'Tramites y consultas'])) {
+            if (!in_array($selectedValue, ['Programas', 'Tramites y consultas','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3574,6 +3575,8 @@ class GuetzaConversation extends Conversation
                 }elseif($selectedValue=='Tramites y consultas'){
                     $this->askTramitesConsultas();
 
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
@@ -3590,18 +3593,23 @@ class GuetzaConversation extends Conversation
                 Button::create('Cultivo')->value('Cultivo'),
                 Button::create('Apoyo economico')->value('Apoyo economico'),
                 Button::create('Educación')->value('Educación'),
-                Button::create('Vivienda')->value('Vivienda')
+                Button::create('Vivienda')->value('Vivienda'),
+                Button::create('Salir Sección')->value('Salir Sección')
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Pensión', 'Cultivo', 'Apoyo economico', 'Educación', 'Vivienda'])) {
+            if (!in_array($selectedValue, ['Salir Sección','Pensión', 'Cultivo', 'Apoyo economico', 'Educación', 'Vivienda'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->Programa = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askSeFiltraBaseProgramasTramitesConsultasFiltro('Programa');
+                if($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askSeFiltraBaseProgramasTramitesConsultasFiltro('Programa');
+                }
             }
         }, ['askprogramasid']);
 
@@ -3624,18 +3632,23 @@ class GuetzaConversation extends Conversation
                 Button::create('Educación')->value('Educación'),
                 Button::create('Seguridad Social')->value('Seguridad Social'),
                 Button::create('Juridíco')->value('Juridíco'),
-                Button::create('Empleo')->value('Empleo')
+                Button::create('Empleo')->value('Empleo'),
+                Button::create('Salir Sección')->value('Salir Sección')
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Identificación', 'Finanzas personales', 'Educación', 'Seguridad Social', 'Juridíco', 'Empleo'])) {
+            if (!in_array($selectedValue, ['Salir Sección','Identificación', 'Finanzas personales', 'Educación', 'Seguridad Social', 'Juridíco', 'Empleo'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->Tramite = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askSeFiltraBaseProgramasTramitesConsultasFiltro('Tramite');
+                if($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askSeFiltraBaseProgramasTramitesConsultasFiltro('Tramite');
+                }
             }
         }, ['askTramitesConsultasid']);
 
@@ -3687,11 +3700,12 @@ class GuetzaConversation extends Conversation
                 Button::create('Solicitar una Orden de protección')->value('Solicitar una Orden de protección'),
                 Button::create('Poner una denuncia por violencia')->value('Poner una denuncia por violencia'),
                 Button::create('Números telefónicos para orientación')->value('Números telefónicos para orientación'),
+                Button::create('Salir Sección')->value('Salir Sección'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Solicitar una Orden de protección', 'Poner una denuncia por violencia', 'Números telefónicos para orientación'])) {
+            if (!in_array($selectedValue,['Salir Sección','Solicitar una Orden de protección', 'Poner una denuncia por violencia', 'Números telefónicos para orientación'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3710,6 +3724,9 @@ class GuetzaConversation extends Conversation
                 } elseif($selectedValue=='Números telefónicos para orientación'){
                     $this->askLineasAtencionLegalFiltro();
                 }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
             }
         }, ['AnteriormenteTeBrindeInformacionRequeriasid']);
     }
@@ -3721,10 +3738,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Presencial')->value('Presencial'),
                 Button::create('En linea')->value('En linea'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Presencial','En linea'])) {
+            if (!in_array($selectedValue,['Presencial','En linea','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3756,6 +3774,9 @@ class GuetzaConversation extends Conversation
                     $this->askTepuedoApoyarConAlgoMas();
 
                 }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
 
             }
         }, ['QuieresSaberSolicitarOrdenProteccionid']);
@@ -3782,14 +3803,12 @@ class GuetzaConversation extends Conversation
                 Button::create('¿Qué es una denuncia?')->value('¿Qué es una denuncia?'),
                 Button::create('Tipos de denuncia')->value('Tipos de denuncia'),
                 Button::create('¿Dónde denunciar?')->value('Números telefónicos para orientación'),
-                Button::create('Requisitos para hacer una denuncia')->value('Requisitos para hacer una denuncia')
+                Button::create('Requisitos para hacer una denuncia')->value('Requisitos para hacer una denuncia'),
+                Button::create('Salir Sección')->value('Salir Sección')
             ]);
-
-
-
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['¿Qué es una denuncia?','Tipos de denuncia','¿Dónde denunciar?','Requisitos para hacer una denuncia'])) {
+            if (!in_array($selectedValue,['Salir Sección','¿Qué es una denuncia?','Tipos de denuncia','¿Dónde denunciar?','Requisitos para hacer una denuncia'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3802,58 +3821,52 @@ class GuetzaConversation extends Conversation
                     $this->say('informar al ministerio público o a la policía de hechos que constituyen un posible delito.');
                     $this->askTepuedoApoyarConAlgoMas();
                 } elseif($selectedValue=='Tipos de denuncia'){
-                    $this->say('<ul>
-                                <li>1. Querella: reportados por la mujer afectada (Violencias). </li>
-                            <li>2. Oficio: no es necesaria la presencia de la víctima (violación, feminicidio).</li>
-                            <li>3. Tentativa: no se llega a la consumación, pero se pone en peligro el bien jurídico.</li>
-                            </ul>');
+                    $this->say('
+                                1. Querella: reportados por la mujer afectada (Violencias). </br>
+                            2. Oficio: no es necesaria la presencia de la víctima (violación, feminicidio).</br>
+                            3. Tentativa: no se llega a la consumación, pero se pone en peligro el bien jurídico.</br>
+                           ');
                     $this->askTepuedoApoyarConAlgoMas();
 
-
                 } elseif($selectedValue=='¿Dónde denunciar?'){
-                    $this->say('<ul>
-                                    <li>1. FGR</li>
-                                    <li>2. FGJ</li>
-                                    <li>3. Línea: denuncia.org </li>
-                                </ul>');
+                    $this->say('1. FGR</br>
+                                2. FGJ</br>
+                                3. Línea: denuncia.org </br>
+                                ');
                     $this->askTepuedoApoyarConAlgoMas();
 
 
                 } elseif($selectedValue=='Requisitos para hacer una denuncia'){
-
                     $this->say('
-                    <ul>
-                    <li>1. Nombre completo (identificación).</li>
-                    <li>2. Domicilio.</li>
-                    <li>3. Nombre de quien cometió el delito.</li>
-                    <li><ul>4. Narración de los hechos (se sugiere llevar una bitácora descriptiva de los hechos- no es un formato legal).
-                        <li>4.1. Fecha y hora de los hechos.</li>
-                        <li>4.2. Lugar de los hechos.</li>
-                        <li>4.3. Personas que intervinieron en los hechos.</li>
-                        <li>4.4. Identificación de dichas personas.</li>
-                        <li>4.5. Comentar si el delito no es un hecho aislado – nombrar los Antecedentes.</li>
-                    </ul>
-                    </li>
-                    <li>5. Sugerencias: Solicitar el número de carpeta, verificar datos personales correctos, verificar que la narración de los hechos sea correcta, solicitar una copia.</li>
-                    <li>6. Conocer mis derechos humanos.
-                        <ul>
-                        <li>-Derecho a un trato digno.</li>
-                        <li>-No revictimización.</li>
-                        <li>-Orientación jurídica y defensa.</li>
-                        <li>-Acompañamiento médico y psicológico.</li>
-                        <li>-Refugio.</li>
-                        <li>-Interprete.</li>
-                        <li>-Acceso a información procesal.</li>
-                        <li>-Reparación del daño.</li>
-                        <li>-Medidas de protección.</li>
-                        <li>-Órdenes de protección.</li>
-                        <li>-Ajustes o medidas especiales.</li>
-                        </ul>
-                    </li>
-                    </ul>
+                    1. Nombre completo (identificación).</br>
+                    2. Domicilio.</br>
+                    3. Nombre de quien cometió el delito.</br>
+                    4. Narración de los hechos (se sugiere llevar una bitácora descriptiva de los hechos- no es un formato legal).
+                        4.1. Fecha y hora de los hechos.</br>
+                        4.2. Lugar de los hechos.</br>
+                        4.3. Personas que intervinieron en los hechos.</br>
+                        4.4. Identificación de dichas personas.</br>
+                        4.5. Comentar si el delito no es un hecho aislado – nombrar los Antecedentes.</br>
+                    </br>
+                    5. Sugerencias: Solicitar el número de carpeta, verificar datos personales correctos, verificar que la narración de los hechos sea correcta, solicitar una copia.</br>
+                    6. Conocer mis derechos humanos.
+                        -Derecho a un trato digno.</br>
+                        -No revictimización.</br>
+                        -Orientación jurídica y defensa.</br>
+                        -Acompañamiento médico y psicológico.</br>
+                        -Refugio.</br>
+                        -Interprete.</br>
+                        -Acceso a información procesal.</br>
+                        -Reparación del daño.</br>
+                        -Medidas de protección.</br>
+                        -Órdenes de protección.</br>
+                        -Ajustes o medidas especiales.</br>
                     ');
                     $this->askTepuedoApoyarConAlgoMas();
 
+                }
+                elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
