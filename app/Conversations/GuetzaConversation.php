@@ -2039,7 +2039,7 @@ class GuetzaConversation extends Conversation
                 ->Identidad("Mujer")
                 ->get()
             );
-        $this->say("<b>Líneas de atención especializada en derechos sexuales y reproductivos</b>   </br></br>".   $instituciones);
+        $this->say("<b>Líneas de atención especializada en derechos sexuales y reproductivos</b></br></br>".   $instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
 
         $this->askTieneDerechoPuedesolicitarGuardarEvidencia();
@@ -4233,19 +4233,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->CuandoDirigeTeLlamaApodoDesagrdeTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->askTeDiceQueEstasConAlguienMasTest();
                 }
-
-
-                $this->askTeDiceQueEstasConAlguienMasTest();
             }
         }, ['CuandoDirigeTeLlamaApodoDesagrdeTestid']);
     }
@@ -4259,17 +4260,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeDiceQueEstasConAlguienMasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->askTeHaInterrumpidoEnSituacionesLaboralesTest();
                 }
-                $this->askTeHaInterrumpidoEnSituacionesLaboralesTest();
             }
         }, ['TeDiceQueEstasConAlguienMasTestid']);
     }
@@ -4283,17 +4287,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaInterrumpidoEnSituacionesLaboralesTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askTeDicenTieneOtrasParejasTest();
                 }
-                $this->askTeDicenTieneOtrasParejasTest();
             }
         }, ['TeHaInterrumpidoEnSituacionesLaboralesTestid']);
     }
@@ -4307,17 +4314,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeDicenTieneOtrasParejasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askTodoTiempoQuiereSaberDondeEstasTest();
                 }
-                $this->askTodoTiempoQuiereSaberDondeEstasTest();
             }
         }, ['TeDicenTieneOtrasParejasTestid']);
     }
@@ -4331,17 +4341,21 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TodoTiempoQuiereSaberDondeEstasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
-                $this->askTeCriticaBurlaCuerpoErroresTest();
+                else{
+                    $this->askTeCriticaBurlaCuerpoErroresTest();
+                }
             }
         }, ['TodoTiempoQuiereSaberDondeEstasTestid']);
     }
@@ -4355,17 +4369,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeCriticaBurlaCUerpoErroresTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askTeHaPedidoCambiesFormaVestirTest();
                 }
-                $this->askTeHaPedidoCambiesFormaVestirTest();
             }
         }, ['TeCriticaBurlaCUerpoErroresTestid']);
     }
@@ -4379,17 +4396,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaPedidoCambiesFormaVestirTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askCuandoEstasConEsaPersonaTensionTest();
                 }
-                $this->askCuandoEstasConEsaPersonaTensionTest();
             }
         }, ['TeHaPedidoCambiesFormaVestirTestid']);
     }
@@ -4403,17 +4423,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->CuandoEstasConEsaPersonaTensionTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askHaRevisadoCelularLlamadasMensajesTest();
                 }
-                $this->askHaRevisadoCelularLlamadasMensajesTest();
             }
         }, ['CuandoEstasConEsaPersonaTensionTestid']);
     }
@@ -4427,17 +4450,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->HaRevisadoCelularLlamadasMensajesTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askParaDecidirLoHaranCuandoSalenTest();
                 }
-                $this->askParaDecidirLoHaranCuandoSalenTest();
             }
         }, ['HaRevisadoCelularLlamadasMensajesTestid']);
     }
@@ -4451,17 +4477,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->ParaDecidirLoHaranCuandoSalenTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askHaInterferidoRelacionesConversacionesInternetTest();
                 }
-                $this->askHaInterferidoRelacionesConversacionesInternetTest();
             }
         }, ['ParaDecidirLoHaranCuandoSalenTestid']);
     }
@@ -4475,17 +4504,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->HaInterferidoRelacionesConversacionesInternetTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->askCuandoHablanTesientesMalHablaSexoTest();
                 }
-                $this->askCuandoHablanTesientesMalHablaSexoTest();
             }
         }, ['HaInterferidoRelacionesConversacionesInternetTestid']);
     }
@@ -4499,17 +4531,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->CuandoHablanTesientesMalHablaSexoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->askHaHechoUsoDineroTusAhorrosTest();
                 }
-                $this->askHaHechoUsoDineroTusAhorrosTest();
             }
         }, ['CuandoHablanTesientesMalHablaSexoTestid']);
     }
@@ -4523,17 +4558,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->HaHechoUsoDineroTusAhorrosTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askSientesConstantementeEstaControlandoTest();
                 }
-                $this->askSientesConstantementeEstaControlandoTest();
             }
         }, ['HaHechoUsoDineroTusAhorrosTestid']);
     }
@@ -4547,17 +4585,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SientesConstantementeEstaControlandoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
-                }
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
                 $this->askTeHaLimitadoControladoGastosCubrirTest();
+                }
             }
         }, ['SientesConstantementeEstaControlandoTestid']);
     }
@@ -4571,17 +4612,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaLimitadoControladoGastosCubrirTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askHasEscondidoDestruidoTusDocumentosTest();
                 }
-                $this->askHasEscondidoDestruidoTusDocumentosTest();
             }
         }, ['TeHaLimitadoControladoGastosCubrirTestid']);
     }
@@ -4595,17 +4639,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->HasEscondidoDestruidoTusDocumentosTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->askSiHasCedidoDeseosSexualesTest();
                 }
-                $this->askSiHasCedidoDeseosSexualesTest();
             }
         }, ['HasEscondidoDestruidoTusDocumentosTestid']);
     }
@@ -4619,17 +4666,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SiHasCedidoDeseosSexualesTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askSiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest();
                 }
-                $this->askSiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest();
             }
         }, ['SiHasCedidoDeseosSexualesTestid']);
     }
@@ -4643,17 +4693,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askTeHaObligadoVerPornografiaTest();
                 }
-                $this->askTeHaObligadoVerPornografiaTest();
             }
         }, ['SiTienenRelacionesSexualesTeImpideUsoMetodoAntiTestid']);
     }
@@ -4667,17 +4720,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaObligadoVerPornografiaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askHaDifundidoInformacionImagenesEnviadoTest();
                 }
-                $this->askHaDifundidoInformacionImagenesEnviadoTest();
             }
         }, ['TeHaObligadoVerPornografiaTestid']);
     }
@@ -4691,17 +4747,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->HaDifundidoInformacionImagenesEnviadoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askTeHaPrecionadoObligadoConsumirDrogaTest();
                 }
-                $this->askTeHaPrecionadoObligadoConsumirDrogaTest();
             }
         }, ['HaDifundidoInformacionImagenesEnviadoTestid']);
     }
@@ -4715,17 +4774,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaPrecionadoObligadoConsumirDrogaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->askSiTomaAlcoholConsumeAlgunTipoDrogaTest();
                 }
-                $this->askSiTomaAlcoholConsumeAlgunTipoDrogaTest();
             }
         }, ['TeHaPrecionadoObligadoConsumirDrogaTestid']);
     }
@@ -4739,17 +4801,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SiTomaAlcoholConsumeAlgunTipoDrogaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askTienesRendirleCuentasTodoTest();
                 }
-                $this->askTienesRendirleCuentasTodoTest();
             }
         }, ['SiTomaAlcoholConsumeAlgunTipoDrogaTestid']);
     }
@@ -4763,17 +4828,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TienesRendirleCuentasTodoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
-                }
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
                 $this->askACausaProblemasTienesPerdidaApetitoTest();
+                }
             }
         }, ['TienesRendirleCuentasTodoTestid']);
     }
@@ -4787,17 +4855,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->ACausaProblemasTienesPerdidaApetitoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askCuandoSeEnojaDiscutenTest();
                 }
-                $this->askCuandoSeEnojaDiscutenTest();
             }
         }, ['ACausaProblemasTienesPerdidaApetitoTestid']);
     }
@@ -4811,17 +4882,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->CuandoSeEnojaDiscutenTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askTeHaGolpeadoAlgunaParteCuerpoTest();
                 }
-                $this->askTeHaGolpeadoAlgunaParteCuerpoTest();
             }
         }, ['CuandoSeEnojaDiscutenTestid']);
     }
@@ -4835,17 +4909,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaGolpeadoAlgunaParteCuerpoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askTeHaObligadoPresionadoEnviarImagenesIntimasTest();
                 }
-                $this->askTeHaObligadoPresionadoEnviarImagenesIntimasTest();
             }
         }, ['TeHaGolpeadoAlgunaParteCuerpoTestid']);
     }
@@ -4859,17 +4936,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaObligadoPresionadoEnviarImagenesIntimasTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
-                }
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
                 $this->askTehaCausadoLesionesAmeritenRecibirAtencionMedicaTest();
+                }
             }
         }, ['TeHaObligadoPresionadoEnviarImagenesIntimasTestid']);
     }
@@ -4883,17 +4963,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TehaCausadoLesionesAmeritenRecibirAtencionMedicaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askTeHaAmenazadoConMatarteCuandoQuieresTerminarTest();
                 }
-                $this->askTeHaAmenazadoConMatarteCuandoQuieresTerminarTest();
             }
         }, ['TehaCausadoLesionesAmeritenRecibirAtencionMedicaTestid']);
     }
@@ -4907,17 +4990,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaAmenazadoConMatarteCuandoQuieresTerminarTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                } else {
+                    $this->askTeHaExigidoDemuestresDondeEstaTuGeoTest();
                 }
-                $this->askTeHaExigidoDemuestresDondeEstaTuGeoTest();
             }
         }, ['TeHaAmenazadoConMatarteCuandoQuieresTerminarTestid']);
     }
@@ -4931,17 +5017,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->TeHaExigidoDemuestresDondeEstaTuGeoTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
-                }
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
                 $this->askDespuesDisculpasMuestraCarinoAtencionTest();
+                }
             }
         }, ['TeHaExigidoDemuestresDondeEstaTuGeoTestid']);
     }
@@ -4955,17 +5044,20 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->DespuesDisculpasMuestraCArinoAtencionTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askSeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest();
                 }
-                $this->askSeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest();
             }
         }, ['DespuesDisculpasMuestraCArinoAtencionTestid']);
     }
@@ -4979,20 +5071,25 @@ class GuetzaConversation extends Conversation
                 Button::create('Nunca')->value('Nunca')]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca'])) {
+            if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-                if($selectedValue!='Nunca'){
+                if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                }elseif($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else{
+                    $this->askResultadoTest();
                 }
-                $this->askResultadoTest();
             }
         }, ['SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTestid']);
     }
+
+
 
     public function askResultadoTest(){
         $r=$this->ResultadoTest;
