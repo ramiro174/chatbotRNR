@@ -2832,11 +2832,11 @@ class GuetzaConversation extends Conversation
                 Button::create('Autocuidado')->value('Autocuidado'),
                 Button::create('En tus relaciones')->value('En tus relaciones'),
                 Button::create('Igualdad de oportunidades y el reconocimiento del valor individual')->value('Igualdad de oportunidades y el reconocimiento del valor individual'),
-                Button::create('Salir Sección')->value('Salir Sección'),
+                Button::create('Anterior')->value('Anterior'),
                 ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Salir Sección','Empoderamiento','Autocuidado','En tus relaciones','Igualdad de oportunidades y el reconocimiento del valor individual'])) {
+            if (!in_array($selectedValue, ['Anterior','Empoderamiento','Autocuidado','En tus relaciones','Igualdad de oportunidades y el reconocimiento del valor individual'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -2858,8 +2858,8 @@ class GuetzaConversation extends Conversation
                 $this->say('En alguno de los siguientes ámbitos: comunitario, laboral, escolar, familiar, de pareja, entre otros. Te encuentras en una o varias de las siguientes situaciones: ');
                 $this->askLasTareasFinanzasResponsabilidadesEstanDistribuidas();
             }
-            elseif($selectedValue=='Salir Sección'){
-                $this->askTepuedoApoyarConAlgoMas();
+            elseif($selectedValue=='Anterior'){
+                $this->askAquiTengoUnasOpcionesParaTi();
             }
         }, ['askDebesSaberTienesDerechoSobreDerechoSexualesid']);
     }
