@@ -4282,6 +4282,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askTeDiceQueEstasConAlguienMasTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else {
@@ -4311,6 +4312,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askTeHaInterrumpidoEnSituacionesLaboralesTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else {
@@ -4340,6 +4342,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askTeDicenTieneOtrasParejasTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4369,6 +4372,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askTodoTiempoQuiereSaberDondeEstasTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4398,6 +4402,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askTeCriticaBurlaCuerpoErroresTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }
@@ -4428,6 +4433,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askTeHaPedidoCambiesFormaVestirTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4457,6 +4463,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askCuandoEstasConEsaPersonaTensionTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4486,6 +4493,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askHaRevisadoCelularLlamadasMensajesTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4515,6 +4523,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askParaDecidirLoHaranCuandoSalenTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -4544,6 +4553,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askHaInterferidoRelacionesConversacionesInternetTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -4573,6 +4583,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askCuandoHablanTesientesMalHablaSexoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else {
@@ -4602,6 +4613,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askHaHechoUsoDineroTusAhorrosTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else {
@@ -4631,6 +4643,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=1;
+                    $this->askSientesConstantementeEstaControlandoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -4660,6 +4673,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askTeHaLimitadoControladoGastosCubrirTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4689,6 +4703,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askHasEscondidoDestruidoTusDocumentosTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4718,6 +4733,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askSiHasCedidoDeseosSexualesTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else {
@@ -4747,6 +4763,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askSiTienenRelacionesSexualesTeImpideUsoMetodoAntiTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4776,6 +4793,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTeHaObligadoVerPornografiaTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4805,6 +4823,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askHaDifundidoInformacionImagenesEnviadoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4834,6 +4853,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTeHaPrecionadoObligadoConsumirDrogaTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -4863,6 +4883,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askSiTomaAlcoholConsumeAlgunTipoDrogaTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else {
@@ -4892,6 +4913,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askTienesRendirleCuentasTodoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -4921,6 +4943,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=2;
+                    $this->askACausaProblemasTienesPerdidaApetitoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4950,6 +4973,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askCuandoSeEnojaDiscutenTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -4979,6 +5003,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTeHaGolpeadoAlgunaParteCuerpoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -5008,6 +5033,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTeHaObligadoPresionadoEnviarImagenesIntimasTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -5037,6 +5063,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTehaCausadoLesionesAmeritenRecibirAtencionMedicaTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -5066,6 +5093,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTeHaAmenazadoConMatarteCuandoQuieresTerminarTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -5095,6 +5123,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askTeHaExigidoDemuestresDondeEstaTuGeoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -5124,6 +5153,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askDespuesDisculpasMuestraCarinoAtencionTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -5153,6 +5183,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askSeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -5180,6 +5211,7 @@ class GuetzaConversation extends Conversation
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if(in_array($selectedValue,['Frecuentemente','Algunas veces'])){
                     $this->ResultadoTest+=3;
+                    $this->askResultadoTest();
                 }elseif($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
