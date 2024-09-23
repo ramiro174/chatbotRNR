@@ -3932,19 +3932,23 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
 
                 $this->PuedesIrMedicoSolaAunqueSeaEnfermaGrave = $selectedValue;
+            if($selectedValue=='Salir Sección'){
+                $this->askTepuedoApoyarConAlgoMas();
+            }else{
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
-
                 $this->askCreesNoTienesMuchoSentirteOrgullosa();
+            }
 
 
             }
@@ -3958,18 +3962,23 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
 
                 $this->CreesNoTienesMuchoSentirteOrgullosa = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askSiTienesPasarFinSemanaSola();
+                if($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askSiTienesPasarFinSemanaSola();
+                }
 
 
 
@@ -3984,18 +3993,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SiTienesPasarFinSemanaSola = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-
-                $this->askGeneralmenteDasMasValorOpinaTuPareja();
+                if($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askGeneralmenteDasMasValorOpinaTuPareja();
+                }
 
 
             }
@@ -4009,17 +4022,22 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->GeneralmenteDasMasValorOpinaTuPareja = $selectedValue;
-                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
-                $this->bot->typesAndWaits($this->tiempoRespuesta);
-                $this->askCuandoTienesTomarDecisionImportanteNoHacerlo();
+                if($selectedValue=='Salir Sección'){
+                    $this->askTepuedoApoyarConAlgoMas();
+                }else {
+                    $this->say('<div class="response-right">' . $answer->getText() . '</div>');
+                    $this->bot->typesAndWaits($this->tiempoRespuesta);
+                    $this->askCuandoTienesTomarDecisionImportanteNoHacerlo();
+                }
             }
         }, ['GeneralmenteDasMasValorOpinaTuParejaid']);
     }
@@ -4031,10 +4049,11 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Si', 'No'])) {
+            if (!in_array($selectedValue, ['Si', 'No','Salir Sección'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4046,7 +4065,13 @@ class GuetzaConversation extends Conversation
                     $this->say('La RNR te puede poner en contacto con profesionales  con formación y experiencia necesaria para darte orientación especializada y herramientas que pueden ser benéficas para ti. ');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askLineasAtencionAmorPropioFiltro();
-                }else{
+                }
+                elseif($selectedValue=='Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
+                }
+
+
+                else{
                     $this->say('Has contestado acertadamente cinco preguntas sobre amor propio para seguir informándote sobre este tema crucial para promover un entorno seguro y saludable para todas, puedes buscar talleres u orientación psicológica. Si te interesa selecciona si, para brindarte un contacto.');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askLineasAtencionAmorPropioFiltro();
@@ -4243,7 +4268,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')]
+            );
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4270,7 +4297,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4297,7 +4326,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4324,7 +4355,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4351,7 +4384,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4379,7 +4414,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4406,7 +4443,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4433,7 +4472,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4460,7 +4501,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4487,7 +4530,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4514,7 +4559,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4541,7 +4588,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4568,7 +4617,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4595,7 +4646,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4622,7 +4675,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4649,7 +4704,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4676,7 +4733,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4703,7 +4762,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4730,7 +4791,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4757,7 +4820,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4784,7 +4849,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4811,7 +4878,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4838,7 +4907,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4865,7 +4936,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4892,7 +4965,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4919,7 +4994,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4946,7 +5023,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -4973,7 +5052,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -5000,7 +5081,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+        ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -5027,7 +5110,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+                ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
@@ -5054,7 +5139,9 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('Frecuentemente')->value('Frecuentemente'),
                 Button::create('Algunas veces')->value('Algunas veces'),
-                Button::create('Nunca')->value('Nunca')]);
+                Button::create('Nunca')->value('Nunca'),
+                Button::create('Salir Sección')->value('Salir Sección')
+            ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
             if (!in_array($selectedValue,['Frecuentemente','Algunas veces','Nunca','Salir Sección'])) {
