@@ -1877,7 +1877,7 @@ class GuetzaConversation extends Conversation
                 Button::create('Física')->value('Física'),
                 Button::create('Psicológica')->value('Psicológica'),
                 Button::create('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?')->value('Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'),
-                Button::create('Mas opciones')->value('Mas opciones'),
+                Button::create('Anterior')->value('Anterior'),
             ]);
 
         $this->ask($question_askPlanesDeAccionProteccionSituacionViolencia, function (Answer $answer) {
@@ -1888,7 +1888,7 @@ class GuetzaConversation extends Conversation
             $this->bot->typesAndWaits($this->tiempoRespuesta);
 
 
-            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Mas opciones','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
+            if (!in_array($selectedValue, ['Sexual', 'Física','Psicológica','Anterior','Si te preguntas ¿Qué puedo hacer si vivo con una persona violenta?'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } elseif($selectedValue=='Sexual') {
@@ -1905,7 +1905,7 @@ class GuetzaConversation extends Conversation
                 $this->say('Es muy importante saber que el plan de seguridad es personal, si bien, hay estrategias generales que puedes seguir, cada caso es diferente, por lo que si sientes que estas en una relación violenta, es necesario que una profesional te acompañe a realizar tu propio plan.  Contáctanos: 55.56.74.96.95 y 800.822.44.60 también por redes sociales  puedes contactarnos, es muy fácil solo busca “Red Nacional de Refugios” e identifica la casita con el mapa de México. ¡Nosotras te acompañamos!');
                 $this->askTepuedoApoyarConAlgoMas();
 
-            } elseif($selectedValue=='Mas opciones'){
+            } elseif($selectedValue=='Anterior'){
                 $this->askAquiTengoUnasOpcionesParaTi();
             }
 
@@ -2313,12 +2313,12 @@ class GuetzaConversation extends Conversation
                 Button::create("Servicios de interrupción del embarazo")->value('Servicios de interrupción del embarazo'),
                 Button::create("Tipos de aborto")->value('Tipos de aborto'),
                 Button::create("¿Quieres saber más?")->value('¿Quieres saber más?'),
-                Button::create('Salir Sección')->value('Salir Sección'),
+                Button::create('Anterior')->value('Anterior'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Tipos de aborto','¿Quieres saber más?',"Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos","Servicios de interrupción del embarazo","Salir Sección"])) {
+            if (!in_array($selectedValue, ['Tipos de aborto','¿Quieres saber más?',"Menstruación digna", "Plenipausia", "Acceder a servicios de salud y atención médica", "Métodos Anticonceptivos","Servicios de interrupción del embarazo","Anterior"])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
@@ -2379,8 +2379,8 @@ class GuetzaConversation extends Conversation
 
                 $this->askQuieresSaberMasAborto5();
             }
-            elseif($selectedValue=='Salir Sección'){
-                $this->askTepuedoApoyarConAlgoMas();
+            elseif($selectedValue=='Anterior'){
+                $this->askAquiTengoUnasOpcionesParaTi();
             }
 
         }, ['DebesSaberTienesDerechoSobreDerechoSexualesid']);
@@ -3887,11 +3887,11 @@ class GuetzaConversation extends Conversation
                 Button::create('¿En qué momento necesito hacer una denuncia?')->value('¿En qué momento necesito hacer una denuncia?'),
                 Button::create('Y tú ¿Vives violencia?')->value('Y tú ¿Vives violencia?'),
                 Button::create('Amor propio')->value('Amor propio'),
-                Button::create('Salir Sección')->value('Salir Sección')]);
+                Button::create('Anterior')->value('Anterior')]);
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue,['Salir Sección','Ciclo de la violencia', 'Modalidad', '¿En qué momento necesito hacer una denuncia?', 'Y tú ¿Vives violencia?', 'Amor propio'])) {
+            if (!in_array($selectedValue,['Anterior','Ciclo de la violencia', 'Modalidad', '¿En qué momento necesito hacer una denuncia?', 'Y tú ¿Vives violencia?', 'Amor propio'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -3918,8 +3918,8 @@ class GuetzaConversation extends Conversation
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     $this->askPuedesIrMedicoSolaAunqueSeaEnfermaGrave();
                 }
-                elseif($selectedValue=='Salir Sección'){
-                    $this->askTepuedoApoyarConAlgoMas();
+                elseif($selectedValue=='Anterior'){
+                    $this->askAquiTengoUnasOpcionesParaTi();
                 }
             }
         }, ['askAlgunasOpcionesInformacionAdicionalid']);
