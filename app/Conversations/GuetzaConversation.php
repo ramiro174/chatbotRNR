@@ -5277,12 +5277,12 @@ class GuetzaConversation extends Conversation
                 Button::create('Placer sexual')->value('Placer sexual'),
                 Button::create('Consentir')->value('Consentir'),
                 Button::create('Salud Sexual')->value('Salud Sexual'),
-                Button::create('Mas opciones')->value('Mas opciones'),
+                Button::create('Anterior')->value('Anterior'),
 
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual','Mas opciones'])) {
+            if (!in_array($selectedValue, ['Placer sexual','Consentir','Salud Sexual','Anterior'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -5295,7 +5295,7 @@ class GuetzaConversation extends Conversation
                     $this->askConsentir();
                 }elseif($selectedValue=='Salud Sexual'){
                         $this->askSaludSexual();
-                }elseif($selectedValue=='Mas opciones'){
+                }elseif($selectedValue=='Anterior'){
                         $this->askAquiTengoUnasOpcionesParaTi();
                 }
 
