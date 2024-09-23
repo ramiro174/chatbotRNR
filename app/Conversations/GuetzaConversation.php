@@ -4235,11 +4235,12 @@ class GuetzaConversation extends Conversation
             ->addButtons([
                 Button::create('¿Necesitas algún servicio de emergencia en este momento?')->value('¿Necesitas algún servicio de emergencia en este momento?'),
                 Button::create('Identifica los tipos de violencia')->value('Identifica los tipos de violencia'),
+                Button::create('Salir Sección')->value('Salir Sección'),
             ]);
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['¿Necesitas algún servicio de emergencia en este momento?', 'Identifica los tipos de violencia'])) {
+            if (!in_array($selectedValue, ['Salir Sección','¿Necesitas algún servicio de emergencia en este momento?', 'Identifica los tipos de violencia'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -4252,6 +4253,9 @@ class GuetzaConversation extends Conversation
                 }elseif($selectedValue=='Identifica los tipos de violencia') {
 
                     $this->askQuieroSaberIdentificarViolencias();
+                }
+                elseif($selectedValue=='Salir Sección') {
+                    $this->askTepuedoApoyarConAlgoMas();
                 }
 
 
