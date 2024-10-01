@@ -3906,7 +3906,7 @@ class GuetzaConversation extends Conversation
                     $this->askPuedesIrMedicoSolaAunqueSeaEnfermaGrave();
                 }
                 elseif($selectedValue=='Anterior'){
-                    $this->askAquiTengoUnasOpcionesParaTi();
+                    $this->askSiEstasAcompanadoMujerEllaTuEncuentranRiesgo();
                 }
             }
         }, ['askAlgunasOpcionesInformacionAdicionalid']);
