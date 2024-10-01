@@ -190,7 +190,6 @@ class GuetzaConversation extends Conversation
 
     public static function ListarOrganizaciones(Collection $listaInsOrg): string
     {
-
         $lista = $listaInsOrg->map(function ($ins) {
             $servicio= trim($ins->Caracteristica)==''?'': "<b style= 'color:purple;font-size:12px'> Servicio: </b>" . $ins->Caracteristica ;
             $telefono= trim($ins->Telefono)==''?'':"<b style= 'color:purple;font-size:12px'> Telefono: </b>" . $ins->Telefono;
@@ -220,8 +219,7 @@ class GuetzaConversation extends Conversation
                 $twiter
                 ;
         });
-    return  Arr::join($lista->toArray(),' </br></br>');
-
+        return  Arr::join($lista->toArray(),' </br></br>');
     }
     public static function ListarProgramasTramites(Collection $listaInsOrg): string
     {
@@ -322,14 +320,13 @@ class GuetzaConversation extends Conversation
     }
     public function askSiEstasAcompanadoMujerEllaTuEncuentranRiesgo(): void
     {
-        $question = Question::create($this->nombre . ' Si estas acompañando a una mujer y ella o tú se encuentran en riesgo, tengo opciones de líneas de emergencia en tu localidad o a nivel federal.')
+        $question = Question::create($this->nombre . ', si estas acompañando a una mujer y ella o tú se encuentran en riesgo, tengo opciones de líneas de emergencia en tu localidad o a nivel federal.')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('SiEstasAcompanadoMujerEllaTuEncuentranRiesgoid')
             ->addButtons([
                 Button::create('Emergencia')->value('Emergencia'),
                 Button::create('Necesito apoyo')->value('Necesito apoyo'),
                 Button::create('Información adicional')->value('Información adicional'),
-                Button::create('Anterior')->value('Anterior'),
                 Button::create('Concluir Conversación')->value('Concluir Conversación'),
 
             ]);
@@ -337,7 +334,7 @@ class GuetzaConversation extends Conversation
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
-            if (!in_array($selectedValue, ['Emergencia', 'Necesito apoyo', 'Información adicional', 'Anterior', 'Concluir Conversación'])) {
+            if (!in_array($selectedValue, ['Emergencia', 'Necesito apoyo', 'Información adicional', 'Concluir Conversación'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
@@ -352,21 +349,11 @@ class GuetzaConversation extends Conversation
                 $this->askLineasApoyoOtrasIdentidadesFiltro();
                 }
                 else if($selectedValue=='Información adicional'){
-          ///estaba aqui
                     $this->askAlgunasOpcionesInformacionAdicional();
-                }
-                else if($selectedValue=='Anterior'){
-                    $this->askQuieresSaberSituacionRiesgo();
                 }
                 else if($selectedValue=='Concluir Conversación'){
                  $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
                 }
-
-
-
-//
-
-
             }
         }, ['SiEstasAcompanadoMujerEllaTuEncuentranRiesgoid']);
     }
@@ -376,7 +363,7 @@ class GuetzaConversation extends Conversation
         $instituciones=  self::ListarOrganizaciones(Instituciones_Organizaciones::estadoRepublica($estado)->ClasificacionEmergencia()->get());
         $this->say("<b>Líneas de emergencia</b>   </br></br>".   $instituciones);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askTepuedoApoyarConAlgoMas();
+        $this->askTepuedoApoyarConAlgoMas2();
 
     }
     public function askLineasApoyoOtrasIdentidadesFiltro(): void
@@ -5597,6 +5584,36 @@ class GuetzaConversation extends Conversation
             }
         }, ['TepuedoApoyarAlgoMasid']);
     }
+    public function askTepuedoApoyarConAlgoMas2(): void
+    {
+        $question = Question::create('¿Te puedo apoyar con algo más?')
+            ->fallback('Edad no valida')
+            ->callbackId('TepuedoApoyarAlgoMasid')
+            ->addButtons([
+                Button::create('Más opciones')->value('Más opciones'),
+                Button::create('Concluir Conversación')->value('Concluir Conversación'),
+            ]);
+        $this->ask($question, function (Answer $answer) {
+            $selectedValue = $answer->getValue();
+            if (!in_array($selectedValue, ['Más opciones', 'Concluir Conversación'])) {
+                $this->say("Haz click en un opcion valida");
+                $this->repeat();
+            } else {
+                $this->say('<div class="response-right">'.  $answer->getText().'</div>');
+                $this->bot->typesAndWaits($this->tiempoRespuesta);
+
+                if($selectedValue=='Más opciones'){
+                    $this->askSiEstasAcompanadoMujerEllaTuEncuentranRiesgo();
+                }elseif($selectedValue=='Concluir Conversación'){
+                        $this->askAntesQueTeVayasMeGustariaConversacionResultoUtil();
+                }
+
+
+
+            }
+        }, ['TepuedoApoyarAlgoMasid']);
+    }
+
     public function askQuieroExplorarMas(): void
         {
             $question = Question::create('¿Quieres explorar más las opciones que tengo para ti?')
