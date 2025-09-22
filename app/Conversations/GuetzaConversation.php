@@ -2,6 +2,7 @@
 
 namespace App\Conversations;
 
+use App\Models\Chat;
 use App\Models\Instituciones_Organizaciones;
 use App\Models\Programas_Sociales_Tramites;
 use BotMan\BotMan\Messages\Conversations\Conversation;
@@ -14,6 +15,12 @@ use Illuminate\Support\Arr;
 
 class GuetzaConversation extends Conversation
 {
+    protected  string $chat_id;
+
+    public function __construct(string $chat_id)
+    {
+        $this->chat_id = $chat_id;
+    }
     protected string $nombre;
     protected string $email;
     protected int $edad=0;
@@ -23,6 +30,8 @@ class GuetzaConversation extends Conversation
     protected string $genero;
     protected string $orientacionNecesitas;
     protected string $QuieresSaberSituacionRiesgo;
+    protected string $QuieresSabernecesitarServicioEmergencia;
+
     protected string $AquiTengoOpcionesParaTi;
     protected string $AlgunaVezHanEmpujadoGolpeadoAgreFisicamente;
     protected string $HasSentidoMiedoSobreTuSeguridad;
@@ -82,7 +91,7 @@ class GuetzaConversation extends Conversation
 
 
 //Orientación psicológica
-    protected string $TePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico;
+    protected string $TePuedoAcompanarAlgunasPreguntasIden;
     //Empoderamiento
     protected string $SientesFaltaConfianzaMisma;
     protected string $TecuestaExpresarOpinionesDeseos;
@@ -115,7 +124,7 @@ class GuetzaConversation extends Conversation
     protected string $AnteriormenteTeBrindeInformacionRequerias;
     protected string $CompartemeSugerenciasPropuestas;
     protected string $HeSeleccionadAlgunasAtencionesPuedesRecibirAtravesOrganizaciones;
-    protected string $SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad;
+    protected string $SiTeInteresaConocerSobreProgramasSo;
     protected string $Programa;
     protected string $Tramite;
 
@@ -164,10 +173,6 @@ class GuetzaConversation extends Conversation
     protected string $TeHaExigidoDemuestresDondeEstaTuGeoTest;
     protected string $DespuesDisculpasMuestraCArinoAtencionTest;
     protected string $SeHaEnfadadoPorNoTenerUnaRespuestaInmediantaTest;
-
-
-
-
 
         //Amor Propio
     protected string $PuedesIrMedicoSolaAunqueSeaEnfermaGrave;
@@ -235,9 +240,16 @@ class GuetzaConversation extends Conversation
 
     }
 
+    public function getConversationIdentifier()
+    {
+        // Forzar a que BotMan lo trate como una conversación totalmente nueva
+        return $this->chatId;
+    }
+
     public function run()
     {
-       $this->askName();
+
+        $this->askName();
       // $this->askCuandoDirigeTeLlamaApodoDesagradeTest();
 
        // $this->askIdentificamosServiciosAtencionMujeresFiltro();
@@ -247,6 +259,11 @@ class GuetzaConversation extends Conversation
     }
     public function askName(): void
     {
+        // chat_id is provided by the controller when user says 'hola'
+        //$this->chat_id= $this->bot->getMessage()->getConversationIdentifier();
+
+        Chat::create(["chat_id"=>$this->chat_id]);
+
         $this->ask('Me gustaría conocer tu nombre o cómo deseas que te llame', function (Answer $answer) {
             // Save result
             $this->nombre = $answer->getText();
@@ -257,6 +274,8 @@ class GuetzaConversation extends Conversation
 
     public function askGenero(): void
     {
+
+
         $question = Question::create($this->nombre . ' un gusto, para poder acompañarte necesito conocerte un poco más por favor selecciona la opción con la qué te identifiques')
             ->fallback('no seleccionate una opción valida')
             ->callbackId('askGeneroid')
@@ -276,13 +295,14 @@ class GuetzaConversation extends Conversation
                 $this->say('<div class="response-right">'.   $selectedText.'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->genero = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'genero','respuesta'=>$this->genero]);
                 $this->askEdad();
             }
         }, ['askGeneroid']);
     }
     public function askEdad()
     {
-
+        $id= $this->bot->getMessage()->getConversationIdentifier();
         $question_Edad = Question::create('¡Gracias!, para poder brindarte atención adecuada podrías indicarme tu edad?')
             ->fallback('Edad no valida')
             ->callbackId('askEdad');
@@ -294,6 +314,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->edad = $answer->getText();
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'edad','respuesta'=>$this->edad]);
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askEstado();
             }
@@ -306,6 +327,7 @@ class GuetzaConversation extends Conversation
         $this->ask('¿En que Estado de la República te encuentras en este momento?', function (Answer $answer) {
             // Save result
             $this->estado_republica = $answer->getText();
+            $this->saveRespuestaBasedeDatos(['pregunta'=>'estado_republica','respuesta'=>$this->estado_republica]);
             $this->bot->typesAndWaits($this->tiempoRespuesta);
             if(in_array($this->genero, ['Hombre','Otra identidad de genero'])) {
                 $this->askSiEstasAcompanadoMujerEllaTuEncuentranRiesgo();
@@ -334,11 +356,13 @@ class GuetzaConversation extends Conversation
 
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
+
             if (!in_array($selectedValue, ['Emergencia', 'Necesito apoyo', 'Información adicional', 'Concluir Conversación'])) {
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
                 $this->SiEstasAcompanadoMujerEllaTuEncuentranRiesgo = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'SiEstasAcompanadoMujerEllaTuEncuentranRiesgo','respuesta'=>$this->SiEstasAcompanadoMujerEllaTuEncuentranRiesgo]);
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
@@ -388,7 +412,6 @@ class GuetzaConversation extends Conversation
 
     }
 
-
     public function askOrientacionNecesitas(): void
     {
         $question = Question::create($this->nombre . ' ¿la orientación que necesitas es para ti o para alguna mujer que conoces?')
@@ -406,6 +429,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->orientacionNecesitas = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'orientacionNecesitas','respuesta'=>$this->orientacionNecesitas]);
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 $this->askQuieresSaberSituacionRiesgo();
@@ -430,6 +454,7 @@ class GuetzaConversation extends Conversation
             } else {
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'QuieresSaberSituacionRiesgo','respuesta'=>$this->QuieresSaberSituacionRiesgo]);
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
                     if($this->edad<=17){
@@ -474,6 +499,7 @@ class GuetzaConversation extends Conversation
             } else {
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSabernecesitarServicioEmergencia = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'QuieresSabernecesitarServicioEmergencia','respuesta'=>$this->QuieresSabernecesitarServicioEmergencia]);
                 if ($selectedValue == 'En caso de agresión') {
                     $this->bot->typesAndWaits(2);
                     $this->say('Si tienes lesiones, acude rápidamente a un Servicio de Urgencias. Procura ir acompañada de una persona de tu confianza. Si sientes peligro o amenaza, llama al 911.');
@@ -516,8 +542,6 @@ class GuetzaConversation extends Conversation
     }
 
 
-
-
     public function askQuieresSabernecesitarServicioEmergencia(): void
     {
         $question = Question::create('Selecciona una opción')
@@ -537,6 +561,7 @@ class GuetzaConversation extends Conversation
             } else {
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSabernecesitarServicioEmergencia = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'QuieresSabernecesitarServicioEmergencia','respuesta'=>$this->QuieresSabernecesitarServicioEmergencia]);
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits(2);
                    $this->askIdentificamosServiciosAtencionMujeresFiltro();
@@ -571,6 +596,7 @@ class GuetzaConversation extends Conversation
             } else {
                 $this->say('<div class="response-right">'.   $selectedValue.'</div>');
                 $this->QuieresSaberCasoHeridaLesion = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'QuieresSaberCasoHeridaLesion','respuesta'=>$this->QuieresSaberCasoHeridaLesion]);
                 if ($selectedValue == 'Si') {
                     $this->say('¿Necesitas contactar con servicios de emergencia, como la policía, los bomberos y los servicios médicos?');
                     $this->bot->typesAndWaits($this->tiempoRespuesta);
@@ -657,6 +683,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->AquiTengoOpcionesParaTi = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'AquiTengoOpcionesParaTi','respuesta'=>$this->AquiTengoOpcionesParaTi]);
                 $this->say('<div class="response-right">'.  $selectedText.'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
@@ -670,7 +697,7 @@ class GuetzaConversation extends Conversation
                     $this->askDebesSaberTienesDerechoSobreDerechoSexuales();
                 }
                 elseif($selectedValue == 'Orientación psicológica') {
-                    $this->askTePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico();
+                    $this->askTePuedoAcompanarAlgunasPreguntasIden();
                 }
                 elseif($selectedValue == 'Me comuniqué con anterioridad y necesito atención') {
                     $this->askAnteriormenteTeBrindeInformacionRequerias();
@@ -722,6 +749,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'QuieresSaberSituacionRiesgo','respuesta'=>$this->QuieresSaberSituacionRiesgo]);
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
                 if ($selectedValue == 'Fisica') {
                     $this->say("Es cualquier acto que causa daño no accidental, usando la fuerza física o algún tipo de arma u objeto que pueda provocarte o no lesiones ya sean internas, externas o ambas. En este tipo te violencia también entra la violencia acida la cual se usa para atacar a mujeres con el objetivo de causarles daños físicos graves y permanentes.");
@@ -845,6 +873,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'AlgunaVezHanEmpujadoGolpeadoAgreFisicamente','respuesta'=>$this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente]);
             if($selectedValue=='Salir Sección'){
                 $this->askTepuedoApoyarConAlgoMas();
             }else{
@@ -880,6 +909,7 @@ class GuetzaConversation extends Conversation
             }
             else {
                 $this->HasSentidoMiedoSobreTuSeguridad = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'HasSentidoMiedoSobreTuSeguridad','respuesta'=>$this->HasSentidoMiedoSobreTuSeguridad]);
                 if($selectedValue=='Salir Sección'){
                     $this->askTepuedoApoyarConAlgoMas();
                 }else{
@@ -914,6 +944,7 @@ class GuetzaConversation extends Conversation
             }
             else {
                 $this->HasTenidoLesionesFisicas = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'HasTenidoLesionesFisicas','respuesta'=>$this->HasTenidoLesionesFisicas]);
                 if ($selectedValue == 'Salir Sección') {
                     $this->askTepuedoApoyarConAlgoMas();
                 } else {
@@ -946,6 +977,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
                 $this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas','respuesta'=>$this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas]);
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $Respuestaspreguntas=[$this->AlgunaVezHanEmpujadoGolpeadoAgreFisicamente,$this->HasSentidoMiedoSobreTuSeguridad,$this->HasTenidoLesionesFisicas,$this->TuParejaFamiliarAlguienCercanoObligadoEnganadoConsumas];
                 $this->say('Existen lugares especializados de protección en los que puedes recibir atención integral de forma gratuita, segura y confidencial. Recuerda que las violencias son un delito y puedes denunciarlo. Te invitamos a conocer planes de acción. ');
@@ -980,7 +1012,6 @@ class GuetzaConversation extends Conversation
                 Button::create('Si')->value('Si'),
                 Button::create('No')->value('No'),
                 Button::create('Salir Sección')->value('Salir Sección'),
-
             ]);
         $this->ask($question, function (Answer $answer) {
             $selectedValue = $answer->getValue();
@@ -988,7 +1019,8 @@ class GuetzaConversation extends Conversation
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             } else {
-                $this->QuieresSaberSituacionRiesgo = $selectedValue;
+                $this->QuieresSaberqueHacerHeridaLesion = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'QuieresSaberqueHacerHeridaLesion','respuesta'=>$this->QuieresSaberqueHacerHeridaLesion]);
                 if ($selectedValue == 'Si') {
                     $this->bot->typesAndWaits(10);
                     $this->askIdentificamosServiciosAtencionMujeresFiltro();
@@ -1024,6 +1056,7 @@ class GuetzaConversation extends Conversation
 
         else {
             $this->AlguienCercanoCriticaMenospreciaBurla = $selectedValue;
+            $this->saveRespuestaBasedeDatos(['pregunta'=>'AlguienCercanoCriticaMenospreciaBurla','respuesta'=>$this->AlguienCercanoCriticaMenospreciaBurla]);
             if ($selectedValue == 'Salir Sección') {
                 $this->askTepuedoApoyarConAlgoMas();
             }else {
@@ -1057,6 +1090,7 @@ class GuetzaConversation extends Conversation
             }
             else {
                 $this->SientesAlguienTuVidaLimitaTusDesiciones = $selectedValue;
+                $this->saveRespuestaBasedeDatos(['pregunta'=>'SientesAlguienTuVidaLimitaTusDesiciones','respuesta'=>$this->SientesAlguienTuVidaLimitaTusDesiciones]);
                 if ($selectedValue == 'Salir Sección') {
                 $this->askTepuedoApoyarConAlgoMas();
             }else {
@@ -1426,7 +1460,7 @@ class GuetzaConversation extends Conversation
         );
         $this->say("<b>Líneas de Atención Legal</b></br></br>".   $Programas);
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->askTePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico();
+        $this->askTePuedoAcompanarAlgunasPreguntasIden();
 
 
     }
@@ -2809,7 +2843,7 @@ class GuetzaConversation extends Conversation
     }
 
     //Orientación psicológica
-    public function askTePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico():void
+    public function askTePuedoAcompanarAlgunasPreguntasIden():void
     {
         $question = Question::create('Te puedo acompañar con algunas preguntas que te permitan identificar temas de interés en tu proceso psicoterapéutico.')
             ->fallback('Edad no valida')
@@ -2827,7 +2861,7 @@ class GuetzaConversation extends Conversation
                 $this->say("Haz click en un opcion valida");
                 $this->repeat();
             }
-            $this->TePuedoAcompanarAlgunasPreguntasIdentificarProcesoPsicoterapeutico = $selectedValue;
+            $this->TePuedoAcompanarAlgunasPreguntasIden = $selectedValue;
             $this->say('<div class="response-right">' . $answer->getText().'</div>');
             $this->bot->typesAndWaits($this->tiempoRespuesta);
 
@@ -3534,13 +3568,13 @@ class GuetzaConversation extends Conversation
     public function AlAcercarteCentrosAtencionPuedesRecibirOrientacionRealizarTramites():void{
         $this->say('Al acercarte a Centros de Atención puedes recibir orientación para realizar trámites, para obtener documentos, crear CV o plan de vida.');
         $this->bot->typesAndWaits($this->tiempoRespuesta);
-        $this->SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad();
+        $this->SiTeInteresaConocerSobreProgramasSo();
     }
-    public function SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad(): void
+    public function SiTeInteresaConocerSobreProgramasSo(): void
     {
         $question = Question::create('Si te interesa conocer mas sobre programas sociales, tramites o consultas que te pueden ser de utilidad, selecciona:')
             ->fallback('Edad no valida')
-            ->callbackId('SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidadid')
+            ->callbackId('SiTeInteresaConocerSobreProgramasSoid')
             ->addButtons([
                 Button::create('Programas')->value('Programas'),
                 Button::create('Tramites y consultas')->value('Tramites y consultas'),
@@ -3553,7 +3587,7 @@ class GuetzaConversation extends Conversation
                 $this->repeat();
             } else {
 
-                $this->SiTeInteresaConocerSobreProgramasSocialesTramitesConsultasUtilidad = $selectedValue;
+                $this->SiTeInteresaConocerSobreProgramasSo = $selectedValue;
                 $this->say('<div class="response-right">'.  $answer->getText().'</div>');
                 $this->bot->typesAndWaits($this->tiempoRespuesta);
 
@@ -5653,6 +5687,16 @@ class GuetzaConversation extends Conversation
 
         return false;
     }
+
+
+    public  function saveRespuestaBasedeDatos(Array $Respuesta)
+    {
+        Chat::where('chat_id', $this->chat_id)
+            ->update([$Respuesta['pregunta'] => $Respuesta['respuesta']]);
+    }
+
+
+
 
 }
 

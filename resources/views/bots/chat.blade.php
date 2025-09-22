@@ -44,5 +44,8 @@
     }
 
 
-
+    window.onload = function() {
+        BotmanWebSocket.disconnect();
+        BotmanWebSocket.connect();
+    };
 </script>
